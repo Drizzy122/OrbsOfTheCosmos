@@ -1,0 +1,84 @@
+:root {
+    --void: rgb(5, 3, 14);
+    --violet: rgb(155, 109, 255);
+    --cyan: rgb(95, 230, 255);
+    --star: rgb(234, 230, 255);
+    --dust: rgb(110, 101, 144);
+}
+
+.loading-root {
+    flex-grow: 1;
+    background-color: rgb(5, 3, 14);
+    justify-content: flex-end;
+    align-items: stretch;
+    /* SceneLoader flips this to Flex; it must never sit visible over gameplay. */
+    display: none;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out;
+}
+
+.loading-panel {
+    flex-direction: column;
+    margin-left: 7%;
+    margin-right: 7%;
+    margin-bottom: 6%;
+}
+
+.loading-title {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/Ottselesque-Regular.otf?fileID=12800000&guid=b00bfdbd79d843a46b8b3fb62f619d32&type=3#Ottselesque-Regular");
+    color: var(--star);
+    font-size: 46px;
+    -unity-font-style: bold-and-italic;
+    -unity-text-align: middle-left;
+    background-color: rgba(0, 0, 0, 0);
+    margin-bottom: 4px;
+}
+
+.loading-tip {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: var(--dust);
+    font-size: 16px;
+    letter-spacing: 2px;
+    white-space: normal;
+    max-width: 620px;
+    background-color: rgba(0, 0, 0, 0);
+    margin-bottom: 22px;
+}
+
+.bar-track {
+    height: 6px;
+    background-color: rgba(155, 109, 255, 0.16);
+    flex-direction: row;
+    overflow: hidden;
+}
+
+/* Width is driven from C# as a percentage of the track. */
+.bar-fill {
+    width: 0;
+    height: 100%;
+    background-color: var(--cyan);
+}
+
+.bar-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.loading-status {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: var(--dust);
+    font-size: 15px;
+    letter-spacing: 5px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.loading-percent {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: var(--cyan);
+    font-size: 15px;
+    letter-spacing: 3px;
+    background-color: rgba(0, 0, 0, 0);
+}

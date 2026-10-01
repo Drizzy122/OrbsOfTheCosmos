@@ -18,7 +18,7 @@ namespace theaaa
         static CustomHierarchyFolder()
         {
             //this delegate enables to put things on hierarchy
-            EditorApplication.hierarchyWindowItemOnGUI += HierarchyWindowItemOnGUI;
+            EditorApplication.hierarchyWindowItemByEntityIdOnGUI += HierarchyWindowItemOnGUI;
         }
 
 
@@ -27,10 +27,10 @@ namespace theaaa
         /// </summary>
         /// <param name="instanceID">Object id</param>
         /// <param name="selectionRect"></param>
-        static void HierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
+        static void HierarchyWindowItemOnGUI(EntityId instanceID, Rect selectionRect)
         {
             //Debug.Log(EditorPrefs.GetBool("MoveWindowOn", false));
-            GameObject obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+            GameObject obj = EditorUtility.EntityIdToObject(instanceID) as GameObject;
 
             if (obj == null)
             {

@@ -9,8 +9,8 @@ namespace Platformer
     {
         public static NotificationManager instance { get; private set; }
 
-        [field: Header("Notification UI")] 
-        [SerializeField] UIDocument hudDocument;
+        [field: Header("Notification UI")]
+        [SerializeField] PanelRenderer hudDocument;
 
         private VisualElement NotificationContainer;
         private Label notificationText;
@@ -32,19 +32,27 @@ namespace Platformer
                 return;
             }
 
-            if (hudDocument == null) 
-                hudDocument = GetComponent<UIDocument>();
-            
-            VisualElement root = hudDocument.rootVisualElement;
-            
+            if (hudDocument == null)
+                hudDocument = GetComponent<PanelRenderer>();
+
+            hudDocument.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnDestroy()
+        {
+            if (hudDocument != null) hudDocument.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnUIReload(PanelRenderer _, VisualElement root)
+        {
             NotificationContainer = root.Q<VisualElement>("NotificationContainer");
             notificationText = root.Q<Label>("NotificationText");
-            
+
             if (NotificationContainer != null && notificationText != null)
             {
                 notificationText.style.display = DisplayStyle.None;
                 NotificationContainer.style.display = DisplayStyle.None;
-                NotificationContainer.style.opacity = 0f; 
+                NotificationContainer.style.opacity = 0f;
             }
             else
             {

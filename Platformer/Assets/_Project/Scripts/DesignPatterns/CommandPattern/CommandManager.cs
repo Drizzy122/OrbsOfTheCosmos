@@ -11,7 +11,6 @@ public class CommandManager : SerializedMonoBehaviour
 
     [Header("Light Attack Settings")]
     [SerializeField] string[] lightAttackAnimations = { "Attack1", "Attack2", "Attack3" };
-    [SerializeField] string[] punchAnimations = { "Punch1", "Punch2", "Punch3" };
 
     [Header("Blast Attack Settings")]
     [SerializeField] string[] blastAttackAnimations = { "BlastAttack1", "BlastAttack2", "BlastAttack3" };
@@ -30,7 +29,7 @@ public class CommandManager : SerializedMonoBehaviour
         var controller = GetComponent<Platformer.PlayerMovement>();
 
         var combat = GetComponent<Platformer.PlayerCombat>();
-        LightAttackCommand = new LightAttackCommand(Entity, () => controller.GetAdjustedMovementDirection(), lightAttackAnimations, punchAnimations, () => combat.hasWeapon, comboResetWindow);
+        LightAttackCommand = new LightAttackCommand(Entity, () => controller.GetAdjustedMovementDirection(), lightAttackAnimations, comboResetWindow);
         BlastAttackCommand = new BlastAttackCommand(Entity, blastAttackAnimations, comboResetWindow);
 
         singleCommand = LightAttackCommand;

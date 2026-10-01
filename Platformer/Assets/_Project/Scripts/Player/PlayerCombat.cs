@@ -29,18 +29,29 @@ namespace Platformer
         [field: Header("Attack Settings")]
         [field: SerializeField] [Range(0, 10)] float lightAttackDistance = 1f;
         [field: SerializeField] int lightAttackDamage = 10;
-        [field: SerializeField] int punchDamage = 5;
         [field: SerializeField] float knockbackTime = 0.5f;
         [Tooltip("Despite the name, this is how long the attack STATE lasts (how much of the swing animation plays). Ground combo clips are 1.6-1.9s.")]
         [field: SerializeField] float attackCoolDown = 0.9f;
         [Tooltip("How long the blast STATE lasts. The air/wave clips are ~0.85-0.9s.")]
         [field: SerializeField] float blastAttackCoolDown = 0.85f;
 
+        [Tooltip("How long a queued attack press stays valid — covers mid-swing combo presses and presses made just before landing.")]
+        [field: SerializeField] float attackBufferWindow = 0.35f;
+        [Tooltip("Fraction of the swing REMAINING below which a queued press starts the next combo swing. 0.45 = the next swing can start once ~55% of the current one has played.")]
+        [field: SerializeField] [Range(0f, 1f)] float comboContinuePoint = 0.45f;
+
         private CountdownTimer attackTimer;
         private CountdownTimer blastAttackTimer;
+        float attackBufferedUntil = -1f;
 
         public bool IsAttacking => attackTimer != null && attackTimer.IsRunning;
         public bool IsBlastAttacking => blastAttackTimer != null && blastAttackTimer.IsRunning;
+
+        // Melee needs a weapon in hand (unarmed punching was removed) and is
+        // unavailable wherever the weapon is tucked away (see HandleWeaponVisibility)
+        bool MeleeAllowed => hasWeapon &&
+                             (playerMovement == null ||
+                              (!playerMovement.wallClimbimg && !playerMovement.IsGliding));
 
        
         [field: Header("Blast Settings")]
@@ -108,7 +119,38 @@ namespace Platformer
                 return;
             }
 
-            if (!IsAttacking) attackTimer.Start();
+            if (!MeleeAllowed) return;
+
+            if (IsAttacking)
+            {
+                // Mid-swing press: queue the next combo swing instead of dropping the input
+                attackBufferedUntil = Time.time + attackBufferWindow;
+            }
+            else if (playerMovement != null && !playerMovement.IsGrounded)
+            {
+                // Airborne press: hold it and fire on landing. Starting the timer here
+                // used to lock input for 0.9s — AttackState is unreachable mid-air.
+                attackBufferedUntil = Time.time + attackBufferWindow;
+            }
+            else
+            {
+                attackTimer.Start();
+            }
+        }
+
+        /// <summary>Called by AttackState when it begins a swing so the attack window
+        /// always spans the full swing (matters when entering from a dodge or a combo
+        /// continue, where the timer was started earlier).</summary>
+        public void RestartAttackWindow() => attackTimer.Start();
+
+        /// <summary>Called by AttackState each frame: true when a queued press exists
+        /// and the current swing has played far enough to flow into the next one.</summary>
+        public bool TryConsumeBufferedCombo()
+        {
+            if (!IsAttacking || Time.time > attackBufferedUntil) return false;
+            if (attackTimer.Progress > comboContinuePoint) return false;
+            attackBufferedUntil = -1f;
+            return true;
         }
 
         void OnBlastAttack()
@@ -120,6 +162,7 @@ namespace Platformer
         {
             attackTimer?.Stop();
             blastAttackTimer?.Stop();
+            attackBufferedUntil = -1f;
 
             // Also kill any in-flight lunge and its pending hit — otherwise getting
             // hurt mid-attack still slides us in and lands the swing from HurtState.
@@ -138,9 +181,10 @@ namespace Platformer
         void Awake()
         {
             playerMovement = GetComponent<PlayerMovement>();
-            playerEquipment = GetComponent<PlayerEquipment>();
+            // Equipment and the ability tree live on child objects of the Player
+            playerEquipment = GetComponentInChildren<PlayerEquipment>();
             playerAim = GetComponent<PlayerAim>();
-            abilityTree = GetComponent<AbilityTree>();
+            abilityTree = GetComponentInChildren<AbilityTree>();
             attackTimer = new CountdownTimer(attackCoolDown);
             blastAttackTimer = new CountdownTimer(blastAttackCoolDown);
 
@@ -162,6 +206,15 @@ namespace Platformer
             {
                 enemyDetection.ScanForEnemies(playerMovement.GetAdjustedMovementDirection());
             }
+
+            // Fire a buffered press (from mid-air or the tail of a swing) as soon as
+            // a fresh swing is allowed again
+            if (!IsAttacking && Time.time <= attackBufferedUntil && MeleeAllowed
+                && playerMovement != null && playerMovement.IsGrounded)
+            {
+                attackBufferedUntil = -1f;
+                attackTimer.Start();
+            }
         }
 
         private void HandleWeaponVisibility()
@@ -169,10 +222,10 @@ namespace Platformer
             if (playerEquipment == null) return;
 
             bool shouldHide = (playerMovement != null &&
-                              (playerMovement.IsGliding || playerMovement.wallClimbimg || playerMovement.InWater))
+                              (playerMovement.IsGliding || playerMovement.wallClimbimg))
                               || (playerAim != null && playerAim.IsAiming);
 
-            // Active weapon + shield tuck away while gliding/climbing/swimming/aiming.
+            // Active weapon + shield tuck away while gliding/climbing/aiming.
             var weaponVisual = playerEquipment.GetEquippedVisual(playerEquipment.ActiveWeaponSlot);
             if (weaponVisual != null) weaponVisual.SetActive(!shouldHide);
 
@@ -188,7 +241,9 @@ namespace Platformer
                 ? Mathf.RoundToInt(abilityTree.GetStat(AbilityTree.StatMeleeDamage))
                 : 0;
 
-            if (!hasWeapon) return punchDamage + abilityBonus;
+            // The weapon can be swapped out between the press and the hit landing —
+            // fall back to the base value rather than an unarmed-punch value
+            if (!hasWeapon) return lightAttackDamage + abilityBonus;
             var weapon = playerEquipment.ActiveWeapon.data as WeaponData;
             return (weapon != null ? weapon.damage : lightAttackDamage) + abilityBonus;
         }

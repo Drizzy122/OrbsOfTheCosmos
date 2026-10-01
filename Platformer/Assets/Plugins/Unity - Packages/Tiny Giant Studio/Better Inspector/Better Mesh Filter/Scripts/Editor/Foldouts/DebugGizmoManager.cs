@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.UIElements;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
@@ -18,12 +19,12 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
 
         readonly GroupBox _container;
 
-        bool _showNormals = false;
+        bool _showNormals;
         float _normalLength = 0.1f;
         float _normalWidth = 5;
         Color _normalColor = Color.blue;
 
-        bool _showTangents = false;
+        bool _showTangents;
         float _tangentLength = 0.1f;
         float _tangentWidth = 5;
         Color _tangentColor = Color.red;
@@ -201,7 +202,9 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         {
             Toggle showNormalsField = container.Q<Toggle>("showNormals");
             FloatField normalsLengthField = container.Q<FloatField>("normalLength");
+            normalsLengthField.value = _normalLength; //CustomPatch: bugfix: initial value not being set in the field
             _normalsWidthField = container.Q<FloatField>("normalWidth");
+            _normalsWidthField.value = _normalWidth; //CustomPatch: bugfix: initial value not being set in the field
             ColorField normalsColorField = container.Q<ColorField>("normalColor");
 
             if (!showNormalsField.value)
@@ -286,7 +289,7 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             });
         }
 
-        bool _justAppliedMaterialDoNotReset = false;
+        bool _justAppliedMaterialDoNotReset;
 
         void AssignCheckerMaterials()
         {
@@ -562,10 +565,13 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         const float UVSeamThreshold = 0.001f;
         const int MaxUVSeamForAaaHandle = 30000;
 
+        //CustomPatch: fixed high memory allocation method causing editor GC pressure for large meshes making it also slower
         void DrawGizmoForMesh(Mesh mesh, Transform transform, CachedMeshData cachedMeshData)
         {
-            if (!mesh) return;
-            Vector3[] vertices = mesh.vertices;
+            if (mesh == null || mesh.vertexCount == 0) return; //CustomPatch: fixed engine error when vertex count is 0 for procedural spline-based meshes
+
+            using PooledObject<List<Vector3>> _ = ListPool<Vector3>.Get(out List<Vector3> vertexList);
+            mesh.GetVertices(vertexList);
 
             Matrix4x4 localToWorld = transform.localToWorldMatrix;
             if (_showUV)
@@ -581,23 +587,28 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             }
 
             if (!_showNormals && !_showTangents) return;
-            Vector3[] normals = mesh.normals;
-            Vector4[] tangents = mesh.tangents;
+
+            using var __ = ListPool<Vector3>.Get(out List<Vector3> normalList);
+            mesh.GetNormals(normalList);
+
+            using var ___ = ListPool<Vector4>.Get(out List<Vector4> tangentList);
+            mesh.GetTangents(tangentList);
 
             Matrix4x4 normalMatrix = transform.localToWorldMatrix;
 
-            bool drawNormals = _showNormals && normals.Length == vertices.Length;
-            bool drawTangents = _showTangents && tangents.Length == vertices.Length;
+            bool drawNormals = _showNormals && normalList.Count == vertexList.Count;
+            bool drawTangents = _showTangents && tangentList.Count == vertexList.Count;
 
-            for (int i = 0; i < vertices.Length; i++)
+            int numVerts = vertexList.Count;
+            for (int i = 0; i < numVerts; i++)
             {
                 //Vector3 worldVertex = transform.TransformPoint(vertices[i]);
-                Vector3 worldVertex = localToWorld.MultiplyPoint3x4(vertices[i]);
+                Vector3 worldVertex = localToWorld.MultiplyPoint3x4(vertexList[i]);
 
                 if (drawNormals)
                 {
                     //Vector3 worldNormal = transform.TransformDirection(normals[i]);
-                    Vector3 worldNormal = normalMatrix.MultiplyVector(normals[i]);
+                    Vector3 worldNormal = normalMatrix.MultiplyVector(normalList[i]);
                     Handles.color = _normalColor;
                     if (_useAntiAliasedHandles)
                         Handles.DrawAAPolyLine(_normalWidth, worldVertex,
@@ -609,7 +620,7 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
                 if (drawTangents)
                 {
                     //Vector3 worldTangent = transform.TransformDirection(new Vector3(tangents[i].x, tangents[i].y, tangents[i].z));
-                    Vector3 worldTangent = normalMatrix.MultiplyVector(tangents[i]);
+                    Vector3 worldTangent = normalMatrix.MultiplyVector(tangentList[i]);
                     Handles.color = _tangentColor;
                     if (_useAntiAliasedHandles)
                         Handles.DrawAAPolyLine(_tangentWidth, worldVertex,
@@ -626,14 +637,14 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
                 if (_showTangents)
                     _drawnGizmo += i + 1;
 
-                MaximumGizmoDrawingTimeReachedForVertexAndTriangles(vertices.Length - (i + 1));
+                MaximumGizmoDrawingTimeReachedForVertexAndTriangles(numVerts - (i + 1));
                 return;
             }
 
             if (_showNormals)
-                _drawnGizmo += vertices.Length;
+                _drawnGizmo += numVerts;
             if (_showTangents)
-                _drawnGizmo += tangents.Length;
+                _drawnGizmo += tangentList.Count;
         }
 
         float _timeSinceLastCachedDataUpdate;
@@ -674,57 +685,66 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             _timeSinceLastCachedDataUpdate = Time.realtimeSinceStartup;
         }
 
+        //CustomPatch: replaced repeated high mesh data memory allocations with pooled lists to reduce GC pressure and improve performance
         void UpdateCachedData(Mesh mesh, Transform transform)
         {
-            Vector3[] vertices = mesh.vertices;
-            int[] triangles = mesh.triangles;
+            using PooledObject<List<Vector3>> _ = ListPool<Vector3>.Get(out List<Vector3> vertexList);
+            using PooledObject<List<int>> __ = ListPool<int>.Get(out List<int> meshTriangleList);
+            using PooledObject<List<Vector2>> ___ = ListPool<Vector2>.Get(out List<Vector2> uvList);
+
+            if (mesh.vertexCount == 0) return;
+
+            mesh.GetVertices(vertexList);
+            if (vertexList.Count == 0) return;
+
+            mesh.GetAllTriangles(meshTriangleList);
+            if (meshTriangleList.Count == 0) return;
 
             Matrix4x4 localToWorld = transform.localToWorldMatrix;
 
-            Vector2[] uvs = mesh.uv;
-            if (uvs.Length == 0) return;
+            mesh.GetUVs(channel: 0, uvList);
+            if (uvList.Count == 0) return;
 
             //float threshold = 0.5f * 0.5f; // Compare squared distances to avoid sqrt calculations
             const float threshold = UVSeamThreshold * UVSeamThreshold; // Compare squared distances to avoid sqrt calculations
 
-            int triangleCount = triangles.Length;
+            int triangleCount = meshTriangleList.Count;
 
             Handles.color = _uvSeamColor;
 
-            List<Triangle> trianglesStruct = new();
+            using PooledObject<List<Triangle>> ____ = ListPool<Triangle>.Get(out List<Triangle> triangleDataList);
             for (int i = 0; i < triangleCount; i += 3)
             {
-                int indexA = triangles[i];
-                int indexB = triangles[i + 1];
-                int indexC = triangles[i + 2];
+                int indexA = meshTriangleList[i];
+                int indexB = meshTriangleList[i + 1];
+                int indexC = meshTriangleList[i + 2];
 
-                Vector2 uvA = uvs[indexA];
-                Vector2 uvB = uvs[indexB];
-                Vector2 uvC = uvs[indexC];
+                Vector2 uvA = uvList[indexA];
+                Vector2 uvB = uvList[indexB];
+                Vector2 uvC = uvList[indexC];
 
                 if ((uvA - uvB).sqrMagnitude > threshold || (uvB - uvC).sqrMagnitude > threshold ||
                     (uvC - uvA).sqrMagnitude > threshold)
                 {
-                    trianglesStruct.Add(new(localToWorld.MultiplyPoint3x4(vertices[indexA]),
-                        localToWorld.MultiplyPoint3x4(vertices[indexB]),
-                        localToWorld.MultiplyPoint3x4(vertices[indexC])));
+                    triangleDataList.Add(new(localToWorld.MultiplyPoint3x4(vertexList[indexA]),
+                        localToWorld.MultiplyPoint3x4(vertexList[indexB]),
+                        localToWorld.MultiplyPoint3x4(vertexList[indexC])));
                 }
             }
 
-            List<Vector3> linePoints = new();
-            foreach (Triangle tri in trianglesStruct)
+            using var _____ = ListPool<Vector3>.Get(out List<Vector3> linePointList);
+            foreach (Triangle tri in triangleDataList)
             {
-                linePoints.Add(tri.WorldVertexA);
-                linePoints.Add(tri.WorldVertexB);
+                linePointList.Add(tri.WorldVertexA);
+                linePointList.Add(tri.WorldVertexB);
 
-                linePoints.Add(tri.WorldVertexB);
-                linePoints.Add(tri.WorldVertexC);
-
-                linePoints.Add(tri.WorldVertexC);
-                linePoints.Add(tri.WorldVertexA);
+                linePointList.Add(tri.WorldVertexB);
+                linePointList.Add(tri.WorldVertexC);
+                linePointList.Add(tri.WorldVertexC);
+                linePointList.Add(tri.WorldVertexA);
             }
 
-            _cachedMeshData.Add(new(linePoints));
+            _cachedMeshData.Add(new(linePointList));
         }
 
         List<CachedMeshData> _cachedMeshData = new();

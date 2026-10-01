@@ -6,7 +6,7 @@
     <ui:GroupBox style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; flex-grow: 1;">
         <uie:ObjectField type="UnityEngine.Transform, UnityEngine.CoreModule" name="Target" tooltip="Target" style="margin-bottom: 5px;" />
         <ui:TextField tooltip="Note" name="NoteText" multiline="true" auto-correction="true" vertical-scroller-visibility="Auto" placeholder-text="Note" style="min-height: 50px; -unity-text-align: upper-left; margin-bottom: 15px;" />
-        <uie:EnumField label="Position in Inspector" type="TinyGiantStudio.BetterInspector.NoteType, TinyGiantStudio.BetterInspector.BetterNotes" name="NoteTypeField" />
+        <ui:EnumField label="Position in Inspector" type="TinyGiantStudio.BetterInspector.NoteType, TinyGiantStudio.BetterInspector.BetterNotes" name="NoteTypeField" />
         <ui:GroupBox style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: row; flex-wrap: wrap;">
             <uie:ColorField label="Text" name="NoteTextColor" show-eye-dropper="true" class="short-width-label" style="flex-grow: 1;" />
             <uie:ColorField label="Background" name="NoteBackgroundColor" show-eye-dropper="true" class="short-width-label" style="flex-grow: 1;" />

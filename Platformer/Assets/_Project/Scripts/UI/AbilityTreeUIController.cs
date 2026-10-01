@@ -8,36 +8,43 @@ namespace Platformer
     /// (nodes named node-{Branch}-{Tier}); this controller binds AbilityNodeData
     /// onto them, applies state classes, and handles unlock clicks.
     /// </summary>
-    [RequireComponent(typeof(UIDocument))]
+    [RequireComponent(typeof(PanelRenderer))]
     public class AbilityTreeUIController : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] UIDocument document;
+        [SerializeField] PanelRenderer document;
         [SerializeField] AbilityTree abilityTree;   // on the Player
 
         const int TiersPerBranch = 4;
 
+        VisualElement uiRoot;   // cached from the reload callback — Refresh() needs it
         Label pointsLabel;
         Label footerName;
         Label footerDesc;
 
-        void Reset() => document = GetComponent<UIDocument>();
+        void Reset() => document = GetComponent<PanelRenderer>();
 
         void OnEnable()
         {
-            var root = document.rootVisualElement;
+            document.RegisterUIReloadCallback(OnUIReload);
+            if (abilityTree != null) abilityTree.OnChanged += Refresh;
+        }
+
+        void OnDisable()
+        {
+            document.UnregisterUIReloadCallback(OnUIReload);
+            if (abilityTree != null) abilityTree.OnChanged -= Refresh;
+        }
+
+        void OnUIReload(PanelRenderer _, VisualElement root)
+        {
+            uiRoot = root;
             pointsLabel = root.Q<Label>("ability-points");
             footerName = root.Q<Label>("ability-footer-name");
             footerDesc = root.Q<Label>("ability-footer-desc");
 
             BindNodes(root);
-            if (abilityTree != null) abilityTree.OnChanged += Refresh;
             Refresh();
-        }
-
-        void OnDisable()
-        {
-            if (abilityTree != null) abilityTree.OnChanged -= Refresh;
         }
 
         void BindNodes(VisualElement root)
@@ -91,10 +98,12 @@ namespace Platformer
 
         void Refresh()
         {
+            if (uiRoot == null) return;
+
             if (pointsLabel != null && abilityTree != null)
                 pointsLabel.text = $"SKILL POINTS  {abilityTree.SkillPoints}";
 
-            var root = document.rootVisualElement;
+            var root = uiRoot;
             foreach (AbilityBranch branch in System.Enum.GetValues(typeof(AbilityBranch)))
             {
                 for (int tier = 1; tier <= TiersPerBranch; tier++)

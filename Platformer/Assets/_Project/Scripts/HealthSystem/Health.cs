@@ -118,7 +118,7 @@ namespace Platformer
         {
             // Defense branch of the ability tree — flat damage reduction, never below 1.
             // Only the player has an AbilityTree component; enemies are unaffected.
-            if (abilityTree == null) abilityTree = GetComponent<AbilityTree>();
+            if (abilityTree == null) abilityTree = GetComponentInChildren<AbilityTree>();
             if (abilityTree != null && damage > 0f)
                 damage = Mathf.Max(1f, damage - abilityTree.GetStat(AbilityTree.StatDefense));
 

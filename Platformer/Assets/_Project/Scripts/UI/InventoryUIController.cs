@@ -7,11 +7,11 @@ namespace Platformer
     /// Renders the player's bag as a tile grid in the Inventory tab.
     /// Click a tile → Equip (PlayerEquipment auto-routes to the correct slot).
     /// </summary>
-    [RequireComponent(typeof(UIDocument))]
+    [RequireComponent(typeof(PanelRenderer))]
     public class InventoryUIController : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] UIDocument document;
+        [SerializeField] PanelRenderer document;
         [SerializeField] Inventory inventory;
         [SerializeField] PlayerEquipment equipment;
 
@@ -19,20 +19,27 @@ namespace Platformer
         Label capacityLabel;
         Label emptyState;
 
-        void Reset() => document = GetComponent<UIDocument>();
+        void Reset() => document = GetComponent<PanelRenderer>();
 
         void OnEnable()
         {
-            var root = document.rootVisualElement;
+            document.RegisterUIReloadCallback(OnUIReload);
+            SubscribeEvents();
+        }
+
+        void OnDisable()
+        {
+            document.UnregisterUIReloadCallback(OnUIReload);
+            UnsubscribeEvents();
+        }
+
+        void OnUIReload(PanelRenderer _, VisualElement root)
+        {
             itemGrid = root.Q<VisualElement>("item-grid");
             capacityLabel = root.Q<Label>("items-capacity");
             emptyState = root.Q<Label>("empty-state");
-
-            SubscribeEvents();
             Refresh();
         }
-
-        void OnDisable() => UnsubscribeEvents();
 
         void SubscribeEvents()
         {

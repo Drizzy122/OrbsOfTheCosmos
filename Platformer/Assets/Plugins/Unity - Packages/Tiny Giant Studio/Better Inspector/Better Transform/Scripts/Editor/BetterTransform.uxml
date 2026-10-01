@@ -1,186 +1,186 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Button.uss?fileID=7433441132597879392&amp;guid=08db9e3ca263ae74b9fd392cb95ab541&amp;type=3#Button" />
-    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Scripts/Editor/StyleSheets/BetterTransformStyleSheet.uss?fileID=7433441132597879392&amp;guid=2b8d9cf785b6d0143af12f9503b8396e&amp;type=3#BetterTransformStyleSheet" />
-    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Scripts/Editor/StyleSheets/ButtonStyleSheet.uss?fileID=7433441132597879392&amp;guid=131d905069871374e8fe6cab76c779cc&amp;type=3#ButtonStyleSheet" />
-    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Fields.uss?fileID=7433441132597879392&amp;guid=358e4c0387adee748b33cc10dacb35b5&amp;type=3#Fields" />
-    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Icons.uss?fileID=7433441132597879392&amp;guid=8485147538ab9684288c884484cd04b0&amp;type=3#Icons" />
-    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Labels.uss?fileID=7433441132597879392&amp;guid=8e783b06ea75cae42a70cbd434239c92&amp;type=3#Labels" />
-    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Scripts/Editor/StyleSheets/MainInformation.uss?fileID=7433441132597879392&amp;guid=48d496df230ab8c41a776949cc106f3e&amp;type=3#MainInformation" />
-    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Scripts/Editor/StyleSheets/BetterTransformIcons.uss?fileID=7433441132597879392&amp;guid=ee1268c19bc1a45498a846da74d57ec9&amp;type=3#BetterTransformIcons" />
-    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Footer.uss?fileID=7433441132597879392&amp;guid=3e3ef1c26165445469526cc86e434a31&amp;type=3#Footer" />
-    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Scripts/Editor/StyleSheets/BetterTransform%20Style%201.uss?fileID=7433441132597879392&amp;guid=ab89b70f046abda40a11ce45cc966132&amp;type=3#BetterTransform Style 1" />
-    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Foldout/Foldout%20Style%201.uss?fileID=7433441132597879392&amp;guid=46a1e9f07dfc8da49a73be794970c7b2&amp;type=3#Foldout Style 1" />
+    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Button.uss?fileID=7433441132597879392&amp;guid=08db9e3ca263ae74b9fd392cb95ab541&amp;type=3#Button"/>
+    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Scripts/Editor/StyleSheets/BetterTransformStyleSheet.uss?fileID=7433441132597879392&amp;guid=2b8d9cf785b6d0143af12f9503b8396e&amp;type=3#BetterTransformStyleSheet"/>
+    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Scripts/Editor/StyleSheets/ButtonStyleSheet.uss?fileID=7433441132597879392&amp;guid=131d905069871374e8fe6cab76c779cc&amp;type=3#ButtonStyleSheet"/>
+    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Fields.uss?fileID=7433441132597879392&amp;guid=358e4c0387adee748b33cc10dacb35b5&amp;type=3#Fields"/>
+    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Icons.uss?fileID=7433441132597879392&amp;guid=8485147538ab9684288c884484cd04b0&amp;type=3#Icons"/>
+    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Labels.uss?fileID=7433441132597879392&amp;guid=8e783b06ea75cae42a70cbd434239c92&amp;type=3#Labels"/>
+    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Scripts/Editor/StyleSheets/MainInformation.uss?fileID=7433441132597879392&amp;guid=48d496df230ab8c41a776949cc106f3e&amp;type=3#MainInformation"/>
+    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Scripts/Editor/StyleSheets/BetterTransformIcons.uss?fileID=7433441132597879392&amp;guid=ee1268c19bc1a45498a846da74d57ec9&amp;type=3#BetterTransformIcons"/>
+    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Footer.uss?fileID=7433441132597879392&amp;guid=3e3ef1c26165445469526cc86e434a31&amp;type=3#Footer"/>
+    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Scripts/Editor/StyleSheets/BetterTransform%20Style%201.uss?fileID=7433441132597879392&amp;guid=ab89b70f046abda40a11ce45cc966132&amp;type=3#BetterTransform Style 1"/>
+    <Style src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/StyleSheets/Foldout/Foldout%20Style%201.uss?fileID=7433441132597879392&amp;guid=46a1e9f07dfc8da49a73be794970c7b2&amp;type=3#Foldout Style 1"/>
     <ui:GroupBox name="RootHolder" picking-mode="Ignore" style="margin-left: -15px; margin-right: -10px; margin-top: -28px; margin-bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 25px; padding-bottom: 0;">
         <ui:GroupBox name="TopGroupBox" style="margin-left: -10px; margin-right: -10px; padding-right: 10px; margin-top: 0; background-color: rgba(255, 255, 255, 0.06); flex-direction: row; padding-top: 2px; padding-bottom: 0; padding-left: 0; margin-bottom: 2px; border-bottom-width: 1px; border-bottom-color: rgba(0, 0, 0, 0.39); align-items: center; border-top-width: 0; border-top-color: rgba(255, 255, 255, 0.2);">
             <ui:Button display-tooltip-when-elided="true" name="WorldSpaceButton" class="toolbarComboButton" style="flex-grow: 1; display: none; align-items: center; padding-right: 5px; border-right-width: 0; border-left-color: rgba(0, 0, 0, 0.1); border-right-color: rgba(0, 0, 0, 0.1); border-top-color: rgba(0, 0, 0, 0.1); border-bottom-color: rgba(0, 0, 0, 0.1); flex-shrink: 0; justify-content: flex-start; border-left-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 0; margin-right: 10px; margin-top: 0; margin-bottom: 0; padding-left: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
-                <ui:VisualElement name="Icon" tooltip="Values are in global orientation" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_ToolHandleGlobal@2x.png?fileID=2800000&amp;guid=cefea71d543290e4aa58bb2334c15ec2&amp;type=3#TGS_d_ToolHandleGlobal@2x&quot;);" />
-                <ui:Label text="World Space" display-tooltip-when-elided="true" name="WorldSpaceLabel" style="padding-left: 3px;" />
+                <ui:VisualElement name="Icon" tooltip="Values are in global orientation" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_ToolHandleGlobal@2x.png?fileID=2800000&amp;guid=cefea71d543290e4aa58bb2334c15ec2&amp;type=3#TGS_d_ToolHandleGlobal@2x&quot;);"/>
+                <ui:Label text="World Space" display-tooltip-when-elided="true" name="WorldSpaceLabel" style="padding-left: 3px;"/>
             </ui:Button>
             <ui:Button display-tooltip-when-elided="true" name="LocalSpaceButton" class="toolbarComboButton" style="flex-grow: 1; align-items: center; border-right-width: 0; padding-right: 5px; border-left-color: rgba(0, 0, 0, 0.1); border-right-color: rgba(0, 0, 0, 0.1); border-top-color: rgba(0, 0, 0, 0.1); border-bottom-color: rgba(0, 0, 0, 0.1); flex-shrink: 0; justify-content: flex-start; border-left-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 0; margin-right: 10px; margin-top: 0; margin-bottom: 0; padding-left: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
-                <ui:VisualElement name="Icon" tooltip="Values are in active object&apos;s orientation" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_ToolHandleLocal@2x.png?fileID=2800000&amp;guid=aaf8ef902b553ca488e57d06f24a73b2&amp;type=3#TGS_d_ToolHandleLocal@2x&quot;);" />
-                <ui:Label text="Local Space" display-tooltip-when-elided="true" name="LocalSpaceLabel" style="padding-left: 3px;" />
+                <ui:VisualElement name="Icon" tooltip="Values are in active object&apos;s orientation" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_ToolHandleLocal@2x.png?fileID=2800000&amp;guid=aaf8ef902b553ca488e57d06f24a73b2&amp;type=3#TGS_d_ToolHandleLocal@2x&quot;);"/>
+                <ui:Label text="Local Space" display-tooltip-when-elided="true" name="LocalSpaceLabel" style="padding-left: 3px;"/>
             </ui:Button>
-            <ui:VisualElement style="flex-grow: 1;" />
+            <ui:VisualElement style="flex-grow: 1;"/>
             <ui:GroupBox style="flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-shrink: 1; justify-content: flex-end; overflow: hidden;">
-                <ui:Button text="Ping" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PingSelfButton" class="text-button" />
-                <ui:Label text="GUIDGUIDGUIDGUIDGUIDGUIDGUIDGUIDGUIDGUID" display-tooltip-when-elided="true" name="GUID" tooltip="Asset GUID" style="opacity: 0.25; -unity-font-style: italic; flex-shrink: 1; overflow: hidden; -unity-text-align: middle-right; font-size: 10px; height: 20px;" />
-                <ui:GroupBox name="InlineSizeButtonsGroupBox" style="flex-direction: row-reverse; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-                <ui:Label text="Sibling Index :" name="SiblingIndexLabel" class="unimportant-information-label" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; overflow: hidden; -unity-text-align: middle-right; opacity: 0.5;" />
-                <ui:Label text="0" name="SiblingIndex" class="unimportant-information-label" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; overflow: hidden; -unity-text-align: middle-right; padding-left: 0;" />
+                <ui:Button text="Ping" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PingSelfButton" class="text-button"/>
+                <ui:Label text="GUIDGUIDGUIDGUIDGUIDGUIDGUIDGUIDGUIDGUID" display-tooltip-when-elided="true" name="GUID" tooltip="Asset GUID" style="opacity: 0.25; -unity-font-style: italic; flex-shrink: 1; overflow: hidden; -unity-text-align: middle-right; font-size: 10px; height: 20px;"/>
+                <ui:GroupBox name="InlineSizeButtonsGroupBox" style="flex-direction: row-reverse; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;"/>
+                <ui:Label text="Sibling Index :" name="SiblingIndexLabel" class="unimportant-information-label" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; overflow: hidden; -unity-text-align: middle-right; opacity: 0.5;"/>
+                <ui:Label text="0" name="SiblingIndex" class="unimportant-information-label" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; overflow: hidden; -unity-text-align: middle-right; padding-left: 0;"/>
             </ui:GroupBox>
             <ui:Button display-tooltip-when-elided="true" name="Settings" tooltip="Opens a context menu to add stuff." class="iconButton" style="margin-right: 0; flex-shrink: 0; flex-grow: 0; flex-direction: row;">
-                <ui:VisualElement class="menu-icon" style="height: 16px; width: 16px;" />
+                <ui:VisualElement class="menu-icon" style="height: 16px; width: 16px;"/>
             </ui:Button>
         </ui:GroupBox>
         <ui:GroupBox name="MainControls" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 5px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; border-top-width: 5px; overflow: visible;">
             <ui:GroupBox style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-direction: row; align-items: flex-start;">
                 <ui:GroupBox style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-grow: 1; flex-shrink: 1; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; align-items: stretch;">
-                    <ui:Label text="Local" display-tooltip-when-elided="true" name="LocalFieldLabel" style="-unity-font-style: bold; border-bottom-width: 1px; border-bottom-color: rgba(255, 255, 255, 0.25); display: none;" />
-                    <ui:GroupBox name="DefaultUnityInspector" style="margin-left: 0; margin-right: 0; margin-top: 1px; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-                    <ui:Label text="World" display-tooltip-when-elided="true" name="WorldFieldLabel" style="-unity-font-style: bold; margin-top: 10px; border-bottom-width: 1px; border-bottom-color: rgba(255, 255, 255, 0.25); display: none;" />
+                    <ui:Label text="Local" display-tooltip-when-elided="true" name="LocalFieldLabel" style="-unity-font-style: bold; border-bottom-width: 1px; border-bottom-color: rgba(255, 255, 255, 0.25); display: none;"/>
+                    <ui:GroupBox name="DefaultUnityInspector" style="margin-left: 0; margin-right: 0; margin-top: 1px; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;"/>
+                    <ui:Label text="World" display-tooltip-when-elided="true" name="WorldFieldLabel" style="-unity-font-style: bold; margin-top: 10px; border-bottom-width: 1px; border-bottom-color: rgba(255, 255, 255, 0.25); display: none;"/>
                     <ui:GroupBox name="CustomEditorGroupBox" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
                         <ui:GroupBox name="Position" class="my-field" style="flex-direction: row; overflow: visible;">
-                            <ui:VisualElement name="PrefabOverrideMark" class="prefabOverrideMark" />
-                            <ui:Label text="Position" display-tooltip-when-elided="true" name="PositionLabel" class="field-label" />
-                            <uie:Vector3Field name="LocalPosition" tooltip="Position" class="unity-binding-animation-recorded unity-binding-animation-animated" style="flex-grow: 1; margin-right: 0; flex-shrink: 1;" />
-                            <uie:Vector3Field name="WorldPosition" style="flex-grow: 1; margin-right: 0; display: none;" />
-                            <ui:VisualElement name="DefaultPrefabOverrideMark" tooltip="DefaultPrefabOverride" class="defaultPrefabOverrideMark" />
+                            <ui:VisualElement name="PrefabOverrideMark" class="prefabOverrideMark"/>
+                            <ui:Label text="Position" display-tooltip-when-elided="true" name="PositionLabel" class="field-label"/>
+                            <uie:Vector3Field name="LocalPosition" tooltip="Position" class="unity-binding-animation-recorded unity-binding-animation-animated" style="flex-grow: 1; margin-right: 0; flex-shrink: 1;"/>
+                            <uie:Vector3Field name="WorldPosition" style="flex-grow: 1; margin-right: 0; display: none;"/>
+                            <ui:VisualElement name="DefaultPrefabOverrideMark" tooltip="DefaultPrefabOverride" class="defaultPrefabOverrideMark"/>
                         </ui:GroupBox>
                         <ui:GroupBox name="Rotation" class="my-field" style="flex-direction: row; margin-bottom: -1px;">
-                            <ui:VisualElement name="PrefabOverrideMark" class="prefabOverrideMark" />
-                            <ui:Label text="Rotation" display-tooltip-when-elided="true" name="RotationLabel" class="field-label" />
-                            <uie:Vector3Field name="LocalRotation" tooltip="Rotation" style="flex-grow: 1; margin-right: 0; display: flex;" />
-                            <uie:Vector3Field name="WorldRotation" style="flex-grow: 1; margin-right: 0; display: none;" />
-                            <ui:VisualElement name="DefaultPrefabOverrideMark" tooltip="DefaultPrefabOverride" class="defaultPrefabOverrideMark" />
+                            <ui:VisualElement name="PrefabOverrideMark" class="prefabOverrideMark"/>
+                            <ui:Label text="Rotation" display-tooltip-when-elided="true" name="RotationLabel" class="field-label"/>
+                            <uie:Vector3Field name="LocalRotation" tooltip="Rotation" style="flex-grow: 1; margin-right: 0; display: flex;"/>
+                            <uie:Vector3Field name="WorldRotation" style="flex-grow: 1; margin-right: 0; display: none;"/>
+                            <ui:VisualElement name="DefaultPrefabOverrideMark" tooltip="DefaultPrefabOverride" class="defaultPrefabOverrideMark"/>
                         </ui:GroupBox>
-                        <uie:PropertyField name="QuaternionRotation" style="display: none; visibility: visible; flex-direction: row;" />
+                        <uie:PropertyField name="QuaternionRotation" style="display: none; visibility: visible; flex-direction: row;"/>
                         <ui:GroupBox name="Scale" class="my-field" style="flex-direction: row;">
-                            <ui:VisualElement name="PrefabOverrideMark" class="prefabOverrideMark" />
+                            <ui:VisualElement name="PrefabOverrideMark" class="prefabOverrideMark"/>
                             <ui:GroupBox name="ScaleLabelGroupbox" class="field-label" style="flex-direction: row;">
-                                <ui:Label text="Scale" display-tooltip-when-elided="true" name="ScaleLabel" class="unity-vector3-field__label field-label" style="flex-grow: 1; min-width: 40px;" />
+                                <ui:Label text="Scale" display-tooltip-when-elided="true" name="ScaleLabel" class="unity-vector3-field__label field-label" style="flex-grow: 1; min-width: 40px;"/>
                                 <ui:Button name="AspectRatioLocked" tooltip="Disable constrained proportions" class="iconButton" style="display: flex; width: 18px;">
-                                    <ui:VisualElement class="link-icon" style="flex-grow: 1; flex-shrink: 0;" />
+                                    <ui:VisualElement class="link-icon" style="flex-grow: 1; flex-shrink: 0;"/>
                                 </ui:Button>
                                 <ui:Button name="AspectRatioUnlocked" tooltip="Enable constrained proportions" class="iconButton" style="display: none; width: 18px;">
-                                    <ui:VisualElement class="unlink-icon" style="flex-grow: 1; flex-shrink: 0;" />
+                                    <ui:VisualElement class="unlink-icon" style="flex-grow: 1; flex-shrink: 0;"/>
                                 </ui:Button>
                             </ui:GroupBox>
-                            <uie:Vector3Field name="LocalScale" style="flex-grow: 1; margin-right: 0; display: flex;" />
-                            <uie:Vector3Field name="LossyScale" tooltip="Scale" style="flex-grow: 1; margin-right: 0; display: none;" />
-                            <uie:Vector3Field name="BoundLocalScale" focusable="false" style="flex-grow: 1; margin-right: 0; display: none;" />
+                            <uie:Vector3Field name="LocalScale" style="flex-grow: 1; margin-right: 0; display: flex;"/>
+                            <uie:Vector3Field name="LossyScale" tooltip="Scale" style="flex-grow: 1; margin-right: 0; display: none;"/>
+                            <uie:Vector3Field name="BoundLocalScale" focusable="false" style="flex-grow: 1; margin-right: 0; display: none;"/>
                         </ui:GroupBox>
                     </ui:GroupBox>
                 </ui:GroupBox>
                 <ui:GroupBox name="ToolbarsGroupBox" style="margin-left: 5px; margin-right: 0; margin-top: 1px; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: flex-start;">
                     <ui:GroupBox name="BothSpaceToolbarForLocalSpace" style="margin-left: 0; margin-right: 0; margin-top: 16px; margin-bottom: 25px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-left-color: rgba(0, 0, 0, 0.39); border-right-color: rgba(0, 0, 0, 0.39); border-top-color: rgba(0, 0, 0, 0.39); border-bottom-color: rgba(0, 0, 0, 0.39); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; display: none;">
                         <ui:GroupBox name="PositionToolbar" class="copy-paste-reset-buttonHolder" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-                            <ui:Button text="C" name="Copy" style="border-bottom-right-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 0;" />
-                            <ui:Button text="P" name="Paste" style="border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-left-radius: 0; border-top-right-radius: 0;" />
-                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-bottom-left-radius: 0;" />
+                            <ui:Button text="C" name="Copy" style="border-bottom-right-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 0;"/>
+                            <ui:Button text="P" name="Paste" style="border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-left-radius: 0; border-top-right-radius: 0;"/>
+                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-bottom-left-radius: 0;"/>
                         </ui:GroupBox>
                         <ui:GroupBox name="RotationToolbar" class="copy-paste-reset-buttonHolder" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-                            <ui:Button text="C" name="Copy" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;" />
-                            <ui:Button text="P" name="Paste" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;" />
-                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;" />
+                            <ui:Button text="C" name="Copy" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;"/>
+                            <ui:Button text="P" name="Paste" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;"/>
+                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;"/>
                         </ui:GroupBox>
                         <ui:GroupBox name="ScaleToolbar" class="copy-paste-reset-buttonHolder" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-                            <ui:Button text="C" name="Copy" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
-                            <ui:Button text="P" name="Paste" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;" />
-                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 0;" />
+                            <ui:Button text="C" name="Copy" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;"/>
+                            <ui:Button text="P" name="Paste" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;"/>
+                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 0;"/>
                         </ui:GroupBox>
                     </ui:GroupBox>
                     <ui:GroupBox name="NormalToolbar" class="copy-paste-reset-buttonHolder-parent" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
                         <ui:GroupBox name="PositionToolbar" class="copy-paste-reset-buttonHolder" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-                            <ui:Button text="C" name="Copy" style="border-bottom-right-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 0;" />
-                            <ui:Button text="P" name="Paste" style="border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-left-radius: 0; border-top-right-radius: 0;" />
-                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-bottom-left-radius: 0;" />
+                            <ui:Button text="C" name="Copy" style="border-bottom-right-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 0;"/>
+                            <ui:Button text="P" name="Paste" style="border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-left-radius: 0; border-top-right-radius: 0;"/>
+                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-bottom-left-radius: 0;"/>
                         </ui:GroupBox>
                         <ui:GroupBox name="RotationToolbar" class="copy-paste-reset-buttonHolder" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-                            <ui:Button text="C" name="Copy" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;" />
-                            <ui:Button text="P" name="Paste" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;" />
-                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;" />
+                            <ui:Button text="C" name="Copy" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;"/>
+                            <ui:Button text="P" name="Paste" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;"/>
+                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;"/>
                         </ui:GroupBox>
                         <ui:GroupBox name="ScaleToolbar" class="copy-paste-reset-buttonHolder" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-                            <ui:Button text="C" name="Copy" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
-                            <ui:Button text="P" name="Paste" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;" />
-                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 0;" />
+                            <ui:Button text="C" name="Copy" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;"/>
+                            <ui:Button text="P" name="Paste" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;"/>
+                            <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 0;"/>
                         </ui:GroupBox>
                     </ui:GroupBox>
                 </ui:GroupBox>
             </ui:GroupBox>
-            <ui:GroupBox name="InlineSizeGroupBox" style="margin-left: 1px; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-direction: row; flex-wrap: nowrap; flex-shrink: 0; flex-grow: 1;" />
+            <ui:GroupBox name="InlineSizeGroupBox" style="margin-left: 1px; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-direction: row; flex-wrap: nowrap; flex-shrink: 0; flex-grow: 1;"/>
         </ui:GroupBox>
-        <ui:Label text="Label" display-tooltip-when-elided="true" name="sizeInformationLabel" class="unimportant-information-label" style="-unity-text-align: middle-center; margin-top: 2px; margin-bottom: 2px; white-space: normal; display: none;" />
+        <ui:Label text="Label" display-tooltip-when-elided="true" name="sizeInformationLabel" class="unimportant-information-label" style="-unity-text-align: middle-center; margin-top: 2px; margin-bottom: 2px; white-space: normal; display: none;"/>
         <ui:GroupBox name="SizeFoldout" view-data-key="sizeFoldoutGroupBox" class="custom-foldout" style="display: flex;">
             <ui:GroupBox name="Header" class="header">
-                <ui:Toggle name="FoldoutToggle" text="Size" value="false" view-data-key="SizeFoldoutToggle" class="unity-foldout__toggle foldout-toggle" />
-                <ui:VisualElement style="flex-grow: 1;" />
+                <ui:Toggle name="FoldoutToggle" text="Size" value="false" view-data-key="SizeFoldoutToggle" class="unity-foldout__toggle foldout-toggle"/>
+                <ui:VisualElement style="flex-grow: 1;"/>
                 <ui:GroupBox name="SizeToolbox" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: row;">
                     <ui:Button display-tooltip-when-elided="true" name="RefreshSizeButton" tooltip="Click to Refresh" class="toolbarComboButton toolbarComboButton-normal" style="margin-right: 0; min-width: 12px;">
-                        <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_refresh.png?fileID=2800000&amp;guid=759de24275ec7b84dbb60bca983a29fd&amp;type=3#TGS_refresh&quot;);" />
+                        <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_refresh.png?fileID=2800000&amp;guid=759de24275ec7b84dbb60bca983a29fd&amp;type=3#TGS_refresh&quot;);"/>
                     </ui:Button>
-                    <ui:Button display-tooltip-when-elided="true" name="AutoRefreshSizeButton" tooltip="When Toggled on, value changes will automatically update size. This is convenient but can be taxing depending on the situation." text="Auto Refresh" class="toolbarComboButton toolbarComboButton-normal" style="margin-left: 0; margin-right: 2px; min-width: 5px;" />
+                    <ui:Button display-tooltip-when-elided="true" name="AutoRefreshSizeButton" tooltip="When Toggled on, value changes will automatically update size. This is convenient but can be taxing depending on the situation." text="Auto Refresh" class="toolbarComboButton toolbarComboButton-normal" style="margin-left: 0; margin-right: 2px; min-width: 5px; overflow: hidden;"/>
                     <ui:GroupBox name="CalculationTypeGroupBox" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: center;">
                         <ui:Button name="RendererSizeButton" tooltip="Calculation is done using Renderers. This is the faster method for size calculation but expect minor inaccuracy. This is the recommended setting." class="toolbarComboButton toolbarComboButton-normal" style="flex-grow: 1;">
-                            <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_MeshRenderer%20Icon.png?fileID=2800000&amp;guid=8d3b11ed42ae0a142875a12da4e54750&amp;type=3#TGS_d_MeshRenderer Icon&quot;);" />
-                            <ui:Label text="Renderer" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;" />
+                            <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_MeshRenderer%20Icon.png?fileID=2800000&amp;guid=8d3b11ed42ae0a142875a12da4e54750&amp;type=3#TGS_d_MeshRenderer Icon&quot;);"/>
+                            <ui:Label text="Renderer" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;"/>
                         </ui:Button>
                         <ui:Button name="FilterSizeButton" tooltip="Calculation is done by going through vertices of each mesh. This is more accurate method for size calculation. But, not recommended for heavier projects." class="toolbarComboButton toolbarComboButton-normal" style="display: none; flex-grow: 1;">
-                            <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_Mesh%20Icon.png?fileID=2800000&amp;guid=725587139d64df4439404d8a28d756a1&amp;type=3#TGS_d_Mesh Icon&quot;);" />
-                            <ui:Label text="Filter" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;" />
+                            <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_Mesh%20Icon.png?fileID=2800000&amp;guid=725587139d64df4439404d8a28d756a1&amp;type=3#TGS_d_Mesh Icon&quot;);"/>
+                            <ui:Label text="Filter" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;"/>
                         </ui:Button>
                     </ui:GroupBox>
                     <ui:GroupBox name="SizeTypeGroupBox" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: center;">
                         <ui:Button display-tooltip-when-elided="true" name="SelfSize" tooltip="Only this GameObject&apos;s size is calculating, ignoring the children." class="toolbarComboButton toolbarComboButton-normal" style="flex-grow: 1;">
-                            <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_ToolHandleLocal@2x.png?fileID=2800000&amp;guid=aaf8ef902b553ca488e57d06f24a73b2&amp;type=3#TGS_d_ToolHandleLocal@2x&quot;);" />
-                            <ui:Label text="Self" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;" />
+                            <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_ToolHandleLocal@2x.png?fileID=2800000&amp;guid=aaf8ef902b553ca488e57d06f24a73b2&amp;type=3#TGS_d_ToolHandleLocal@2x&quot;);"/>
+                            <ui:Label text="Self" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;"/>
                         </ui:Button>
                         <ui:Button display-tooltip-when-elided="true" name="HierarchySize" tooltip="Every child/subchild is included in calculating the size." class="toolbarComboButton toolbarComboButton-normal" style="display: none; flex-grow: 1;">
-                            <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_Folder%20Icon.png?fileID=2800000&amp;guid=31c1d6a1e58148540a74de14fb534b2f&amp;type=3#TGS_d_Folder Icon&quot;);" />
-                            <ui:Label text="Hierarchy" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;" />
+                            <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_d_Folder%20Icon.png?fileID=2800000&amp;guid=31c1d6a1e58148540a74de14fb534b2f&amp;type=3#TGS_d_Folder Icon&quot;);"/>
+                            <ui:Label text="Hierarchy" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;"/>
                         </ui:Button>
                     </ui:GroupBox>
-                    <ui:DropdownField index="0" name="UnitsDropDownField" choices="NauticalMile" tooltip="The unit used by size" class="toolbar-popup-field" style="flex-shrink: 1; flex-direction: column; overflow: visible;" />
+                    <ui:DropdownField index="0" name="UnitsDropDownField" choices="NauticalMile" tooltip="The unit used by size" class="toolbar-popup-field" style="flex-shrink: 1; flex-direction: column; overflow: visible;"/>
                 </ui:GroupBox>
             </ui:GroupBox>
             <ui:GroupBox name="Content" class="container content">
                 <ui:GroupBox name="Size" class="my-field" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 1px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-direction: row; align-items: center; flex-shrink: 1; flex-grow: 1;">
                     <ui:GroupBox class="my-field" style="flex-grow: 1; flex-shrink: 1;">
                         <ui:GroupBox name="SizeLabelGroupBox" class="field-label">
-                            <ui:Label text="Size" display-tooltip-when-elided="true" tooltip="There is a few miliseconds delay in setting the size and it can&apos;t set size below a certain amount." class="unity-vector3-field__label field-label" style="flex-grow: 1; min-width: 40px;" />
+                            <ui:Label text="Size" display-tooltip-when-elided="true" tooltip="There is a few miliseconds delay in setting the size and it can&apos;t set size below a certain amount." class="unity-vector3-field__label field-label" style="flex-grow: 1; min-width: 40px;"/>
                             <ui:Button name="AspectRatioLocked" tooltip="Disable constrained proportions" class="iconButton" style="display: none; width: 18px;">
-                                <ui:VisualElement class="link-icon" style="flex-grow: 1; flex-shrink: 0;" />
+                                <ui:VisualElement class="link-icon" style="flex-grow: 1; flex-shrink: 0;"/>
                             </ui:Button>
-                            <ui:Button name="AspectRatioUnlocked" tooltip="Enable constrained proportions" multiline="true" class="iconButton" style="display: flex; width: 18px;">
-                                <ui:VisualElement class="unlink-icon" style="flex-grow: 1; flex-shrink: 0;" />
+                            <ui:Button name="AspectRatioUnlocked" tooltip="Enable constrained proportions" class="iconButton" style="display: flex; width: 18px;">
+                                <ui:VisualElement class="unlink-icon" style="flex-grow: 1; flex-shrink: 0;"/>
                             </ui:Button>
                         </ui:GroupBox>
-                        <uie:Vector3Field name="SizeFoldoutField" tooltip="Size" style="flex-shrink: 1; flex-grow: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 3px;" />
+                        <uie:Vector3Field name="SizeFoldoutField" tooltip="Size" style="flex-shrink: 1; flex-grow: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 3px;"/>
                     </ui:GroupBox>
                     <ui:GroupBox name="SizeToolbar" class="copy-paste-reset-buttonHolder" style="border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px;">
-                        <ui:Button text="C" name="Copy" style="border-top-right-radius: 0; border-bottom-right-radius: 0;" />
-                        <ui:Button text="P" name="Paste" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;" />
-                        <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-bottom-left-radius: 0;" />
+                        <ui:Button text="C" name="Copy" style="border-top-right-radius: 0; border-bottom-right-radius: 0;"/>
+                        <ui:Button text="P" name="Paste" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;"/>
+                        <ui:Button text="R" name="Reset" style="border-top-left-radius: 0; border-bottom-left-radius: 0;"/>
                     </ui:GroupBox>
                 </ui:GroupBox>
                 <ui:GroupBox tooltip="This can&apos;t be modified." name="SizeCenterFoldoutGroup" class="my-field" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: row;">
-                    <ui:Label text="Center" display-tooltip-when-elided="true" name="SizeCenterLabel" class="field-label" />
-                    <uie:Vector3Field name="CenterFoldoutField" tooltip="This can&apos;t be modified." class="unity-disabled my-field" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; align-items: stretch; flex-grow: 1;" />
-                    <ui:GroupBox name="SizeCenterToolbar" class="copy-paste-reset-buttonHolder" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; width: 68px;" />
+                    <ui:Label text="Center" display-tooltip-when-elided="true" name="SizeCenterLabel" class="field-label"/>
+                    <uie:Vector3Field name="CenterFoldoutField" tooltip="This can&apos;t be modified." class="unity-disabled my-field" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; align-items: stretch; flex-grow: 1;"/>
+                    <ui:GroupBox name="SizeCenterToolbar" class="copy-paste-reset-buttonHolder" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; width: 68px;"/>
                 </ui:GroupBox>
             </ui:GroupBox>
         </ui:GroupBox>
         <ui:GroupBox name="ChildGroupBox" class="custom-foldout" style="display: flex; margin-top: 5px;">
             <ui:GroupBox name="Header" class="header" style="align-items: stretch;">
-                <ui:Toggle name="FoldoutToggle" text="Child Objects" value="false" view-data-key="ChildFoldoutDataKey" class="unity-foldout__toggle foldout-toggle" />
-                <ui:Label text="Label" display-tooltip-when-elided="true" name="Label1" class="unimportant-information-label" />
-                <ui:Label text="Label" display-tooltip-when-elided="true" name="Label2" tooltip="Total number of objects under this one." class="unimportant-information-label" />
+                <ui:Toggle name="FoldoutToggle" text="Child Objects" value="false" view-data-key="ChildFoldoutDataKey" class="unity-foldout__toggle foldout-toggle"/>
+                <ui:Label text="Label" display-tooltip-when-elided="true" name="Label1" class="unimportant-information-label"/>
+                <ui:Label text="Label" display-tooltip-when-elided="true" name="Label2" tooltip="Total number of objects under this one." class="unimportant-information-label"/>
             </ui:GroupBox>
             <ui:GroupBox name="Content" class="container content">
                 <ui:GroupBox name="TooManyChildForInspectorCreation" tooltip="This is to avoid slowing down editor. Depending on your project and your device, you can increase/lower this value to fit your need." style="margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgba(0, 0, 0, 0.39); border-right-color: rgba(0, 0, 0, 0.39); border-top-color: rgba(0, 0, 0, 0.39); border-bottom-color: rgba(0, 0, 0, 0.39); background-color: rgba(255, 255, 255, 0.04); display: flex; flex-direction: row; align-items: center; justify-content: flex-start; max-height: 65px; overflow: hidden;">
                     <ui:GroupBox style="align-items: center; flex-direction: row; margin-left: 0; margin-right: 5px; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-shrink: 1;">
-                        <ui:VisualElement class="warning-icon" style="width: 30px; height: 30px; flex-shrink: 0;" />
-                        <ui:Label text="The object contains an excessive number of child objects to fit here. If necessary, consider adjusting the limit via settings to accommodate this higher quantity." display-tooltip-when-elided="true" style="flex-wrap: wrap; margin-right: 25px; margin-left: 2.5px; white-space: normal;" />
+                        <ui:VisualElement class="warning-icon" style="width: 30px; height: 30px; flex-shrink: 0;"/>
+                        <ui:Label text="The object contains an excessive number of child objects to fit here. If necessary, consider adjusting the limit via settings to accommodate this higher quantity." display-tooltip-when-elided="true" style="flex-wrap: wrap; margin-right: 25px; margin-left: 2.5px; white-space: normal;"/>
                     </ui:GroupBox>
                 </ui:GroupBox>
             </ui:GroupBox>
@@ -188,26 +188,26 @@
         <ui:GroupBox tooltip="Toggle Visiblity of Gizmos in Scene" name="GizmoToggles" class="unfocusedItem" style="margin-top: 2px; margin-right: 3px; margin-bottom: 0; margin-left: 3px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-items: stretch; flex-direction: row; justify-content: flex-end;">
             <ui:GroupBox name="GizmoGroupBox" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: center; flex-direction: row;">
                 <ui:Button display-tooltip-when-elided="true" name="GizmoOn" tooltip="Click to toggle scene gizmo off" class="toolbarComboButton toolbarComboButton-normal">
-                    <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_visibility-on.png?fileID=2800000&amp;guid=9175bed6d8cfbb54aa4df683b0138b93&amp;type=3#TGS_visibility-on&quot;);" />
-                    <ui:Label text="Size Outline" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;" />
+                    <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_visibility-on.png?fileID=2800000&amp;guid=9175bed6d8cfbb54aa4df683b0138b93&amp;type=3#TGS_visibility-on&quot;);"/>
+                    <ui:Label text="Size Outline" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;"/>
                 </ui:Button>
                 <ui:Button display-tooltip-when-elided="true" name="GizmoOff" tooltip="Click to toggle scene gizmo on" class="toolbarComboButton toolbarComboButton-normal" style="display: none;">
-                    <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_visibility-off.png?fileID=2800000&amp;guid=c2de49d23145ad044a3015138ef11fa6&amp;type=3#TGS_visibility-off&quot;);" />
-                    <ui:Label text="Size Outline" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;" />
+                    <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_visibility-off.png?fileID=2800000&amp;guid=c2de49d23145ad044a3015138ef11fa6&amp;type=3#TGS_visibility-off&quot;);"/>
+                    <ui:Label text="Size Outline" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;"/>
                 </ui:Button>
                 <ui:GroupBox style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: center;">
                     <ui:Button display-tooltip-when-elided="true" name="SizeLabelsGizmoOn" tooltip="Click to toggle size labels in scene off" class="toolbarComboButton toolbarComboButton-normal">
-                        <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_visibility-on.png?fileID=2800000&amp;guid=9175bed6d8cfbb54aa4df683b0138b93&amp;type=3#TGS_visibility-on&quot;);" />
-                        <ui:Label text="Size Label" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;" />
+                        <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_visibility-on.png?fileID=2800000&amp;guid=9175bed6d8cfbb54aa4df683b0138b93&amp;type=3#TGS_visibility-on&quot;);"/>
+                        <ui:Label text="Size Label" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;"/>
                     </ui:Button>
                     <ui:Button display-tooltip-when-elided="true" name="SizeLabelsGizmoOff" tooltip="Click to toggle size labels in scene on" class="toolbarComboButton toolbarComboButton-normal" style="display: none;">
-                        <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_visibility-off.png?fileID=2800000&amp;guid=c2de49d23145ad044a3015138ef11fa6&amp;type=3#TGS_visibility-off&quot;);" />
-                        <ui:Label text="Size Label" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;" />
+                        <ui:VisualElement name="Icon" style="background-image: url(&quot;project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Better%20Transform/Artworks/TGS_visibility-off.png?fileID=2800000&amp;guid=c2de49d23145ad044a3015138ef11fa6&amp;type=3#TGS_visibility-off&quot;);"/>
+                        <ui:Label text="Size Label" display-tooltip-when-elided="true" name="Label" style="flex-shrink: 1;"/>
                     </ui:Button>
                 </ui:GroupBox>
             </ui:GroupBox>
         </ui:GroupBox>
-        <ui:Label text="Label" display-tooltip-when-elided="true" name="SizeUpdateWarning" class="unimportant-information-label" style="-unity-text-align: middle-center; margin-top: 2px; margin-bottom: 2px; white-space: normal; display: none;" />
-        <ui:Label text="Showing World Space in Play Mode on fast-changing objects may reduce performance." display-tooltip-when-elided="true" name="WorldSpaceWarning" class="unimportant-information-label" style="-unity-text-align: middle-center; margin-top: 2px; margin-bottom: 2px; white-space: normal; display: none;" />
+        <ui:Label text="Label" display-tooltip-when-elided="true" name="SizeUpdateWarning" class="unimportant-information-label" style="-unity-text-align: middle-center; margin-top: 2px; margin-bottom: 2px; white-space: normal; display: none;"/>
+        <ui:Label text="Showing World Space in Play Mode on fast-changing objects may reduce performance." display-tooltip-when-elided="true" name="WorldSpaceWarning" class="unimportant-information-label" style="-unity-text-align: middle-center; margin-top: 2px; margin-bottom: 2px; white-space: normal; display: none;"/>
     </ui:GroupBox>
 </ui:UXML>

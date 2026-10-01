@@ -19,7 +19,7 @@ namespace Platformer
         {
             if (!performed) return;
 
-            foreach (var interactable in FindObjectsByType<Interactable>(FindObjectsSortMode.InstanceID))
+            foreach (var interactable in FindObjectsByType<Interactable>())
             {
                 if (Vector3.Distance(transform.position, interactable.transform.position) < interactDistance)
                 {

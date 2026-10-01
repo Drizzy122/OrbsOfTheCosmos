@@ -1,0 +1,16 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="../USS/LoadingScreen.uss"/>
+    <ui:VisualElement name="LoadingRoot" class="loading-root">
+        <ui:VisualElement name="LoadingPanel" class="loading-panel">
+            <ui:Label name="LoadingTitle" text="Entering the Cosmos" class="loading-title"/>
+            <ui:Label name="LoadingTip" class="loading-tip"/>
+            <ui:VisualElement name="BarTrack" class="bar-track">
+                <ui:VisualElement name="BarFill" class="bar-fill"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="BarFooter" class="bar-footer">
+                <ui:Label name="LoadingStatus" text="LOADING" class="loading-status"/>
+                <ui:Label name="LoadingPercent" text="0%" class="loading-percent"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

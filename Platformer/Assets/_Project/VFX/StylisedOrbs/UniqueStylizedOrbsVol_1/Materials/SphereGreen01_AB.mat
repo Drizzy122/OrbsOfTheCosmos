@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SphereGreen01_AB
-  m_Shader: {fileID: -6465566751694194690, guid: ea8baaad630c79946a5e36519ac4d995,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: ea8baaad630c79946a5e36519ac4d995, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -98,6 +97,7 @@ Material:
     - _DissolveAmount: 0
     - _DistortionAmount: 0
     - _DstBlend: 0
+    - _DstBlendAlpha: 0
     - _MainTexPower: 0.93
     - _MainTexSinePower: 0.4
     - _QueueControl: 0
@@ -105,6 +105,7 @@ Material:
     - _ReceiveShadows: 0
     - _SoftParticles: 20
     - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZTest: 4

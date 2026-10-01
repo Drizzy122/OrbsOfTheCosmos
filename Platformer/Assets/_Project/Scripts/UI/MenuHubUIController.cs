@@ -13,11 +13,11 @@ namespace Platformer
     /// pause behavior (timescale, cursor, disable player input + movement).
     /// TabView handles the visual tab switching itself.
     /// </summary>
-    [RequireComponent(typeof(UIDocument))]
+    [RequireComponent(typeof(PanelRenderer))]
     public class MenuHubUIController : ValidatedMonoBehaviour
     {
         [Header("References")]
-        [SerializeField] UIDocument document;
+        [SerializeField] PanelRenderer document;
         [SerializeField, Anywhere] InputReader input;
         [SerializeField, Anywhere] PlayerMovement playerMovement;
 
@@ -43,11 +43,19 @@ namespace Platformer
         // DIALOGUE, not DEFAULT, so NPCs don't react to menu button presses.
         InputEventContext contextBeforeOpen = InputEventContext.DEFAULT;
 
-        void Reset() => document = GetComponent<UIDocument>();
+        void Reset() => document = GetComponent<PanelRenderer>();
 
         void OnEnable()
         {
-            var root = document.rootVisualElement;
+            // PanelRenderer hands us the UI via the reload callback: it fires when
+            // the panel is first built (or immediately if it already exists), and
+            // again whenever the UI rebuilds — so wiring lives in OnUIReload.
+            document.RegisterUIReloadCallback(OnUIReload);
+            SubscribeInput();
+        }
+
+        void OnUIReload(PanelRenderer _, VisualElement root)
+        {
             panel = root.Q<VisualElement>("menu-hub");
             tabView = root.Q<TabView>("main-tabs");
 
@@ -61,9 +69,8 @@ namespace Platformer
                 returnButton.clicked += ReturnToMainMenu;
             }
 
-            SubscribeInput();
-            SetVisible(false);
-            SetActiveTab(defaultTab);
+            SetVisible(isOpen);
+            SetActiveTab(isOpen ? activeTab : defaultTab);
         }
 
         void ReturnToMainMenu()
@@ -78,11 +85,12 @@ namespace Platformer
             Cursor.visible = true;
             if (input != null) input.EnablePlayerMap();
 
-            SceneManager.LoadScene(mainMenuSceneName);
+            SceneLoader.Load(mainMenuSceneName);
         }
 
         void OnDisable()
         {
+            document.UnregisterUIReloadCallback(OnUIReload);
             UnsubscribeInput();
             if (isOpen) Close();
         }

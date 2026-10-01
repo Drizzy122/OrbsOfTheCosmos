@@ -1,19 +1,24 @@
 using System;
 using System.Collections.Generic;
+using KBCore.Refs;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace Platformer
 {
-    [RequireComponent(typeof(UIDocument))]
+    [RequireComponent(typeof(PanelRenderer))]
     public class SaveSlotsMenu : MonoBehaviour
     {
-        [Header("Menu Navigation")] 
-        // Notice we completely removed the MainMenu reference!
-        [SerializeField] private ConfirmationPopUpMenu confirmationPopupMenu;
-
-        private UIDocument document;
+        [field: Header("Components")] 
+        [field: SerializeField, Self] PanelRenderer saveSlotsRenderer;
+        [field: SerializeField, Anywhere] ConfirmationPopUpMenu confirmationPopupMenu;
+     
+        [Header("Scene")]
+        [Tooltip("Scene Name to load to.")]
+        [field: SerializeField] string gameSceneName = "Game";
+     
+        [field: Header("UI Elements")]
         private VisualElement rootContainer;
         private Button backButton;
 
@@ -25,10 +30,20 @@ namespace Platformer
 
         private void Awake()
         {
-            document = GetComponent<UIDocument>();
-            
-            rootContainer = document.rootVisualElement.Q<VisualElement>("SaveSlotsMenuContainer"); 
-            
+            saveSlotsRenderer = GetComponent<PanelRenderer>();
+            saveSlotsRenderer.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnDestroy()
+        {
+            if (saveSlotsRenderer != null) saveSlotsRenderer.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnUIReload(PanelRenderer _, VisualElement root)
+        {
+            rootContainer = root.Q<VisualElement>("SaveSlotsMenuContainer");
+            if (rootContainer == null) return;
+
             backButton = rootContainer.Q<Button>("BackButton");
             backButton.clicked += OnBackClicked;
 
@@ -103,7 +118,7 @@ namespace Platformer
         private void SaveGameAndLoadScene()
         {
             DataPersistenceManager.instance.SaveGame();
-            SceneManager.LoadSceneAsync("Game");
+            SceneLoader.Load(gameSceneName);
         }
 
         public void OnClearClicked(SaveSlot saveSlot)
@@ -130,8 +145,9 @@ namespace Platformer
         // Updated to require the Action
         public void ActivateMenu(bool isLoadingGame, Action onBackAction)
         {
+            if (rootContainer == null) return;   // UI not built yet
             this.onBackAction = onBackAction;
-            
+
             rootContainer.style.display = DisplayStyle.Flex;
             this.isLoadingGame = isLoadingGame;
 
@@ -159,7 +175,7 @@ namespace Platformer
 
         public void DeactivateMenu()
         {
-            rootContainer.style.display = DisplayStyle.None;
+            if (rootContainer != null) rootContainer.style.display = DisplayStyle.None;
             if (confirmationPopupMenu != null)
             {
                 confirmationPopupMenu.DeactivateMenu();

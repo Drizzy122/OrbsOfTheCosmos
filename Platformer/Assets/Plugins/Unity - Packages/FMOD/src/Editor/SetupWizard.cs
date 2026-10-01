@@ -1,4 +1,4 @@
-﻿using FMOD.Studio;
+using FMOD.Studio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,7 +79,7 @@ namespace FMODUnity
         private GUIStyle iconStyle;
 
         private SimpleTreeView m_SimpleTreeView;
-        private TreeViewState m_TreeViewState;
+        private TreeViewState<int> m_TreeViewState;
 
         private bool bStudioLinked;
         private bool isValidSource = true;
@@ -753,7 +753,7 @@ Assets/Plugins/FMOD/**/Info.plist text eol=lf";
                 {
                     if (m_TreeViewState == null)
                     {
-                        m_TreeViewState = new TreeViewState();
+                        m_TreeViewState = new TreeViewState<int>();
                     }
                     m_SimpleTreeView = new SimpleTreeView(m_TreeViewState);
                 }
@@ -975,23 +975,23 @@ Assets/Plugins/FMOD/**/Info.plist text eol=lf";
         }
     }
 
-    public class SimpleTreeView : TreeView
+    public class SimpleTreeView : TreeView<int>
     {
         private const float BodyHeight = 200;
 
-        public SimpleTreeView(TreeViewState state) : base(state)
+        public SimpleTreeView(TreeViewState<int> state) : base(state)
         {
             Reload();
             Repaint();
             ExpandAll();
         }
 
-        protected override bool CanMultiSelect(TreeViewItem item)
+        protected override bool CanMultiSelect(TreeViewItem<int> item)
         {
             return false;
         }
 
-        protected override bool CanChangeExpandedState(TreeViewItem item)
+        protected override bool CanChangeExpandedState(TreeViewItem<int> item)
         {
             return !(item is AudioSourceItem);
         }
@@ -1019,9 +1019,9 @@ Assets/Plugins/FMOD/**/Info.plist text eol=lf";
             }
         }
 
-        protected override TreeViewItem BuildRoot()
+        protected override TreeViewItem<int> BuildRoot()
         {
-            var root = new TreeViewItem (-1, -1);
+            var root = new TreeViewItem<int> (-1, -1);
 
             CreateItems(root, Resources.FindObjectsOfTypeAll<AudioSource>());
             showAlternatingRowBackgrounds = true;
@@ -1031,7 +1031,7 @@ Assets/Plugins/FMOD/**/Info.plist text eol=lf";
             return root;
         }
 
-        private class AudioSourceItem : TreeViewItem
+        private class AudioSourceItem : TreeViewItem<int>
         {
             const string audioIcon = "AudioSource Icon";
             public AudioSourceItem(AudioSource source) : base(source.GetHashCode())
@@ -1041,7 +1041,7 @@ Assets/Plugins/FMOD/**/Info.plist text eol=lf";
             }
         }
 
-        private class ParentItem : TreeViewItem
+        private class ParentItem : TreeViewItem<int>
         {
             public GameObject gameObject;
             const string goIcon = "GameObject Icon";
@@ -1076,7 +1076,7 @@ Assets/Plugins/FMOD/**/Info.plist text eol=lf";
             }
         }
 
-        private class SceneItem : TreeViewItem
+        private class SceneItem : TreeViewItem<int>
         {
             public Scene m_scene;
             const string sceneIcon = "SceneAsset Icon";
@@ -1098,7 +1098,7 @@ Assets/Plugins/FMOD/**/Info.plist text eol=lf";
             }
         }
 
-        private void CreateItems(TreeViewItem root, AudioSource[] audioSources)
+        private void CreateItems(TreeViewItem<int> root, AudioSource[] audioSources)
         {
             for(int i = 0; i < audioSources.Length; i++)
             {

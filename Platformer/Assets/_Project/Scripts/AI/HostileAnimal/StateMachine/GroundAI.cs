@@ -28,7 +28,7 @@ namespace Platformer
         [SerializeField] float knockbackForce = 8f;
 
         public bool isScared = false;
-        public CountdownTimer knockbackTimer;
+        [System.NonSerialized] public CountdownTimer knockbackTimer;
 
         StateMachine stateMachine;
         private static readonly int SpeedHash = Animator.StringToHash("Speed");

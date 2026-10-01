@@ -20,7 +20,6 @@ namespace Platformer
         protected static readonly int GlideHash = Animator.StringToHash("Glide");
         protected static readonly int DieHash = Animator.StringToHash("Death");
         protected static readonly int TeleportationHash = Animator.StringToHash("Teleport");
-        protected static readonly int SwimHash = Animator.StringToHash("Swim");
         protected static readonly int HurtHash = Animator.StringToHash("Hurt");
         protected static readonly int SprintHash = Animator.StringToHash("Sprint");
 
@@ -125,21 +124,6 @@ namespace Platformer
         }
     }
 
-    public class SwimState : BaseState
-    {
-        public SwimState(PlayerMovement player, Animator animator) : base(player, animator) { }
-        public override void OnEnter()
-        {
-            animator.CrossFade(SwimHash, crossFadeDuration);
-        }
-
-        public override void FixedUpdate()
-        {
-            player.HandleSwimming();
-        }
-
-        public override void OnExit() { }
-    }
     public class WallClimbState : BaseState
     {
         public WallClimbState(PlayerMovement player, Animator animator) : base(player, animator) { }
@@ -219,8 +203,22 @@ namespace Platformer
 
         public AttackState(PlayerMovement player, Animator animator) : base(player, animator) { }
 
-        public override void OnEnter() {
+        public override void OnEnter() => BeginSwing();
+
+        public override void Update()
+        {
+            // Combo flow: a queued press starts the next swing once the current one
+            // has played far enough, so chains don't stall between swings
+            if (player.combat.TryConsumeBufferedCombo()) BeginSwing();
+        }
+
+        void BeginSwing()
+        {
             player.transform.DOKill();
+
+            // Re-arm the attack window so it spans this whole swing (the timer may
+            // have been started earlier, e.g. mid-dodge or by the previous swing)
+            player.combat.RestartAttackWindow();
 
             // When we have a soft-lock target the DOTween lunge owns our position —
             // stop feeding the rigidbody velocity or the two visibly fight.

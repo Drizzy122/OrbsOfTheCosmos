@@ -1,0 +1,12 @@
+{
+    "asset": "737f06c957573524dafee3d5803e5feb",
+    "fileName": "019ff200-0f42-7046-acb6-ae91bcabe271.pose.json",
+    "prompt": "flying with wings flapping",
+    "negativePrompt": "",
+    "model": "unity-text-to-motion",
+    "modelName": "Text to Motion",
+    "customSeed": 388741143,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "isTrimmed": false
+}

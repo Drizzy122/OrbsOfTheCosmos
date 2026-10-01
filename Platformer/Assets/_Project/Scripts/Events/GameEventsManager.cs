@@ -6,13 +6,14 @@ namespace Platformer
     {
         public static GameEventsManager instance { get; private set; }
         
-        public MiscEvents miscEvents;
-        public PlayerEvents playerEvents;
-        public QuestEvents questEvents;
-        public InputEvents inputEvents;
-        public EnemyEvents enemyEvents;
-        public DialogueEvents dialogueEvents;
-        public InventoryEvents inventoryEvents;
+        // Plain C# event hubs created in Awake — never serialized by Unity
+        [System.NonSerialized] public MiscEvents miscEvents;
+        [System.NonSerialized] public PlayerEvents playerEvents;
+        [System.NonSerialized] public QuestEvents questEvents;
+        [System.NonSerialized] public InputEvents inputEvents;
+        [System.NonSerialized] public EnemyEvents enemyEvents;
+        [System.NonSerialized] public DialogueEvents dialogueEvents;
+        [System.NonSerialized] public InventoryEvents inventoryEvents;
         
 
       

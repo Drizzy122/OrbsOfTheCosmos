@@ -1,15 +1,18 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using System;
+using KBCore.Refs;
 
 namespace Platformer
 {
-    [RequireComponent(typeof(UIDocument))]
+    [RequireComponent(typeof(PanelRenderer))]
     public class ConfirmationPopUpMenu : MonoBehaviour
     {
-        private UIDocument document;
+        [field: Header("Components")]
+        [field: SerializeField] PanelRenderer confirmationPopUpRenderer;
+       
+        [field: Header("UI Elements")]
         private VisualElement rootContainer;
-        
         private Label displayText;
         private Button confirmButton;
         private Button cancelButton;
@@ -20,23 +23,33 @@ namespace Platformer
 
         private void Awake()
         {
-            document = GetComponent<UIDocument>();
-            rootContainer = document.rootVisualElement.Q<VisualElement>("ConfirmationPopupMenuContainer");
+            confirmationPopUpRenderer = GetComponent<PanelRenderer>();
+            confirmationPopUpRenderer.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnDestroy()
+        {
+            if (confirmationPopUpRenderer != null) confirmationPopUpRenderer.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnUIReload(PanelRenderer _, VisualElement root)
+        {
+            rootContainer = root.Q<VisualElement>("ConfirmationPopupMenuContainer");
+            if (rootContainer == null) return;
 
             displayText = rootContainer.Q<Label>("DisplayText");
             confirmButton = rootContainer.Q<Button>("ConfirmButton");
             cancelButton = rootContainer.Q<Button>("CancelButton");
 
-            DeactivateMenu();
-        }
-
-        private void Start() {
             AudioManager.instance.RegisterButtonAudio(confirmButton);
             AudioManager.instance.RegisterButtonAudio(cancelButton, isCloseAction: true);
+
+            DeactivateMenu();
         }
 
         public void ActivateMenu(string text, Action confirmAction, Action cancelAction)
         {
+            if (rootContainer == null) return;   // UI not built yet
             rootContainer.style.display = DisplayStyle.Flex;
             this.displayText.text = text;
 
@@ -64,9 +77,10 @@ namespace Platformer
         }
 
         // Change this from private to public!
-        public void DeactivateMenu() 
+        public void DeactivateMenu()
         {
-            rootContainer.style.display = DisplayStyle.None;
+            // Guarded: SaveSlotsMenu can call this before our UI has built
+            if (rootContainer != null) rootContainer.style.display = DisplayStyle.None;
         }
     }
 }

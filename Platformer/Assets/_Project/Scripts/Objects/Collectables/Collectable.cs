@@ -67,7 +67,7 @@ namespace Platformer
                     break;
 
                 case CollectableType.Health:
-                    var health = player.GetComponent<Health>();
+                    var health = player.GetComponentInChildren<Health>();
                     if (health == null) return;
                     if (health.HealthPercent >= 1f) return;   // full HP — leave the pickup in the world
                     health.AddHealth(healthValue);
@@ -94,13 +94,14 @@ namespace Platformer
                 return false;
             }
 
-            var inventory = player.GetComponent<Inventory>();
+            // Inventory/equipment live on a child of the Player, so search the hierarchy
+            var inventory = player.GetComponentInChildren<Inventory>();
             if (inventory == null) return false;
             if (!inventory.Add(itemToGive, itemQuantity)) return false;
 
             if (autoEquipIfSlotEmpty)
             {
-                var equipment = player.GetComponent<PlayerEquipment>();
+                var equipment = player.GetComponentInChildren<PlayerEquipment>();
                 var slot = SlotFor(itemToGive);
                 if (equipment != null && slot != EquipSlot.None && !equipment.HasEquipped(slot))
                 {

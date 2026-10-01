@@ -9,30 +9,36 @@ namespace Platformer
     /// when the dot ARRIVES, so the bar visibly ticks up as dots land.
     /// Attach to the HUD GameObject (same one as HUDStatsController).
     /// </summary>
-    [RequireComponent(typeof(UIDocument))]
+    [RequireComponent(typeof(PanelRenderer))]
     public class HUDXPOrbEffect : MonoBehaviour
     {
         static HUDXPOrbEffect instance;
 
-        [SerializeField] UIDocument document;
+        [SerializeField] PanelRenderer document;
         [SerializeField] float flightDuration = 0.55f;
         [SerializeField] float dotSize = 14f;
 
         VisualElement root;
         VisualElement xpContainer;
 
-        void Reset() => document = GetComponent<UIDocument>();
+        void Reset() => document = GetComponent<PanelRenderer>();
 
         void OnEnable()
         {
             instance = this;
-            root = document.rootVisualElement;
-            xpContainer = root.Q<VisualElement>("XPContainer");
+            document.RegisterUIReloadCallback(OnUIReload);
         }
 
         void OnDisable()
         {
+            document.UnregisterUIReloadCallback(OnUIReload);
             if (instance == this) instance = null;
+        }
+
+        void OnUIReload(PanelRenderer _, VisualElement newRoot)
+        {
+            root = newRoot;
+            xpContainer = root.Q<VisualElement>("XPContainer");
         }
 
         /// <summary>

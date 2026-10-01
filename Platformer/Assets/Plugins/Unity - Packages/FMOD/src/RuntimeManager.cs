@@ -663,7 +663,8 @@ retry:
                 debugStyle.fontSize = currentPlatform.OverlayFontSize;
                 if (studioSystem.isValid() && isOverlayEnabled)
                 {
-                    windowRect = GUI.Window(GetInstanceID(), windowRect, DrawDebugOverlay, "FMOD Studio Debug", debugStyle);
+                    // Patched: GetInstanceID() is a compile error on Unity 6.3+; the window just needs a stable unique int id.
+                    windowRect = GUI.Window(GetHashCode(), windowRect, DrawDebugOverlay, "FMOD Studio Debug", debugStyle);
                 }
             }
             else

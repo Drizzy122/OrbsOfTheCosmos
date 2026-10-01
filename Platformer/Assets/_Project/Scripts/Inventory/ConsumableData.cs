@@ -19,7 +19,8 @@ namespace Platformer
         {
             if (healAmount > 0)
             {
-                var health = user.GetComponent<Health>();
+                // The user may be the Inventory child object — Health sits on the Player root
+                var health = user.GetComponentInParent<Health>();
                 if (health == null) return false;
                 if (health.HealthPercent >= 1f) return false;   // full HP — don't waste it
                 health.AddHealth(healAmount);

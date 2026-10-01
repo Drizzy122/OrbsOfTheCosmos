@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using TinyGiantStudio.BetterEditor;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.UIElements;
 
 namespace TinyGiantStudio.BetterInspector.BetterMesh
@@ -26,7 +28,9 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         readonly VisualTreeAsset _previewTemplate;
 
         // Path to the UXML file for mesh previews
-        const string PreviewTemplateLocation = "Assets/Plugins/Tiny Giant Studio/Better Inspector/Better Mesh Filter/Scripts/Editor/Templates/MeshPreview.uxml";
+        const string PreviewTemplateLocation =
+            "Assets/Plugins/Tiny Giant Studio/Better Inspector/Better Mesh Filter/Scripts/Editor/Templates/MeshPreview.uxml";
+
         const string PreviewTemplateGuid = "7358ad733b4a05a4c88dbecb820153e8";
 
         // Custom GUIStyle used when drawing elements with colored backgrounds
@@ -58,6 +62,10 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         // Stores reference to the current user settings for Better Mesh
         readonly BetterMeshSettings _editorSettings;
 
+        static StringBuilder
+            strBuilder =
+                new StringBuilder(1024); //CustomPatch: added to reduce memory allocations when working with strings
+
         /// <summary>
         /// Frees up allocated memory and UI elements when the editor window is closed.
         /// Must be called during tear-down to prevent memory leaks.
@@ -70,10 +78,15 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             // Dispose of all mesh preview elements  
             for (int index = 0; index < _meshPreviews.Count; index++)
             {
-                if (_meshPreviews[index] == null) continue;
+                MeshPreview preview = _meshPreviews[index];
 
-                _meshPreviews[index].Dispose();
+                if (preview == null)  
+                    continue;
+                
+                //Debug.Log("Cleanup preview: " + preview);
                 DomainReloadCleanup.Unregister(_meshPreviews[index]);
+                
+                _meshPreviews[index].Dispose();
                 _meshPreviews[index] = null;
             }
 
@@ -246,7 +259,9 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
 
         void CreatePreviewForMesh(Mesh mesh)
         {
-            if (mesh == null)
+            // Debug.Log("CreatePreviewForMesh");
+            if (!mesh || mesh.vertexCount ==
+                0) //CustomPatch: prevention for a rare engine error when working with procedurally generated skinned meshes
                 return;
 
             // Clone template and add to the UI
@@ -269,14 +284,13 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             _meshPreviews.Add(meshPreview);
             DomainReloadCleanup.Register(meshPreview);
 
-            // If failed to create preview, return.
-            if (meshPreview == null)
-                return;
-
             previewSettingsContainer.onGUIHandler += () =>
             {
                 //GUI.contentColor = Color.white;
                 //GUI.color = Color.white;
+                //CustomPatch: fix exception for when mesh is destroyed (when working with procedural generating tools)
+                if (!mesh || mesh.vertexCount == 0)
+                    return;
 
                 //GUILayout.BeginHorizontal("Box");
                 GUILayout.BeginHorizontal();
@@ -335,23 +349,28 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
                 GroupBox submeshGroup = meshDataGroup.Q<GroupBox>("SubmeshGroup");
                 if (meshes.Count == 1)
                 {
-                    int[] subMeshVertexCounts = meshes[0].SubMeshVertexCount();
-                    if (subMeshVertexCounts is { Length: > 1 })
+                    //CustomPatch: memory allocation optimizations
+                    using PooledObject<List<int>> _ = ListPool<int>.Get(out List<int> subMeshVertexCounts);
+                    meshes[0].SubMeshVertexCount(outVertexCountList: subMeshVertexCounts);
+                    if (subMeshVertexCounts is { Count: > 1 })
                     {
                         submeshGroup.style.display = DisplayStyle.Flex;
                         submeshGroup.Q<Label>("SubmeshValue").text =
-                            subMeshVertexCounts.Length.ToString(CultureInfo.InvariantCulture);
+                            subMeshVertexCounts.Count.ToString(CultureInfo.InvariantCulture);
                         Label submeshVertices = submeshGroup.Q<Label>("SubmeshVertices");
-                        submeshVertices.text = "(";
-                        for (int i = 0; i < subMeshVertexCounts.Length; i++)
-                        {
-                            submeshVertices.text += subMeshVertexCounts[i];
 
-                            if (i + 1 != subMeshVertexCounts.Length)
-                                submeshVertices.text += ", ";
+                        strBuilder.EnsureCapacity(subMeshVertexCounts.Count * 6);
+                        strBuilder.Clear();
+                        strBuilder.Append("(");
+                        for (int i = 0; i < subMeshVertexCounts.Count; i++)
+                        {
+                            strBuilder.Append(subMeshVertexCounts[i]);
+                            if (i + 1 != subMeshVertexCounts.Count)
+                                strBuilder.Append(", ");
                         }
 
-                        submeshVertices.text += ")";
+                        strBuilder.Append(")");
+                        submeshVertices.text = strBuilder.ToString();
                     }
                     else
                     {
@@ -390,7 +409,10 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             {
                 tangentsGroup.style.display = DisplayStyle.Flex;
 
-                int counter = meshes.Where(mesh => mesh != null).Sum(mesh => mesh.tangents.Length);
+                int counter =
+                    meshes.Where(mesh => mesh != null)
+                        .Sum(mesh =>
+                            mesh.GetTangentCount()); //CustomPatch: removed high memory allocation => used new tangent count extension method
                 tangentsGroup.Q<Label>("Value").text = counter.ToString(CultureInfo.InvariantCulture);
             }
 
@@ -415,7 +437,10 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
                 if (_editorSettings.showRunTimeMemoryUsageLabel)
                 {
                     label.style.display = DisplayStyle.Flex;
-                    meshMemoryGroupBox.Q<Button>().clicked += () => { Application.OpenURL(LearnMoreAboutRuntimeMemoryUsageLink); };
+                    meshMemoryGroupBox.Q<Button>().clicked += () =>
+                    {
+                        Application.OpenURL(LearnMoreAboutRuntimeMemoryUsageLink);
+                    };
                 }
                 else
                 {
@@ -442,22 +467,29 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
                 verticesGroup.Q<Label>("Value").text = mesh.vertexCount.ToString(CultureInfo.InvariantCulture);
 
                 GroupBox submeshGroup = meshDataGroup.Q<GroupBox>("SubmeshGroup");
-                int[] subMeshVertexCounts = mesh.SubMeshVertexCount();
-                if (subMeshVertexCounts is { Length: > 1 })
+
+                //CustomPatch: memory allocation optimizations
+                using PooledObject<List<int>> _ = ListPool<int>.Get(out List<int> subMeshVertexCounts);
+                mesh.SubMeshVertexCount(subMeshVertexCounts);
+                if (subMeshVertexCounts is { Count: > 1 })
                 {
                     submeshGroup.style.display = DisplayStyle.Flex;
                     submeshGroup.Q<Label>("SubmeshValue").text =
-                        subMeshVertexCounts.Length.ToString(CultureInfo.InvariantCulture);
+                        subMeshVertexCounts.Count.ToString(CultureInfo.InvariantCulture);
                     Label submeshVertices = submeshGroup.Q<Label>("SubmeshVertices");
-                    submeshVertices.text = "(";
-                    for (int i = 0; i < subMeshVertexCounts.Length; i++)
+
+                    strBuilder.EnsureCapacity(subMeshVertexCounts.Count * 6);
+                    strBuilder.Clear();
+                    strBuilder.Append("(");
+                    for (int i = 0; i < subMeshVertexCounts.Count; i++)
                     {
-                        submeshVertices.text += subMeshVertexCounts[i];
-                        if (i + 1 != subMeshVertexCounts.Length)
-                            submeshVertices.text += ", ";
+                        strBuilder.Append(subMeshVertexCounts[i]);
+                        if (i + 1 != subMeshVertexCounts.Count)
+                            strBuilder.Append(", ");
                     }
 
-                    submeshVertices.text += ")";
+                    strBuilder.Append(")");
+                    submeshVertices.text = strBuilder.ToString();
                 }
                 else
                 {
@@ -486,7 +518,10 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             else
             {
                 tangentsGroup.style.display = DisplayStyle.Flex;
-                tangentsGroup.Q<Label>("Value").text = mesh.tangents.Length.ToString(CultureInfo.InvariantCulture);
+                tangentsGroup.Q<Label>("Value").text =
+                    mesh.GetTangentCount()
+                        .ToString(CultureInfo
+                            .InvariantCulture); //CustomPatch: removed high memory allocation => used new tangent count extension method
             }
 
             GroupBox faceGroup = meshDataGroup.Q<GroupBox>("FaceGroup");
@@ -508,7 +543,10 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
                 if (_editorSettings.showRunTimeMemoryUsageLabel)
                 {
                     label.style.display = DisplayStyle.Flex;
-                    meshMemoryGroupBox.Q<Button>().clicked += () => { Application.OpenURL(LearnMoreAboutRuntimeMemoryUsageLink); };
+                    meshMemoryGroupBox.Q<Button>().clicked += () =>
+                    {
+                        Application.OpenURL(LearnMoreAboutRuntimeMemoryUsageLink);
+                    };
                 }
                 else
                 {
@@ -547,7 +585,7 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         //     if (remainingKilobytes > 0) usage += remainingKilobytes + "KB";
         //     return usage;
         // }
-        
+
         // Fix provided by Florin C
         // static string ByteToReadableString(long usageInByte)
         // {
@@ -561,40 +599,43 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         //     if (remainingKilobytes > 0) usage += remainingKilobytes + "KB";
         //     return usage;
         // }
-        
+
         const long OneKilobyte = 1024;
         const long OneMegabyte = OneKilobyte * 1024;
+
         const long OneGigabyte = OneMegabyte * 1024;
+
         // Slightly reorganized/modified fix
         static string ByteToReadableString(long usageInBytes)
         {
-            if (usageInBytes < 0) //Never got any error regarding this. But the code editor Rider keeps suggesting me to add it 
+            if (usageInBytes <
+                0) //Never got any error regarding this. But the code editor Rider keeps suggesting me to add it 
                 return "0KB";
-            
+
             //Added for just in-case scenarios. Doubt anyone would ever reach this regularly to be needed.
             long gigabytes = usageInBytes / OneGigabyte;
             long remainingAfterGigabyte = usageInBytes % OneGigabyte;
-            
+
             long megabytes = remainingAfterGigabyte / OneMegabyte;
             long remainingAfterMegabyte = remainingAfterGigabyte % OneMegabyte;
-            
+
             long kilobytes = remainingAfterMegabyte / OneKilobyte;
             long bytes = remainingAfterMegabyte % OneKilobyte;
-            
+
             string usage = string.Empty;
-            
+
             if (gigabytes > 0) //No need to add Gigabyte when it is zero
                 usage += $"{gigabytes}GB ";
-            
+
             if (megabytes > 0) //No need to add Megabyte when it is zero
                 usage += $"{megabytes}MB ";
-        
+
             if (kilobytes > 0) //No need to add Kilobyte when it is zero
                 usage += $"{kilobytes}KB ";
-        
+
             if (bytes > 0 && megabytes == 0) // only show bytes if below 1MB
                 usage += $"{bytes}B";
-        
+
             return string.IsNullOrWhiteSpace(usage) ? "0B" : usage.TrimEnd();
         }
 

@@ -8,10 +8,10 @@ namespace Platformer
     /// Attach to the HUD GameObject (the one whose UIDocument shows HUD.uxml).
     /// Listens to the global player events — no direct player references needed.
     /// </summary>
-    [RequireComponent(typeof(UIDocument))]
+    [RequireComponent(typeof(PanelRenderer))]
     public class HUDStatsController : MonoBehaviour
     {
-        [SerializeField] UIDocument document;
+        [SerializeField] PanelRenderer document;
 
         [Tooltip("Charge count that renders the bar completely full.")]
         [SerializeField, Min(1)] int chargesFullBar = 10;
@@ -48,11 +48,21 @@ namespace Platformer
         // value actually changes (skips the initial broadcast too).
         int lastSeenXp = int.MinValue;
 
-        void Reset() => document = GetComponent<UIDocument>();
+        void Reset() => document = GetComponent<PanelRenderer>();
 
         void OnEnable()
         {
-            var root = document.rootVisualElement;
+            document.RegisterUIReloadCallback(OnUIReload);
+
+            var events = GameEventsManager.instance.playerEvents;
+            events.onPlayerExperienceChange += OnExperienceChanged;
+            events.onPlayerLevelChange += OnLevelChanged;
+            events.onLuminChargesChanged += OnChargesChanged;
+            events.onComboChanged += OnComboChanged;
+        }
+
+        void OnUIReload(PanelRenderer _, VisualElement root)
+        {
             xpBar = root.Q<VisualElement>("XPBar");
             xpContainer = root.Q<VisualElement>("XPContainer");
             levelLabel = root.Q<Label>("XPLevelLabel");
@@ -72,16 +82,11 @@ namespace Platformer
 
             var levelUpElement = root.Q<VisualElement>("LevelUpNotification");
             if (levelUpElement != null) levelUpPopup = new HUDPopup(levelUpElement, levelUpDuration);
-
-            var events = GameEventsManager.instance.playerEvents;
-            events.onPlayerExperienceChange += OnExperienceChanged;
-            events.onPlayerLevelChange += OnLevelChanged;
-            events.onLuminChargesChanged += OnChargesChanged;
-            events.onComboChanged += OnComboChanged;
         }
 
         void OnDisable()
         {
+            document.UnregisterUIReloadCallback(OnUIReload);
             if (GameEventsManager.instance == null) return;
             var events = GameEventsManager.instance.playerEvents;
             events.onPlayerExperienceChange -= OnExperienceChanged;

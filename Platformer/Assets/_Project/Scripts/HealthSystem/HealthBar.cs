@@ -5,7 +5,7 @@ namespace Platformer
     public class HealthBar : MonoBehaviour
     {
         [field: Header("UI Configuration")]
-        [field: SerializeField] private UIDocument uiDocument;
+        [field: SerializeField] private PanelRenderer uiDocument;
         [field: SerializeField] private float lerpSpeed = 5f; // Kept from your original script
 
         private VisualElement healthBarFill;
@@ -15,9 +15,17 @@ namespace Platformer
         private void OnEnable()
         {
             if (uiDocument == null) return;
+            uiDocument.RegisterUIReloadCallback(OnUIReload);
+        }
 
-            var root = uiDocument.rootVisualElement;
-            healthBarFill = root.Q<VisualElement>("HealthBar"); 
+        private void OnDisable()
+        {
+            if (uiDocument != null) uiDocument.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnUIReload(PanelRenderer _, VisualElement root)
+        {
+            healthBarFill = root.Q<VisualElement>("HealthBar");
         }
 
         // Your FloatEventListener will call this method

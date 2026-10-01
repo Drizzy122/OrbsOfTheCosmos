@@ -37,15 +37,24 @@ namespace TinyGiantStudio.BetterInspector
         #region Referenced in the Inspector
 
         [SerializeField] VisualTreeAsset visualTreeAsset; // If reference is lost, retrieved from file location
-        const string VisualTreeAssetFileLocation = "Assets/Plugins/Tiny Giant Studio/Better Inspector/Better Transform/Scripts/Editor/BetterTransform.uxml";
+
+        const string VisualTreeAssetFileLocation =
+            "Assets/Plugins/Tiny Giant Studio/Better Inspector/Better Transform/Scripts/Editor/BetterTransform.uxml";
+
         const string VisualTreeAssetGuid = "e8eee4a8330502c40b42313f6a99d0b6";
 
         [SerializeField] VisualTreeAsset folderTemplate; // If reference is lost, retrieved from file location
-        const string FolderTemplateFileLocation = "Assets/Plugins/Tiny Giant Studio/Better Inspector/Better Transform/Scripts/Editor/Templates/CustomFoldoutTemplate.uxml";
+
+        const string FolderTemplateFileLocation =
+            "Assets/Plugins/Tiny Giant Studio/Better Inspector/Better Transform/Scripts/Editor/Templates/CustomFoldoutTemplate.uxml";
+
         const string FolderTemplateGuid = "ce465cbac9f131241acfd8b7127846a4";
 
         [SerializeField] VisualTreeAsset settingsTemplate;
-        const string SettingsTemplateFileLocation = "Assets/Plugins/Tiny Giant Studio/Better Inspector/Better Transform/Scripts/Editor/Templates/Settings.uxml";
+
+        const string SettingsTemplateFileLocation =
+            "Assets/Plugins/Tiny Giant Studio/Better Inspector/Better Transform/Scripts/Editor/Templates/Settings.uxml";
+
         const string SettingsTemplateGuid = "892731edae4e3934aaddd13b03e5dd15";
 
         [SerializeField] StyleSheet betterTransformStyleSheet1;
@@ -54,7 +63,9 @@ namespace TinyGiantStudio.BetterInspector
 
         #endregion Referenced in the Inspector
 
-        const string AssetLink = "https://assetstore.unity.com/packages/tools/utilities/better-transform-size-notes-global-local-workspace-parent-child--321300?aid=1011ljxWe";
+        const string AssetLink =
+            "https://assetstore.unity.com/packages/tools/utilities/better-transform-size-notes-global-local-workspace-parent-child--321300?aid=1011ljxWe";
+
         const string PublisherLink = "https://assetstore.unity.com/publishers/45848?aid=1011ljxWe";
         const string DocumentationLink = "https://ferdowsur.gitbook.io/better-transform/";
 
@@ -68,7 +79,7 @@ namespace TinyGiantStudio.BetterInspector
 
 
         Editor _originalEditor;
-        readonly List<Editor> _otherBetterTransformEditors = new();
+        readonly List<Editor> _otherBetterTransformEditors = new List<Editor>();
 
         SizeCalculation _sizeCalculator;
         QuickActions _quickActions;
@@ -166,7 +177,7 @@ namespace TinyGiantStudio.BetterInspector
         /// <returns>What should be shown on the inspector</returns>
         public override VisualElement CreateInspectorGUI()
         {
-            _root = new();
+            _root = new VisualElement();
 
             if (target == null)
                 return _root;
@@ -188,7 +199,7 @@ namespace TinyGiantStudio.BetterInspector
             if (_logPerformance)
             {
                 if (_stopwatch != null) _stopwatch.Reset();
-                else _stopwatch = new();
+                else _stopwatch = new Stopwatch();
 
                 _stopwatch.Start();
             }
@@ -197,7 +208,7 @@ namespace TinyGiantStudio.BetterInspector
             _domainReloaded = false;
 
             transform = target as Transform;
-            _soTarget = new(target);
+            _soTarget = new SerializedObject(target);
 
             LogDetailedPerformance("Serializing target time");
 
@@ -376,7 +387,7 @@ namespace TinyGiantStudio.BetterInspector
             if (!_betterTransformSettings.ConstantSizeUpdate)
                 return;
 
-            _sizeUpdateScheduleHolder = new();
+            _sizeUpdateScheduleHolder = new VisualElement();
             _root.Add(_sizeUpdateScheduleHolder);
 
             _sizeUpdateScheduleHolder.schedule.Execute(() => UpdateSize(true)).Every(3000)
@@ -392,7 +403,7 @@ namespace TinyGiantStudio.BetterInspector
         {
             if (_root == null) return;
 
-            _sizeCalculator ??= new(_betterTransformSettings);
+            _sizeCalculator ??= new SizeCalculation(_betterTransformSettings);
             _topGroupBox = _root.Q<GroupBox>("TopGroupBox");
             _toolbarsGroupBox = _root.Q<GroupBox>("ToolbarsGroupBox");
 
@@ -426,7 +437,7 @@ namespace TinyGiantStudio.BetterInspector
             UpdateMainControls();
             LogPerformance("Position/Rotation/Size Fields");
 
-            _quickActions = new(targets, _root, this);
+            _quickActions = new QuickActions(targets, _root, this);
             LogPerformance("Quick Action Buttons");
 
             SetupGuid();
@@ -509,9 +520,9 @@ namespace TinyGiantStudio.BetterInspector
         /// </summary>
         void CreatePerformanceLoggingGroupBox()
         {
-            _performanceLoggingGroupBox = new();
+            _performanceLoggingGroupBox = new GroupBox();
 
-            Button button = new()
+            Button button = new Button
             {
                 text = "Turn Off performance logging"
             };
@@ -1070,7 +1081,7 @@ namespace TinyGiantStudio.BetterInspector
 
             void UpdateContextMenuForPosition()
             {
-                _contextualMenuManipulatorForPositionLabel = new(evt =>
+                _contextualMenuManipulatorForPositionLabel = new ContextualMenuManipulator(evt =>
                 {
                     evt.menu.AppendAction("Position :", _ => { }, DropdownMenuAction.AlwaysDisabled);
                     evt.menu.AppendSeparator();
@@ -1356,7 +1367,7 @@ namespace TinyGiantStudio.BetterInspector
         void CreateBigNumberWarning()
         {
             _bigNumberWarning =
-                new(
+                new HelpBox(
                     "Due to floating-point precision limitations, it is recommended to bring the world coordinates of the GameObject within a smaller range.",
                     HelpBoxMessageType.Warning)
                 {
@@ -1474,7 +1485,7 @@ namespace TinyGiantStudio.BetterInspector
 
             void UpdateContextMenuForRotation()
             {
-                _contextualMenuManipulatorForRotationLabel = new(evt =>
+                _contextualMenuManipulatorForRotationLabel = new ContextualMenuManipulator(evt =>
                 {
                     evt.menu.AppendAction("Rotation :", _ => { }, DropdownMenuAction.AlwaysDisabled);
                     evt.menu.AppendSeparator();
@@ -2101,7 +2112,7 @@ namespace TinyGiantStudio.BetterInspector
 
             void UpdateContextMenuForScale()
             {
-                _contextualMenuManipulatorForScaleLabel = new(evt =>
+                _contextualMenuManipulatorForScaleLabel = new ContextualMenuManipulator(evt =>
                 {
                     evt.menu.AppendAction("Scale :", _ => { },
                         DropdownMenuAction.Status.Disabled);
@@ -2240,14 +2251,14 @@ namespace TinyGiantStudio.BetterInspector
                 if (!Approximately(newLossyScale.z, oldLossyScale.z))
                     newZ = newLossyScale.z / t.parent.lossyScale.z;
 
-                Vector3 newScale = new(newX, newY, newZ);
+                Vector3 newScale = new Vector3(newX, newY, newZ);
                 if (IsInfinity(newScale))
                     Debug.LogWarning(
                         "<color=yellow>Unable to set world scale</color> because the target world scale :" + newScale +
                         " contains infinity. The most common cause of this issue is any object in it's parent hierarchy has scale with 0 value in any axis.",
                         transform);
                 else
-                    t.localScale = new(newX, newY, newZ);
+                    t.localScale = new Vector3(newX, newY, newZ);
             }
             else
             {
@@ -2269,10 +2280,10 @@ namespace TinyGiantStudio.BetterInspector
                 multiplier = newLocalScale.x / currentLocalScale.x;
 
                 if (float.IsFinite(multiplier))
-                    return new(newLocalScale.x, currentLocalScale.y * multiplier,
+                    return new Vector3(newLocalScale.x, currentLocalScale.y * multiplier,
                         currentLocalScale.z * multiplier);
                 multiplier = newLocalScale.x / _nonZeroValue.x;
-                return new(newLocalScale.x, _nonZeroValue.y * multiplier, _nonZeroValue.z * multiplier);
+                return new Vector3(newLocalScale.x, _nonZeroValue.y * multiplier, _nonZeroValue.z * multiplier);
             }
 
             if (!Approximately(currentLocalScale.y, newLocalScale.y))
@@ -2282,11 +2293,11 @@ namespace TinyGiantStudio.BetterInspector
 
                 multiplier = newLocalScale.y / currentLocalScale.y;
                 if (float.IsFinite(multiplier))
-                    return new(currentLocalScale.x * multiplier, newLocalScale.y,
+                    return new Vector3(currentLocalScale.x * multiplier, newLocalScale.y,
                         currentLocalScale.z * multiplier);
                 Debug.Log(newLocalScale);
                 multiplier = newLocalScale.y / _nonZeroValue.y;
-                return new(_nonZeroValue.x * multiplier, newLocalScale.y, _nonZeroValue.z * multiplier);
+                return new Vector3(_nonZeroValue.x * multiplier, newLocalScale.y, _nonZeroValue.z * multiplier);
             }
 
             if (Approximately(currentLocalScale.z, newLocalScale.z)) return newLocalScale;
@@ -2295,10 +2306,10 @@ namespace TinyGiantStudio.BetterInspector
 
             multiplier = newLocalScale.z / currentLocalScale.z;
             if (float.IsFinite(multiplier))
-                return new(currentLocalScale.x * multiplier, currentLocalScale.y * multiplier,
+                return new Vector3(currentLocalScale.x * multiplier, currentLocalScale.y * multiplier,
                     newLocalScale.z);
             multiplier = newLocalScale.z / _nonZeroValue.z;
-            return new(_nonZeroValue.x * multiplier, _nonZeroValue.y * multiplier, newLocalScale.z);
+            return new Vector3(_nonZeroValue.x * multiplier, _nonZeroValue.y * multiplier, newLocalScale.z);
         }
 
         Vector3 AspectRatioAppliedWorldScale(Vector3 newLossyScale)
@@ -2316,11 +2327,11 @@ namespace TinyGiantStudio.BetterInspector
                 multiplier = newLossyScale.x / currentLossyScale.x;
 
                 if (float.IsFinite(multiplier))
-                    return new(newLocalScale.x, currentLocalScale.y * multiplier,
+                    return new Vector3(newLocalScale.x, currentLocalScale.y * multiplier,
                         currentLocalScale.z * multiplier);
 
                 multiplier = newLossyScale.x / _nonZeroValue.x;
-                return new(newLossyScale.x, _nonZeroValue.y * multiplier, _nonZeroValue.z * multiplier);
+                return new Vector3(newLossyScale.x, _nonZeroValue.y * multiplier, _nonZeroValue.z * multiplier);
             }
 
             if (!Approximately(currentLossyScale.y, newLossyScale.y))
@@ -2331,11 +2342,11 @@ namespace TinyGiantStudio.BetterInspector
                 multiplier = newLossyScale.y / currentLossyScale.y;
 
                 if (float.IsFinite(multiplier))
-                    return new(currentLocalScale.x * multiplier, newLocalScale.y,
+                    return new Vector3(currentLocalScale.x * multiplier, newLocalScale.y,
                         currentLocalScale.z * multiplier);
 
                 multiplier = newLossyScale.y / _nonZeroValue.y;
-                return new(_nonZeroValue.x * multiplier, newLossyScale.y, _nonZeroValue.z * multiplier);
+                return new Vector3(_nonZeroValue.x * multiplier, newLossyScale.y, _nonZeroValue.z * multiplier);
             }
 
             if (Approximately(currentLossyScale.z, newLossyScale.z)) return newLocalScale;
@@ -2345,11 +2356,11 @@ namespace TinyGiantStudio.BetterInspector
             multiplier = newLossyScale.z / currentLossyScale.z;
 
             if (float.IsFinite(multiplier))
-                return new(currentLocalScale.x * multiplier, currentLocalScale.y * multiplier,
+                return new Vector3(currentLocalScale.x * multiplier, currentLocalScale.y * multiplier,
                     newLocalScale.z);
 
             multiplier = newLossyScale.z / _nonZeroValue.z;
-            return new(_nonZeroValue.x * multiplier, _nonZeroValue.y * multiplier, newLossyScale.z);
+            return new Vector3(_nonZeroValue.x * multiplier, _nonZeroValue.y * multiplier, newLossyScale.z);
         }
 
         #endregion Scale
@@ -2638,7 +2649,7 @@ namespace TinyGiantStudio.BetterInspector
                     return;
 
                 Undo.RecordObject(transform, "Size Paste on " + transform.gameObject.name);
-                SetSize(new(x, y, z));
+                SetSize(new Vector3(x, y, z));
                 EditorUtility.SetDirty(transform);
 
                 float unitMultiplier = ScalesManager.instance.CurrentUnitValue();
@@ -2681,7 +2692,7 @@ namespace TinyGiantStudio.BetterInspector
 
         void CreateTooManyChildForAutoSizeCalculationWarning()
         {
-            _manualUpdateButton = new()
+            _manualUpdateButton = new Button
             {
                 text = "Check Size",
                 tooltip =
@@ -3076,7 +3087,7 @@ namespace TinyGiantStudio.BetterInspector
             if (_manualUpdateButton != null)
                 _manualUpdateButton.style.display = DisplayStyle.None;
 
-            Bounds newBound = new();
+            Bounds newBound = new Bounds();
 
             Transform[] transforms = targetTransform.GetComponentsInChildren<Transform>()
                 .Where(t =>
@@ -3143,7 +3154,7 @@ namespace TinyGiantStudio.BetterInspector
         /// <returns></returns>
         Bounds GetRendererLocalBounds(Transform targetTransform, bool showWarningIfTooManyChild = false)
         {
-            Bounds newBound = new();
+            Bounds newBound = new Bounds();
 
             Transform[] transforms = targetTransform.GetComponentsInChildren<Transform>()
                 .Where(t =>
@@ -3232,7 +3243,7 @@ namespace TinyGiantStudio.BetterInspector
                         _manualUpdateButton.style.display = DisplayStyle.Flex;
                     else
                         CreateTooManyChildForAutoSizeCalculationWarning();
-                    return new();
+                    return new Bounds();
                 }
 
             //This button is never created unless required.
@@ -3242,7 +3253,7 @@ namespace TinyGiantStudio.BetterInspector
             MeshFilter[] meshFilters = targetTransform.GetComponentsInChildren<MeshFilter>();
             Matrix4x4 worldToTargetLocal = targetTransform.worldToLocalMatrix;
 
-            Bounds bounds = new();
+            Bounds bounds = new Bounds();
             bool firstBounds = true;
 
             foreach (MeshFilter meshFilter in meshFilters)
@@ -3264,7 +3275,7 @@ namespace TinyGiantStudio.BetterInspector
 
                     if (firstBounds)
                     {
-                        bounds = new(localVertex, Vector3.zero); // Initialize bounds in local space
+                        bounds = new Bounds(localVertex, Vector3.zero); // Initialize bounds in local space
                         firstBounds = false;
                     }
                     else
@@ -3295,24 +3306,10 @@ namespace TinyGiantStudio.BetterInspector
             assetGuidLabel.style.display = DisplayStyle.None;
 
             if (!_thisIsAnAsset || !_betterTransformSettings.showAssetGuid) return;
-            string myGuid = GetObjectID();
+            string myGuid = NoteUtility.GetUserFriendlyID(transform);
             assetGuidLabel.text = myGuid;
             assetGuidLabel.tooltip = "GUID\n" + myGuid;
             assetGuidLabel.style.display = DisplayStyle.Flex;
-        }
-
-        /// <summary>
-        ///     Returns a unique identifier for the object.
-        ///     If the object is a persistent asset, returns its GUID.
-        ///     Otherwise, returns the instance ID (as a string) for scene objects or non-persistent objects.
-        /// </summary>
-        string GetObjectID()
-        {
-            if (!AssetDatabase.Contains(transform)) return transform.GetInstanceID().ToString();
-            // ReSharper disable once NotAccessedOutParameterVariable
-            long localID; //Required in Unity 2022 or before
-            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(target, out string guid, out localID);
-            return guid;
         }
 
         #endregion Notes
@@ -3427,7 +3424,7 @@ namespace TinyGiantStudio.BetterInspector
             if (transform.parent == originalTransform) return;
             if (_parentGroupBox == null)
             {
-                _parentGroupBox = new()
+                _parentGroupBox = new GroupBox
                 {
                     style =
                     {
@@ -3451,7 +3448,7 @@ namespace TinyGiantStudio.BetterInspector
         void CreateEditor(GroupBox rootHolder, string foldoutName,
             Transform targetTransform, bool margin = false, bool showSiblingIndex = true)
         {
-            VisualElement visualElement = new();
+            VisualElement visualElement = new VisualElement();
             rootHolder.Add(visualElement);
             folderTemplate.CloneTree(visualElement);
             GroupBox container = visualElement.Q<GroupBox>("TemplateRoot");
@@ -3559,24 +3556,28 @@ namespace TinyGiantStudio.BetterInspector
         void OpenContextMenu_settings()
         {
             UpdateContextMenu_settings();
+#if UNITY_6000_3_OR_NEWER
+            _settingsMenuButton.DropDown(GetMenuRect(_settingsButton), _settingsButton, DropdownMenuSizeMode.Auto);
+#else
             _settingsMenuButton.DropDown(GetMenuRect(_settingsButton), _settingsButton, true);
+#endif
         }
 
         void UpdateContextMenu_settings()
         {
-            _settingsMenuButton = new();
-            
+            _settingsMenuButton = new GenericDropdownMenu();
+
             if (_inspectorEditorSettings != null)
             {
-                _inspectorEditorSettings.BetterTransformContextMenuItems ??= new();
+                _inspectorEditorSettings.BetterTransformContextMenuItems ??= new Dictionary<string, Action>();
 
                 foreach (KeyValuePair<string, Action> item in _inspectorEditorSettings.BetterTransformContextMenuItems)
                     _settingsMenuButton.AddItem(item.Key, false, item.Value);
             }
 
             _settingsMenuButton.AddSeparator("");
-            
-            
+
+
             _settingsMenuButton.AddItem("Settings", false, ToggleSettings);
 
             _settingsMenuButton.AddSeparator("");
@@ -3607,7 +3608,7 @@ namespace TinyGiantStudio.BetterInspector
                     });
             }
 
-            
+
             if (!_betterTransformSettings.ShowSizeFoldout && !_betterTransformSettings.ShowSizeInLine) return;
             _settingsMenuButton.AddSeparator("");
 
@@ -3721,7 +3722,8 @@ namespace TinyGiantStudio.BetterInspector
 
             if (!_settingsFieldSetupDone)
             {
-                if (settingsTemplate == null) settingsTemplate = Utility.GetVisualTreeAsset(SettingsTemplateFileLocation, SettingsTemplateGuid);
+                if (settingsTemplate == null)
+                    settingsTemplate = Utility.GetVisualTreeAsset(SettingsTemplateFileLocation, SettingsTemplateGuid);
                 if (settingsTemplate == null) return;
 
                 TemplateContainer settingsTemplateContainer = settingsTemplate.CloneTree();
@@ -3765,9 +3767,9 @@ namespace TinyGiantStudio.BetterInspector
             _settingsFieldSetupDone = true;
 
             GroupBox settingsFoldoutContent = _settingsFoldout.Q<GroupBox>("Content");
-            
+
             SettingsFilePathManager.SetupSettingsPathConfigurationUI(settingsFoldoutContent);
-            
+
             GroupBox settingsFoldoutHeader = _settingsFoldout.Q<GroupBox>("Header");
 
             settingsFoldoutContent.Add(new HelpBox(
@@ -3869,7 +3871,8 @@ namespace TinyGiantStudio.BetterInspector
             _roundRotationFieldToggle.SetValueWithoutNotify(_betterTransformSettings.roundRotationField);
             _roundRotationFieldToggle.schedule.Execute(() => { _roundRotationFieldToggle.RegisterValueChangedCallback(_ => { ToggleRotationFieldRounding(); }); }).ExecuteLater(250);
 
-            _maxChildCountForSizeCalculation = settingsFoldoutContent.Q<IntegerField>("MaxChildCountForSizeCalculation");
+            _maxChildCountForSizeCalculation =
+                settingsFoldoutContent.Q<IntegerField>("MaxChildCountForSizeCalculation");
             _maxChildCountForSizeCalculation.SetValueWithoutNotify(_betterTransformSettings
                 .MaxChildCountForSizeCalculation);
             _maxChildCountForSizeCalculation.schedule.Execute(() => { _maxChildCountForSizeCalculation.RegisterValueChangedCallback(ev => { _betterTransformSettings.MaxChildCountForSizeCalculation = ev.newValue; }); }).ExecuteLater(1000);
@@ -4198,7 +4201,8 @@ namespace TinyGiantStudio.BetterInspector
                     if (!_betterTransformSettings.showAssetGuid) return;
                     if (!_thisIsAnAsset) return;
                     idLabel.style.display = DisplayStyle.Flex;
-                    string id = GetObjectID();
+
+                    string id = NoteUtility.GetUserFriendlyID(transform);
                     idLabel.text = id;
                     idLabel.tooltip = "GUID\n" + id;
                 });
@@ -4677,7 +4681,7 @@ namespace TinyGiantStudio.BetterInspector
                 DestroyImmediate(_originalEditor);
 
             _originalEditor = CreateEditor(targets, Type.GetType("UnityEditor.TransformInspector, UnityEditor"));
-            IMGUIContainer inspectorContainer = new(OnGUICallback);
+            IMGUIContainer inspectorContainer = new IMGUIContainer(OnGUICallback);
             container.Add(inspectorContainer);
         }
 
@@ -4744,13 +4748,14 @@ namespace TinyGiantStudio.BetterInspector
         {
             if (_betterTransformSettings.logPerformance && _betterTransformSettings.logDetailedPerformance)
             {
-                _stopwatch = new();
+                _stopwatch = new Stopwatch();
                 _stopwatch.Start();
             }
 
             if (IsNotInValidAnimationMode())
             {
-                if (!_betterTransformSettings.logPerformance || !_betterTransformSettings.logDetailedPerformance) return;
+                if (!_betterTransformSettings.logPerformance ||
+                    !_betterTransformSettings.logDetailedPerformance) return;
                 Log("(Running on loop) Animator State Update", _stopwatch.ElapsedMilliseconds);
                 _stopwatch.Stop();
 

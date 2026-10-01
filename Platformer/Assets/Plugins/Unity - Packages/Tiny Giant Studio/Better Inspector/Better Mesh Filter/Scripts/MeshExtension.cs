@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 using Object = UnityEngine.Object;
 
 #if UNITY_EDITOR
@@ -19,40 +20,88 @@ namespace TinyGiantStudio.BetterInspector
     {
         #region Information
 
-        public static int[] SubMeshVertexCount(this Mesh mesh)
+        //CustomPatch: created new extension method
+        /// <summary>
+        /// Gets all triangles from a mesh and all its submeshes without repeatedly allocating mesh related memory.
+        /// </summary>
+        /// <param name="mesh"></param>
+        /// <param name="outTriangleList">A list that will be populated with the output data. It will be automatically cleared internally</param>
+        public static void GetAllTriangles(this Mesh mesh, List<int> outTriangleList)
         {
-            if (mesh == null)
-                return null;
+            outTriangleList.Clear();
+            if (mesh == null || mesh.vertexCount == 0) return;
 
-            int[] vertices = new int[mesh.subMeshCount];
+            using var _ = ListPool<int>.Get(out List<int> submeshTriangleList);
+
             for (int i = 0; i < mesh.subMeshCount; i++)
             {
-                vertices[i] = mesh.GetSubMesh(i).vertexCount;
-            }
+                if (mesh.GetSubMesh(i).topology != MeshTopology.Triangles) continue;
 
-            return vertices;
+                mesh.GetTriangles(submeshTriangleList, submesh: i);
+                outTriangleList.AddRange(submeshTriangleList);
+            }
         }
 
-
-        public static int TrianglesCount(this Mesh mesh) => mesh.triangles.Length / 3;
-
-        public static int EdgeCount(this Mesh mesh)
+        //CustomPatch: fixed memory allocation method adding to editor GC pressure
+        public static void SubMeshVertexCount(this Mesh mesh, List<int> outVertexCountList)
         {
-            HashSet<Edge> uniqueEdges = new();
-            int[] triangles = mesh.triangles;
+            outVertexCountList.Clear();
+            if (mesh == null || mesh.vertexCount == 0) return;
 
-            for (int i = 0; i < triangles.Length; i += 3)
+            for (int i = 0; i < mesh.subMeshCount; i++)
+                outVertexCountList.Add(mesh.GetSubMesh(i).vertexCount);
+        }
+
+        //CustomPatch: fixed high memory allocation method causing editor GC pressure for large meshes and it was also much slower
+        /// <summary>
+        /// Returns the total number of triangles in the mesh by summing up the triangle count of all submeshes.<br/>
+        /// If any submesh is not using triangle topology, it returns 0.<br/>
+        /// </summary>
+        /// <param name="mesh"></param>
+        /// <returns></returns>
+        public static int TrianglesCount(this Mesh mesh)
+        {
+            if (mesh == null || mesh.vertexCount == 0) return 0;
+
+            int totalIndexCount = 0;
+            for (int i = 0; i < mesh.subMeshCount; i++)
             {
-                Edge edge1 = new(triangles[i], triangles[i + 1]);
-                Edge edge2 = new(triangles[i + 1], triangles[i + 2]);
-                Edge edge3 = new(triangles[i + 2], triangles[i]);
+                if (mesh.GetSubMesh(i).topology != MeshTopology.Triangles) continue;
 
-                uniqueEdges.Add(edge1);
-                uniqueEdges.Add(edge2);
-                uniqueEdges.Add(edge3);
+                totalIndexCount += (int)mesh.GetIndexCount(submesh: i);
             }
 
-            return uniqueEdges.Count;
+            return totalIndexCount / 3;
+        }
+
+        //CustomPatch: created new extension method
+        public static int GetTangentCount(this Mesh mesh)
+        {
+            if (mesh == null) return 0;
+
+            return mesh.HasVertexAttribute(UnityEngine.Rendering.VertexAttribute.Tangent) ? mesh.vertexCount : 0;
+        }
+
+        //CustomPatch: fixed repeated high memory allocations
+        public static int EdgeCount(this Mesh mesh)
+        {
+            var _ = HashSetPool<Edge>.Get(out HashSet<Edge> uniqueEdgesSet);
+            using var __ = ListPool<int>.Get(out List<int> triangleList);
+            mesh.GetAllTriangles(triangleList);
+
+            int triangleCount = triangleList.Count;
+            for (int i = 0; i < triangleCount; i += 3)
+            {
+                Edge edge1 = new(triangleList[i], triangleList[i + 1]);
+                Edge edge2 = new(triangleList[i + 1], triangleList[i + 2]);
+                Edge edge3 = new(triangleList[i + 2], triangleList[i]);
+
+                uniqueEdgesSet.Add(edge1);
+                uniqueEdgesSet.Add(edge2);
+                uniqueEdgesSet.Add(edge3);
+            }
+
+            return uniqueEdgesSet.Count;
         }
 
         readonly struct Edge : IEquatable<Edge>
@@ -66,7 +115,7 @@ namespace TinyGiantStudio.BetterInspector
                 _vertexIndexB = Mathf.Max(vertexIndexA, vertexIndexB);
             }
 
-            public override int GetHashCode() => _vertexIndexA.GetHashCode() ^ _vertexIndexB.GetHashCode();
+            public override int GetHashCode() => HashCode.Combine(_vertexIndexA, _vertexIndexB); //CustomPatch: using System.HashCode for better and SAFER hash distribution and performance compared to the previous implementation
 
             public override bool Equals(object obj)
             {
@@ -78,7 +127,7 @@ namespace TinyGiantStudio.BetterInspector
                 _vertexIndexA == other._vertexIndexA && _vertexIndexB == other._vertexIndexB;
         }
 
-        public static int FaceCount(this Mesh mesh) => mesh.triangles.Length / 3;
+        public static int FaceCount(this Mesh mesh) => mesh.TrianglesCount() ; //CustomPatch: fixed high memory allocation => used own extension method instead because it returns the same thing
 
 #if UNITY_EDITOR
 
@@ -97,29 +146,35 @@ namespace TinyGiantStudio.BetterInspector
 
         #region Functions
 
+        //CustomPatch: fixed high memory allocation method causing editor GC pressure for large meshes also causing slower performance
         /// <summary>
         /// Flips the direction of the normals
         /// </summary>
         public static Mesh FlipNormals(this Mesh mesh)
         {
-            Vector3[] normals = mesh.normals;
-            for (int i = 0; i < normals.Length; i++)
+            if (mesh == null || mesh.vertexCount == 0) return mesh;
+
+            using var _ = ListPool<Vector3>.Get(out List<Vector3> meshNormalsList);
+            int normalsCount = meshNormalsList.Count;
+            for (int i = 0; i < normalsCount; i++)
+                meshNormalsList[i] = -meshNormalsList[i];
+
+            mesh.SetNormals(meshNormalsList);
+
+            using var __ = ListPool<int>.Get(out List<int> subMeshTrianglesList);
+            int subMeshCount = mesh.subMeshCount;
+            for (int i = 0; i < subMeshCount; i++)
             {
-                normals[i] = -normals[i];
+                subMeshTrianglesList.Clear();
+                mesh.GetTriangles(subMeshTrianglesList, submesh: i);
+
+                int trianglesCount = subMeshTrianglesList.Count;
+                for (int j = 0; j < trianglesCount; j += 3)
+                    (subMeshTrianglesList[j], subMeshTrianglesList[j + 2]) = (subMeshTrianglesList[j + 2], subMeshTrianglesList[j]);
+
+                mesh.SetTriangles(subMeshTrianglesList, submesh: i);
             }
 
-            mesh.normals = normals;
-
-            int[] triangles = mesh.triangles;
-            for (int i = 0; i < triangles.Length; i += 3)
-            {
-                // int temp = triangles[i];
-                // triangles[i] = triangles[i + 2];
-                // triangles[i + 2] = temp;
-                (triangles[i], triangles[i + 2]) = (triangles[i + 2], triangles[i]);
-            }
-
-            mesh.triangles = triangles;
             return mesh;
         }
 

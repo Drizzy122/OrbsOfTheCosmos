@@ -1,13 +1,25 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=1e607d4d39bbf3c4aa48749712dc3062&amp;type=3#MainMenuStyle"/>
-    <ui:VisualElement name="MainMenuContent" style="flex-grow: 1; background-image: none; background-color: rgba(0, 0, 0, 0); display: flex;">
-        <ui:VisualElement name="ButtonContent" style="width: 359px; height: 1172px; background-color: rgba(0, 0, 0, 0.79); left: 113px;">
-            <ui:Label text="Orbs of the Cosmos" name="Header" class="Text" style="-unity-text-align: middle-center; font-size: 66px; bottom: auto; color: rgb(255, 255, 255); -unity-text-outline-width: 5px; text-shadow: -3.8px 3.4px 0 rgb(72, 72, 72); -unity-font-style: bold-and-italic; -unity-text-generator: standard; -unity-text-auto-size: none; white-space: pre-wrap; text-overflow: clip; background-color: rgba(0, 0, 0, 0); border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); height: auto; width: auto; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; align-self: center; top: 160px; -unity-text-outline-color: rgba(0, 0, 0, 0);"/>
-            <ui:Button text="NEW GAME" name="NewGameButton" class="button" style="top: 327px; right: auto; height: 56px; width: 334px; font-size: 33px; transition-duration: 0.35s; transition-timing-function: ease; align-self: center;"/>
-            <ui:Button text="CONTINUE GAME" name="ContinueGameButton" class="button" style="top: 347px; right: auto; height: 56px; width: 334px; font-size: 33px; transition-duration: 0.35s; transition-timing-function: ease; align-self: center;"/>
-            <ui:Button text="LOAD GAME" name="LoadGameButton" class="button" style="top: 374px; right: auto; height: 56px; width: 334px; font-size: 33px; transition-duration: 0.35s; transition-timing-function: ease; align-self: center;"/>
-            <ui:Button text="SETTINGS" name="SettingsButton" class="button" style="top: 401px; right: auto; height: 56px; width: 334px; font-size: 33px; transition-duration: 0.35s; transition-timing-function: ease; align-self: center;"/>
+    <ui:VisualElement name="MainMenuContent" class="screen">
+        <ui:VisualElement name="Scrim" class="scrim" picking-mode="Ignore"/>
+        <ui:VisualElement name="ScrimFalloff" class="scrim-falloff" picking-mode="Ignore"/>
+        <ui:VisualElement name="MenuColumn" class="menu-column">
+            <ui:VisualElement name="Brand">
+                <ui:Label text="Orbs of the Cosmos" name="Header" class="title"/>
+                <ui:VisualElement name="TitleRule" class="title-rule" picking-mode="Ignore"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="MenuItems" class="menu-items">
+                <ui:Button text="NEW GAME" name="NewGameButton" class="button"/>
+                <ui:Button text="CONTINUE" name="ContinueGameButton" class="button"/>
+                <ui:Label name="ContinueMeta" class="meta" picking-mode="Ignore"/>
+                <ui:Button text="LOAD GAME" name="LoadGameButton" class="button"/>
+                <ui:Button text="SETTINGS" name="SettingsButton" class="button"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="MenuFooter" class="menu-footer">
+                <ui:Button text="QUIT TO DESKTOP" name="QuitButton" class="button button--quiet"/>
+            </ui:VisualElement>
         </ui:VisualElement>
+        <ui:Label name="VersionLabel" class="version" picking-mode="Ignore"/>
     </ui:VisualElement>
     <ui:VisualElement name="VirtualCursor" picking-mode="Ignore" style="flex-grow: 1; width: 32px; height: 32px; position: absolute; background-image: url(&quot;project://database/Assets/_Project/Textures/Cursor-Scroll-1--Streamline-Cyber.png?fileID=2800000&amp;guid=b51e1b01692f7e045b52d55a64cb56e8&amp;type=3#Cursor-Scroll-1--Streamline-Cyber&quot;); background-color: rgba(255, 255, 255, 0); display: none;"/>
 </ui:UXML>

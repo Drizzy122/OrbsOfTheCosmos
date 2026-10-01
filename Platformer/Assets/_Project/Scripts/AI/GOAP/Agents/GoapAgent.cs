@@ -11,14 +11,15 @@ public abstract class GoapAgent : MonoBehaviour {
     protected AnimationController animations;
     protected Rigidbody rb;
 
-    public AgentGoal lastGoal;
-    public AgentGoal currentGoal;
-    public ActionPlan actionPlan;
-    public AgentAction currentAction;
+    // Runtime planner state — read directly by GOAPAgentInspector, never serialized
+    [System.NonSerialized] public AgentGoal lastGoal;
+    [System.NonSerialized] public AgentGoal currentGoal;
+    [System.NonSerialized] public ActionPlan actionPlan;
+    [System.NonSerialized] public AgentAction currentAction;
 
-    public Dictionary<string, AgentBelief> beliefs;
-    public HashSet<AgentAction> actions;
-    public HashSet<AgentGoal> goals;
+    [System.NonSerialized] public Dictionary<string, AgentBelief> beliefs;
+    [System.NonSerialized] public HashSet<AgentAction> actions;
+    [System.NonSerialized] public HashSet<AgentGoal> goals;
 
     protected IGoapPlanner gPlanner;
 

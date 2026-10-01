@@ -1,20 +1,21 @@
 {
-  "name": "TinyGiantStudio.BetterInspector.BetterTransform.Editor",
-  "rootNamespace": "",
-  "references": [
-    "GUID:a914bd36fb440cf4ea484b5d7d986971",
-    "GUID:a5827bb3f07c6954798ac297e18093cc",
-    "GUID:47f8b7a40b1ebdc4c922399d31ef2e08"
-  ],
-  "includePlatforms": [
-    "Editor"
-  ],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+    "name": "TinyGiantStudio.BetterInspector.BetterTransform.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a914bd36fb440cf4ea484b5d7d986971",
+        "GUID:a5827bb3f07c6954798ac297e18093cc",
+        "GUID:47f8b7a40b1ebdc4c922399d31ef2e08",
+        "GUID:5559e7249e6eaf043ba20440a642c5bb"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

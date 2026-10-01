@@ -11,16 +11,14 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
-// ReSharper disable FieldCanBeMadeReadOnly.Local
 
+// ReSharper disable FieldCanBeMadeReadOnly.Local
 namespace TinyGiantStudio.BetterInspector.BetterMesh
 {
-    /// <summary>
-    ///
-    /// </summary>
     [CanEditMultipleObjects]
-    [CustomEditor(typeof(SkinnedMeshRenderer))]
-    public class SkinnedMeshRendererEditor : Editor
+    [CustomEditor(typeof(SkinnedMeshRenderer), true)]
+    public class
+        BetterSkinnedMeshRendererEditor : Editor 
     {
         #region Variables
 
@@ -36,7 +34,7 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             "Assets/Plugins/Tiny Giant Studio/Better Inspector/Better Mesh Filter/Scripts/Editor/Skinned Mesh Renderer/BetterSkinnedMeshRenderer.uxml";
 
         const string VisualTreeAssetGuid = "4855344e42fb2bd40aa29c60be87912d";
-        
+
         Editor _originalEditor;
         VisualElement _root;
 
@@ -74,10 +72,10 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
 
         #region Unity stuff
 
-        //This is not unnecessary.
+        // //This is not unnecessary.
         void OnDestroy()
         {
-            CleanUp();
+            CleanUp(); 
         }
 
         void OnDisable()
@@ -87,6 +85,10 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
 
         public override VisualElement CreateInspectorGUI()
         {
+            //Required because of(Most likely, IDK, 50/50?) an issue with a third party asset.
+            //CreateInspectorGUI was being called on repeat for some unknown reason.
+            CleanUp();
+            
             _root = new();
 
             if (target == null)
@@ -101,8 +103,15 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             //In-case reference to the asset is lost, retrieve it from the file location
             visualTreeAsset = Utility.GetVisualTreeAsset(VisualTreeAssetFileLocation, VisualTreeAssetGuid);
 
-            if (visualTreeAsset == null) //if it couldn't find the asset, load the default inspector instead of showing an empty section.
+            //if it couldn't find the asset, load the default inspector instead of showing an empty section.
+            if (visualTreeAsset == null) 
             {
+                //There was a weird glitch with Unity 6.3 Alpha version where this would trigger for 1 frame
+                //and then the correct inspector would load. Probably fixed by now.
+                //Will add it later after verifying
+                //CustomPatch: added warning for this rare case to let the user know something is wrong with the installation of this package
+                //Debug.LogWarning($"[TinyGiantStudio.BetterInspector.BetterMesh.{nameof(BetterSkinnedMeshRendererEditor)}]: could not find VisualTreeAsset! Loading default skinned mesh renderer inspector...");
+                
                 LoadDefaultEditor(_root);
                 return _root;
             }
@@ -110,7 +119,7 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             visualTreeAsset.CloneTree(_root);
 
             _editorSettings = BetterMeshSettings.instance;
-            
+
             StyleSheetsManager.UpdateStyleSheet(_root);
 
             _debugGizmoManager = new(_editorSettings, _root);
@@ -143,7 +152,7 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             _settingsFoldoutManager.OnActionButtonsSettingsUpdated += _actionsFoldoutManager.UpdateFoldoutVisibilities;
             _settingsFoldoutManager.OnBaseSizeSettingsUpdated += BaseSizeSettingUpdated;
 
-            
+
             _previewManager = new(_editorSettings, _root);
             _previewManager.SetupPreviewManager(_meshes, targets.Length);
             _settingsFoldoutManager.OnPreviewSettingsUpdated += UpdatePreviews;
@@ -152,9 +161,12 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             _settingsButton.clicked += OpenContextMenu_settingsButton;
 
             _root.Q<Label>("BonesCounter").text = GetBonesCount().ToString(CultureInfo.InvariantCulture);
-
+#if HAS_URP
+            _root.Q<Foldout>("URP2DFoldout").style.display = DisplayStyle.Flex;
+#endif
             return _root;
         }
+        
 
         int GetBonesCount() => _skinnedMeshRenderers.Sum(item => item.bones.Length);
 
@@ -309,7 +321,7 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
 
         Toggle _blendShapesFoldoutToggle;
         PropertyField _blendShapesPropertyField;
-        bool _changedBlendShapesWithSlider = false;
+        bool _changedBlendShapesWithSlider;
         HelpBox _legacyClampBlendShapeWeightsInfo;
 
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
@@ -1186,7 +1198,6 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         }
 
         #endregion UI
-
         /// <summary>
         /// If the UXML file is missing for any reason,
         /// Instead of showing an empty inspector,
@@ -1198,18 +1209,23 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             if (_originalEditor != null)
                 DestroyImmediate(_originalEditor);
 
-            //originalEditor = Editor.CreateEditor(targets);
+            // _originalEditor = Editor.CreateEditor(targets);
+#if HAS_URP
+            _originalEditor = CreateEditor(targets,
+                // typeof(Editor).Assembly.GetType("UnityEditor.Rendering.Universal.SkinnedMeshEditor2DURP")); //SkinnedMeshEditor2DURP
+                typeof(Editor).Assembly.GetType("UnityEditor.SkinnedMeshRendererEditor")); 
+#else
             _originalEditor = CreateEditor(targets,
                 typeof(Editor).Assembly.GetType("UnityEditor.SkinnedMeshRendererEditor"));
-            IMGUIContainer inspectorContainer = new(OnGUICallback);
+#endif
+            
+            IMGUIContainer inspectorContainer = new IMGUIContainer(OnGUICallback);
             container.Add(inspectorContainer);
         }
-
+        
         //For the original Editor
         void OnGUICallback()
         {
-            //EditorGUIUtility.hierarchyMode = true;
-
             EditorGUI.BeginChangeCheck();
             _originalEditor.OnInspectorGUI();
             EditorGUI.EndChangeCheck();
@@ -1231,7 +1247,12 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         void OpenContextMenu_settingsButton()
         {
             UpdateContextMenu_settingsButton();
+#if UNITY_6000_3_OR_NEWER
+            _settingsButtonContextMenu.DropDown(GetMenuRect(_settingsButton), _settingsButton,
+                DropdownMenuSizeMode.Auto);
+#else
             _settingsButtonContextMenu.DropDown(GetMenuRect(_settingsButton), _settingsButton, true);
+#endif
         }
 
         void UpdateContextMenu_settingsButton()

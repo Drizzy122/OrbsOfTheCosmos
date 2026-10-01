@@ -7,7 +7,7 @@ namespace Platformer
     public class DialoguePanelUI : MonoBehaviour
     {
         [Header("UI Toolkit")]
-        [SerializeField] private UIDocument uiDocument;
+        [SerializeField] private PanelRenderer uiDocument;
 
         [Header("UXML Element Names")]
         [SerializeField] private string rootElementName = "DialogueContainer";
@@ -20,13 +20,22 @@ namespace Platformer
 
         private void Awake()
         {
-            var root = uiDocument.rootVisualElement;
+            if (uiDocument != null) uiDocument.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnDestroy()
+        {
+            if (uiDocument != null) uiDocument.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnUIReload(PanelRenderer _, VisualElement root)
+        {
             rootContainer = root.Q<VisualElement>(rootElementName);
             dialogueTextLabel = root.Q<Label>(dialogueTextName);
             choicesContainer = root.Q<VisualElement>(choicesContainerName);
 
-            // 1. Ensure the whole panel is hidden when the game starts
-            rootContainer.style.display = DisplayStyle.None;
+            // Ensure the whole panel is hidden whenever the UI (re)builds
+            if (rootContainer != null) rootContainer.style.display = DisplayStyle.None;
         }
 
         private void OnEnable()
@@ -46,12 +55,13 @@ namespace Platformer
         private void DialogueStarted()
         {
             // Show the main panel when dialogue begins
-            rootContainer.style.display = DisplayStyle.Flex;
+            if (rootContainer != null) rootContainer.style.display = DisplayStyle.Flex;
         }
 
         private void DialogueFinished()
         {
             // Hide the main panel when dialogue ends
+            if (rootContainer == null) return;
             rootContainer.style.display = DisplayStyle.None;
             dialogueTextLabel.text = "";
             choicesContainer.Clear();

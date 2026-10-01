@@ -20,8 +20,8 @@ namespace Platformer
         [field: SerializeField, Self] public PlayerInteraction interaction;
         
         [Header("Movement Settings")]
-        [field: SerializeField] [Range(0,10)] float moveSpeed = 10f;
-        [field: SerializeField] [Range(0,20)] float sprintSpeed = 18f;
+        [field: SerializeField] [Range(0,20)] float moveSpeed = 20f;
+        [field: SerializeField] [Range(0,50)] float sprintSpeed = 40f;
         [field: SerializeField] [Range(0,1000)] float rotationSpeed = 1000f;
         public bool IsSprinting { get; private set; }
         [field: SerializeField] float smoothTime = 0.2f;
@@ -34,7 +34,7 @@ namespace Platformer
         // While aiming, PlayerAim owns the facing (camera yaw) — movement must not rotate us
         public bool IsAimingActive => playerAim != null && playerAim.IsAiming;
 
-        [field: Header("Jump Settings")] 
+        [field: Header("Jump Settings")]
         [field: SerializeField] float jumpForce = 10f;
         [field: SerializeField] float jumpDuration = 0.5f;
         [field: HideInInspector] int jumpCount = 2;
@@ -74,12 +74,20 @@ namespace Platformer
         Vector3 wallClimbTargetPos;
        
         
-        [Header("Swim Settings")]
-        [SerializeField] float swimSpeed = 4f;
-        [SerializeField] float swimLevelOffset = 1.2f; 
-        [SerializeField] float waterSurfaceY;
-        [SerializeField] GameObject objectActiveInWater;
-        public bool InWater { get; private set; }
+        [field: Header("Locomotion Animation")]
+        [Tooltip("World speed (m/s) at which the walk clip plays pure — blend tree threshold 0.5.")]
+        [field: SerializeField] float animWalkSpeed = 6f;
+        [Tooltip("World speed (m/s) at which the run clip plays pure — blend tree threshold 1.")]
+        [field: SerializeField] float animRunSpeed = 20f;
+        [Tooltip("How much to speed up clips to keep the stride planted. 0 = authored cadence (skates), 1 = fully matched to ground speed.")]
+        [field: SerializeField] [Range(0f, 1f)] float strideMatching = 1f;
+        [Tooltip("Cap on playback scaling, so absurd speeds don't turn into a blur.")]
+        [field: SerializeField] [Range(1f, 6f)] float maxStrideMultiplier = 2.5f;
+        [field: SerializeField] float locomotionBlendDamp = 0.1f;
+
+        // Measured from the clips' root motion: distance travelled / clip length.
+        const float WalkClipSpeed = 1.57f;
+        const float RunClipSpeed = 4.14f;
 
         [field: Header("More variables")]
         const float ZeroF = 0f;
@@ -107,8 +115,10 @@ namespace Platformer
         StateMachine stateMachine;
         
         static readonly int Speed = Animator.StringToHash("Speed");
+        static readonly int SpeedMult = Animator.StringToHash("SpeedMult");
         static readonly int VelX = Animator.StringToHash("VelX");
         static readonly int VelZ = Animator.StringToHash("VelZ");
+        bool hasSpeedMult;
 
         #endregion
         void Awake()
@@ -117,6 +127,11 @@ namespace Platformer
             rb.freezeRotation = true;
             glideStamina = GetComponent<GlideStamina>();
             playerAim = GetComponent<PlayerAim>();
+            // Stride matching is optional — only drive SpeedMult if the controller actually declares it.
+            foreach (var p in animator.parameters)
+            {
+                if (p.nameHash == SpeedMult && p.type == AnimatorControllerParameterType.Float) hasSpeedMult = true;
+            }
             SetupTimers();
             SetupStateMachine();
         }
@@ -133,7 +148,32 @@ namespace Platformer
             stateMachine.FixedUpdate();
             WallClimbCheck();
         }
-        void UpdateAnimator() => animator.SetFloat(Speed, currentSpeed);
+        /// <summary>Drives the Locomotion blend tree from the body's ACTUAL planar speed rather
+        /// than stick tilt, so sprinting reads as sprinting and gliding doesn't blow past the tree.</summary>
+        void UpdateAnimator()
+        {
+            float worldSpeed = new Vector3(rb.linearVelocity.x, ZeroF, rb.linearVelocity.z).magnitude;
+
+            // Map world speed onto the tree's authored thresholds: 0 idle / 0.5 walk / 1 run.
+            float blend = worldSpeed <= animWalkSpeed
+                ? Mathf.Lerp(ZeroF, 0.5f, animWalkSpeed > ZeroF ? worldSpeed / animWalkSpeed : ZeroF)
+                : Mathf.Lerp(0.5f, 1f, Mathf.InverseLerp(animWalkSpeed, animRunSpeed, worldSpeed));
+            blend = Mathf.Clamp01(blend);
+
+            animator.SetFloat(Speed, blend, locomotionBlendDamp, Time.deltaTime);
+            if (hasSpeedMult) animator.SetFloat(SpeedMult, StrideMultiplier(worldSpeed, blend));
+        }
+
+        /// <summary>The clips travel at a fixed authored pace (walk ~1.6 m/s, run ~4.1 m/s). If the
+        /// body moves faster than that, the feet skate — scaling playback to the ratio plants them.</summary>
+        float StrideMultiplier(float worldSpeed, float blend)
+        {
+            if (worldSpeed < 0.01f) return 1f;
+            float clipSpeed = Mathf.Lerp(WalkClipSpeed, RunClipSpeed, Mathf.InverseLerp(0.5f, 1f, blend));
+            if (clipSpeed <= ZeroF) return 1f;
+            float matched = Mathf.Lerp(1f, worldSpeed / clipSpeed, strideMatching);
+            return Mathf.Clamp(matched, 1f / maxStrideMultiplier, maxStrideMultiplier);
+        }
        
 
         #region StateMachine
@@ -154,7 +194,6 @@ namespace Platformer
             var deathState = new DeathState(this, animator, playerHealth);
             var teleportState = new TeleportState(this, animator);
             var wallClimbState = new WallClimbState(this, animator);
-            var swimState = new SwimState(this, animator);
             var hurtState = new HurtState(this, animator);
             var aimState = new AimState(this, animator);
 
@@ -166,7 +205,6 @@ namespace Platformer
             At(aimState, dodgeState, new FuncPredicate(() => dodgeTimer.IsRunning));
             At(aimState, attackState, new FuncPredicate(() => combat.IsAttacking));
             At(aimState, spinAttackState, new FuncPredicate(() => combat.IsBlastAttacking));
-            At(aimState, swimState, new FuncPredicate(() => InWater));
 
             // An aim-dodge returns straight to aim (before the dodge→jump fallback
             // below, so we don't flash through the jump animation)
@@ -187,7 +225,6 @@ namespace Platformer
             At(sprintState, dodgeState, new FuncPredicate(() => dodgeTimer.IsRunning));
             At(sprintState, attackState, new FuncPredicate(() => combat.IsAttacking));
             At(sprintState, spinAttackState, new FuncPredicate(() => combat.IsBlastAttacking));
-            At(sprintState, swimState, new FuncPredicate(() => InWater));
 
             // Landing while still holding sprint goes straight back into SprintState —
             // the locomotion catch-all intentionally skips sprinting players, so without
@@ -202,7 +239,7 @@ namespace Platformer
             At(locomotionState, jumpState, new FuncPredicate(() => !groundChecker.IsGrounded));
 
             // Define transitions for double jump
-            At(doubleJumpState, glideState, new FuncPredicate(() => glideTimer.IsRunning && !InWater));;
+            At(doubleJumpState, glideState, new FuncPredicate(() => glideTimer.IsRunning));
             At(jumpState, doubleJumpState, new FuncPredicate(() => jumpTimer.IsRunning && remainingJumps <= jumpCount - 2));
             At(doubleJumpState, dodgeState, new FuncPredicate(() => dodgeTimer.IsRunning));
 
@@ -210,7 +247,14 @@ namespace Platformer
             At(locomotionState, dodgeState, new FuncPredicate(() => dodgeTimer.IsRunning));
             At(glideState, dodgeState, new FuncPredicate(() => dodgeTimer.IsRunning));
             At(jumpState, dodgeState, new FuncPredicate(() => dodgeTimer.IsRunning));
-            At(dodgeState, jumpState, new FuncPredicate(() => !dodgeTimer.IsRunning));
+
+            // Dodge-cancel: registered BEFORE attack→locomotion so it wins the same
+            // frame OnDodge cancels the swing (transitions are checked in order)
+            At(attackState, dodgeState, new FuncPredicate(() => dodgeTimer.IsRunning));
+
+            // Dodge flows into a queued attack; the jump fallback must not swallow it
+            At(dodgeState, attackState, new FuncPredicate(() => !dodgeTimer.IsRunning && combat.IsAttacking));
+            At(dodgeState, jumpState, new FuncPredicate(() => !dodgeTimer.IsRunning && !combat.IsAttacking));
             
             // Define transitions for attack
             At(locomotionState, attackState, new FuncPredicate(() => combat.IsAttacking));
@@ -224,7 +268,7 @@ namespace Platformer
             At(spinAttackState, jumpState, new FuncPredicate(() => !combat.IsBlastAttacking || jumpTimer.IsRunning));
             
             // Define transitions for glide
-            At(jumpState, glideState, new FuncPredicate(() => glideTimer.IsRunning && !InWater));
+            At(jumpState, glideState, new FuncPredicate(() => glideTimer.IsRunning));
             At(dodgeState, glideState, new FuncPredicate(() => glideTimer.IsRunning));
             At(glideState, jumpState, new FuncPredicate(() => !glideTimer.IsRunning));
             
@@ -235,19 +279,7 @@ namespace Platformer
             
             // Definne transition for teleportation
              At(teleportState, locomotionState, new FuncPredicate(() => !interaction.isTeleporting));
-            
-             At(locomotionState, swimState, new FuncPredicate(() => InWater));
-             At(swimState, locomotionState, new FuncPredicate(() => !InWater));
-             
-            
-             At(jumpState, swimState, new FuncPredicate(() => InWater));
-             At(doubleJumpState, swimState, new FuncPredicate(() => InWater));
-             At(glideState, swimState, new FuncPredicate(() => InWater));
-             
-             // Jump out: If we press jump while swimming (uses the logic we set up in OnJump)
-             At(swimState, jumpState, new FuncPredicate(() => jumpTimer.IsRunning));
-             
-            
+
              // Set initial state
             Any(teleportState, new FuncPredicate(() => interaction.isTeleporting));
             Any(hurtState, new FuncPredicate(() => hurtTimer.IsRunning && !playerHealth.isDead));
@@ -260,7 +292,6 @@ namespace Platformer
         bool ReturnToLocomotionState()
         {
             return groundChecker.IsGrounded
-                   && !InWater
                    && !playerHealth.isDead
                    && !combat.IsAttacking
                    && !combat.IsBlastAttacking
@@ -397,41 +428,6 @@ namespace Platformer
             IsSprinting = performed;
         }
 
-        
-        public void HandleSwimming()
-        {
-            if (jumpTimer.IsRunning) return;
-
-            // 1. Determine Movement Direction (Same as normal movement)
-            var adjustedDirection = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * movement;
-    
-            // 2. Apply Swim Speed
-            if (adjustedDirection.magnitude > 0f)
-            {
-                HandleRotation(adjustedDirection);
-                // Move horizontally using swimSpeed instead of moveSpeed
-                Vector3 velocity = adjustedDirection * swimSpeed;
-                rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
-                SmoothSpeed(adjustedDirection.magnitude);
-            }
-            else
-            {
-                SmoothSpeed(0f);
-                rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
-            }
-
-            // 3. Handle Floating (Buoyancy)
-            // Smoothly move the player's Y position to the water surface minus the offset
-            float targetY = waterSurfaceY - swimLevelOffset;
-            Vector3 currentPos = transform.position;
-    
-            // Lerp specifically on the Y axis to create a floating effect
-            float newY = Mathf.Lerp(currentPos.y, targetY, Time.fixedDeltaTime * 5f);
-            transform.position = new Vector3(currentPos.x, newY, currentPos.z);
-    
-            // Kill vertical velocity so gravity doesn't pull us down
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        }
         void HandlePlayerHurt(float knockbackTime)
         {
             if (!playerHealth.isDead)
@@ -449,6 +445,8 @@ namespace Platformer
         }
         
         public bool IsGliding => glideTimer != null && glideTimer.IsRunning;
+
+        public bool IsGrounded => groundChecker.IsGrounded;
 
         // True only while actually sprint-moving (grounded + giving input), not just holding the key.
         // Aiming never sprints (AimState caps speed at aimMoveSpeed), so the
@@ -504,7 +502,6 @@ namespace Platformer
          
                 if (movement.x > 0)
                 {
-                    wallClimbPos += transform.right * 0.01f * wallClimbMoveSpeed;
                     wallClimbPos += transform.right * 0.01f * wallClimbMoveSpeed;
                 }
                 else if (movement.x < 0)
@@ -580,7 +577,12 @@ namespace Platformer
         {
             // A dodge is committed: it can't be held, steered, or cancelled early
             if (!performed || dodgeTimer.IsRunning || dodgeCooldownTimer.IsRunning) return;
-            if (InWater || wallClimbimg || playerHealth.isDead) return;
+            if (wallClimbimg || playerHealth.isDead) return;
+
+            // Dodge-cancel: kill an in-flight swing (and its pending lunge damage).
+            // Previously this fell through silently — the dodge timer ran and granted
+            // i-frames without the state machine ever leaving AttackState.
+            if (combat.IsAttacking) combat.CancelActions();
 
             // Lock in the escape direction: current input (camera-relative),
             // or straight ahead when standing still.
@@ -626,21 +628,20 @@ namespace Platformer
                 OnWallClimb(true);
                 return;
             }
-            
-            if (performed && (groundChecker.IsGrounded || InWater))
+
+            if (performed && groundChecker.IsGrounded)
             {
                 remainingJumps = jumpCount;
             }
 
-            if (performed && !jumpTimer.IsRunning && !jumpCooldownTimer.IsRunning && remainingJumps > 0)
+            // Every press gives the full jump arc — no holding to go higher. A press
+            // mid-rise restarts the timer, which is what makes the double jump fire
+            // without needing to release the button first.
+            if (performed && !jumpCooldownTimer.IsRunning && remainingJumps > 0)
             {
                 remainingJumps--;
                 jumpTimer.Start();
                 AudioManager.instance.PlayOneShot(FMODEvents.instance.playerJump, this.transform.position);
-            }
-            else if (!performed && jumpTimer.IsRunning)
-            {
-                jumpTimer.Stop();
             }
         }
         public void HandleJump()
@@ -669,11 +670,6 @@ namespace Platformer
         #region Glide
         public void OnGlide(bool performed)
         {
-            if (InWater) 
-            {
-                glideTimer.Stop(); 
-                return; 
-            }
             if (performed)
             {
                 if (!glideTimer.IsRunning && !groundChecker.IsGrounded)
@@ -745,28 +741,6 @@ namespace Platformer
                 Gizmos.color = Color.magenta;
                 if(wallClimbNormal != Vector3.zero) Gizmos.DrawRay(wallClimbTargetPos, wallClimbNormal);
                 
-            }
-        }
-        
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Water"))
-            {
-                InWater = true;
-                waterSurfaceY = other.bounds.max.y;
-                
-                if (objectActiveInWater != null) 
-                    objectActiveInWater.SetActive(true);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.CompareTag("Water"))
-            {
-                InWater = false;
-                if (objectActiveInWater != null) 
-                    objectActiveInWater.SetActive(false);
             }
         }
         

@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: FlareDark01_AB
-  m_Shader: {fileID: -6465566751694194690, guid: be8ba0df87da1b448b142819efe929a3,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: be8ba0df87da1b448b142819efe929a3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:

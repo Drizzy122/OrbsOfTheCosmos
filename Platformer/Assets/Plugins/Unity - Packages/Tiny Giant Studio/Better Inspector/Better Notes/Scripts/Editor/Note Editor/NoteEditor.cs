@@ -70,7 +70,7 @@ namespace TinyGiantStudio.BetterInspector
             {
                 if (_targetTransform == null) return;
 
-                if (_thisIsAnAsset) _prefabNotes.SetNote(GetID(), e.newValue);
+                if (_thisIsAnAsset) _prefabNotes.SetNote(NoteUtility.GetAssetGUID(_targetTransform), e.newValue);
                 else _sceneNotesManager.SetNote(_targetTransform, e.newValue);
 
                 _note.note = e.newValue;
@@ -92,7 +92,7 @@ namespace TinyGiantStudio.BetterInspector
 
                 _note.textColor = e.newValue;
 
-                if (_thisIsAnAsset) _prefabNotes.SetNote(GetID(), _note.textColor, _note.backgroundColor);
+                if (_thisIsAnAsset) _prefabNotes.SetNote(NoteUtility.GetAssetGUID(_targetTransform), _note.textColor, _note.backgroundColor);
                 else _sceneNotesManager.SetNote(_targetTransform, _note.textColor, _note.backgroundColor);
 
                 if (_targetRoot == null)
@@ -112,7 +112,7 @@ namespace TinyGiantStudio.BetterInspector
 
                 _note.backgroundColor = e.newValue;
 
-                if (_thisIsAnAsset) _prefabNotes.SetNote(GetID(), _note.textColor, _note.backgroundColor);
+                if (_thisIsAnAsset) _prefabNotes.SetNote(NoteUtility.GetAssetGUID(_targetTransform), _note.textColor, _note.backgroundColor);
                 else _sceneNotesManager.SetNote(_targetTransform, _note.textColor, _note.backgroundColor);
 
                 if (_targetRoot == null)
@@ -132,7 +132,7 @@ namespace TinyGiantStudio.BetterInspector
 
                 _note.showInSceneView = e.newValue;
 
-                if (_thisIsAnAsset) _prefabNotes.SetNoteShowInScene(GetID(), e.newValue);
+                if (_thisIsAnAsset) _prefabNotes.SetNoteShowInScene(NoteUtility.GetAssetGUID(_targetTransform), e.newValue);
                 else _sceneNotesManager.SetNote(_targetTransform, e.newValue);
             });
 
@@ -141,7 +141,7 @@ namespace TinyGiantStudio.BetterInspector
             {
                 if (_targetTransform == null) return;
 
-                if (_thisIsAnAsset) _prefabNotes.SetNote(GetID(), (NoteType)e.newValue);
+                if (_thisIsAnAsset) _prefabNotes.SetNote(NoteUtility.GetAssetGUID(_targetTransform), (NoteType)e.newValue);
                 else _sceneNotesManager.SetNote(_targetTransform, (NoteType)e.newValue);
 
                 _note.noteType = (NoteType)e.newValue;
@@ -160,7 +160,7 @@ namespace TinyGiantStudio.BetterInspector
             {
                 if (_targetTransform == null) return;
 
-                _prefabNotes.SetNoteShowInPrefabInstance(GetID(), e.newValue);
+                _prefabNotes.SetNoteShowInPrefabInstance(NoteUtility.GetAssetGUID(_targetTransform), e.newValue);
             });
 
             _prefabInformation = _root.Q<GroupBox>("PrefabInformation");
@@ -174,7 +174,7 @@ namespace TinyGiantStudio.BetterInspector
                 GameObject prefab = PrefabUtility.GetCorrespondingObjectFromSource(_targetTransform.gameObject);
                 if (prefab == null) return;
 
-                Note prefabNote = _prefabNotes.MyNote(GetID(prefab));
+                Note prefabNote = _prefabNotes.MyNote(NoteUtility.GetAssetGUID(prefab.transform));
                 _sceneNotesManager.SetNote(_targetTransform, prefabNote);
 
                 _note = _sceneNotesManager.MyNote(_targetTransform);
@@ -196,7 +196,7 @@ namespace TinyGiantStudio.BetterInspector
             _root.Q<Button>("NoteDeleteButton").clicked += () =>
             {
                 if (_thisIsAnAsset)
-                    _prefabNotes.DeleteNote(GetID());
+                    _prefabNotes.DeleteNote(NoteUtility.GetAssetGUID(_targetTransform));
                 else
                     _sceneNotesManager.DeleteNote(_targetTransform);
 
@@ -290,7 +290,7 @@ namespace TinyGiantStudio.BetterInspector
             if (_sceneNotesManager == null) _sceneNotesManager = SceneNotesManager.Instance;
             if (_sceneNotesManager == null)
             {
-                GameObject sceneNoteManagerObject = new("Better Transform Scene Notes Manager");
+                GameObject sceneNoteManagerObject = new GameObject("Better Transform Scene Notes Manager");
                 _sceneNotesManager = sceneNoteManagerObject.AddComponent<SceneNotesManager>();
             }
 
@@ -299,7 +299,7 @@ namespace TinyGiantStudio.BetterInspector
             _targetField.value = _targetTransform;
 
             //Try to find existing note
-            _note = _thisIsAnAsset ? _prefabNotes.MyNote(GetID()) : _sceneNotesManager.MyNote(_targetTransform);
+            _note = _thisIsAnAsset ? _prefabNotes.MyNote(NoteUtility.GetAssetGUID(_targetTransform)) : _sceneNotesManager.MyNote(_targetTransform);
             //If no note exists, create one
             _note ??= new("", NoteType.Tooltip, Color.white, Color.gray, true);
 
@@ -334,7 +334,7 @@ namespace TinyGiantStudio.BetterInspector
                 GameObject prefab = PrefabUtility.GetCorrespondingObjectFromSource(_targetTransform.gameObject);
                 if (prefab != null)
                 {
-                    Note prefabNote = _prefabNotes.MyNote(GetID(prefab));
+                    Note prefabNote = _prefabNotes.MyNote(NoteUtility.GetAssetGUID(prefab.transform));
                     if (prefabNote != null)
                     {
                         _prefabInformation.style.display = DisplayStyle.Flex;
@@ -362,27 +362,6 @@ namespace TinyGiantStudio.BetterInspector
             _prefabNoteCopy.SetEnabled(false);
         }
 
-        //Settings use this method to find the object again when cleaning up,
-        //If this is updated, that needs to be updated as well.
-        string GetID()
-        {
-            if (!AssetDatabase.Contains(_targetTransform)) return _targetTransform.GetInstanceID().ToString();
-            // ReSharper disable once NotAccessedOutParameterVariable
-            long localID; //Required in Unity 2022 and earlier
-            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(_targetTransform, out string guid, out localID);
-            return guid;
-        }
-
-        //Settings use this method to find the object again when cleaning up,
-        //If this is updated, that needs to be updated as well.
-        static string GetID(GameObject prefab)
-        {
-            if (!AssetDatabase.Contains(prefab)) return prefab.GetInstanceID().ToString();
-            // ReSharper disable once NotAccessedOutParameterVariable
-            long localID; //Required in Unity 2022 and earlier
-            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(prefab, out string guid, out localID);
-            return guid;
-        }
 
         void GetRandomTip()
         {

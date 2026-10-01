@@ -77,17 +77,22 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         /// <returns></returns>
         public override VisualElement CreateInspectorGUI()
         {
-            _root = new();
+            //Required because of(Most likely, IDK, 50/50?) an issue with a third party asset.
+            //CreateInspectorGUI was being called on repeat for some unknown reason.
+            CleanUp();
+            
+            _root = new VisualElement();
 
             if (target == null)
                 return _root;
 
             //In-case reference to the asset is lost, retrieve it from the file location
-            if (visualTreeAsset == null) visualTreeAsset = Utility.GetVisualTreeAsset(VisualTreeAssetFileLocation, VisualTreeAssetGuid);
+            if (visualTreeAsset == null)
+                visualTreeAsset = Utility.GetVisualTreeAsset(VisualTreeAssetFileLocation, VisualTreeAssetGuid);
 
             //If it can't find the BetterMeshUXML,
             //Show the default inspector
-            if (visualTreeAsset == null)
+            if (!visualTreeAsset)
             {
                 LoadDefaultEditor();
                 return _root;
@@ -100,10 +105,10 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
             StyleSheetsManager.UpdateStyleSheet(_root);
 
             _debugGizmoManager =
-                new(_editorSettings,
+                new DebugGizmoManager(_editorSettings,
                     _root); //This needs to be set up before mesh field because mesh field will pass the meshes list to debugList
             _baseSizeFoldoutManager =
-                new(_editorSettings,
+                new BaseSizeFoldoutManager(_editorSettings,
                     _root); //This needs to be set up before mesh field because mesh field will pass the meshes list to debugList
 
             SetupMeshField();
@@ -259,7 +264,7 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         {
             _previewManager?.CleanUp();
 
-            if (_originalEditor != null)
+            if (_originalEditor)
                 DestroyImmediate(_originalEditor);
 
             _debugGizmoManager?.Cleanup();
@@ -273,7 +278,7 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         /// </summary>
         void LoadDefaultEditor()
         {
-            if (_originalEditor != null)
+            if (_originalEditor)
                 DestroyImmediate(_originalEditor);
 
             _originalEditor = CreateEditor(targets);
@@ -294,7 +299,12 @@ namespace TinyGiantStudio.BetterInspector.BetterMesh
         void OpenContextMenu_settingsButton()
         {
             UpdateContextMenu_settingsButton();
+#if UNITY_6000_3_OR_NEWER
+            _settingsButtonContextMenu.DropDown(GetMenuRect(_settingsButton), _settingsButton,
+                DropdownMenuSizeMode.Auto);
+#else
             _settingsButtonContextMenu.DropDown(GetMenuRect(_settingsButton), _settingsButton, true);
+#endif
         }
 
         void UpdateContextMenu_settingsButton()

@@ -12,7 +12,7 @@ namespace Platformer
     public class QuestTrackerUI : MonoBehaviour
     {
         [Header("UI Toolkit")] [SerializeField]
-        private UIDocument uiDocument;
+        private PanelRenderer uiDocument;
 
         [Header("UXML Element Names")] [SerializeField]
         private string rootContainerName = "MissionBoxContainer";
@@ -34,7 +34,16 @@ namespace Platformer
 
         private void Awake()
         {
-            var root = uiDocument.rootVisualElement;
+            if (uiDocument != null) uiDocument.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnDestroy()
+        {
+            if (uiDocument != null) uiDocument.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnUIReload(PanelRenderer _, VisualElement root)
+        {
             questTitleLabel = root.Q<Label>(questTitleName);
             questStatusLabel = root.Q<Label>(questStatusName);
             popup = new HUDPopup(root.Q<VisualElement>(rootContainerName), displayDuration);
@@ -74,7 +83,7 @@ namespace Platformer
                      quest.info.id == trackedQuest.info.id)
             {
                 trackedQuest = null;
-                popup.Close();
+                popup?.Close();
             }
         }
 
@@ -90,6 +99,7 @@ namespace Platformer
 
         private void ShowPopup()
         {
+            if (popup == null) return;   // UI not built yet — quest events can fire first
             RefreshText();
             popup.Show();
         }

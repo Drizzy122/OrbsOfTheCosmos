@@ -12,7 +12,7 @@ namespace Platformer
         [SerializeField] private FloatEventChannel staminaEventChannel; // Kept in case you still want to broadcast
 
         [Header("UI Toolkit Integration")]
-        [SerializeField] private UIDocument uiDocument;
+        [SerializeField] private PanelRenderer uiDocument;
         [SerializeField] private string targetElementID = "StaminaBar";
 
         private float currentStamina;
@@ -32,16 +32,25 @@ namespace Platformer
 
         private void Start()
         {
-            // Query the UI elements when the script starts
+            // The HUD panel hands us its root via the reload callback
             if (uiDocument != null)
             {
-                var root = uiDocument.rootVisualElement;
-                barFill = root.Q<VisualElement>(targetElementID);
+                uiDocument.RegisterUIReloadCallback(OnUIReload);
             }
             else
             {
-                Debug.LogWarning("UIDocument is not assigned in GlideStamina!");
+                Debug.LogWarning("Panel renderer is not assigned in GlideStamina!");
             }
+        }
+
+        private void OnDestroy()
+        {
+            if (uiDocument != null) uiDocument.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnUIReload(PanelRenderer _, VisualElement root)
+        {
+            barFill = root.Q<VisualElement>(targetElementID);
         }
 
         private void Update()

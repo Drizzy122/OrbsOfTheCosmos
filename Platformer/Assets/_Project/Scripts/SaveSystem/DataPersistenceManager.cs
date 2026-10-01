@@ -195,6 +195,13 @@ namespace Platformer
             return gameData != null;
         }
 
+        /// <summary>The loaded save for the selected profile, or null when there is none.
+        /// Read-only view for UI that wants to show save context.</summary>
+        public GameData GetSelectedGameData()
+        {
+            return gameData;
+        }
+
         public Dictionary<string, GameData> GetAllProfilesGameData()
         {
             return dataHandler.LoadAllProfiles();

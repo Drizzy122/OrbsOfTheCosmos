@@ -10,11 +10,11 @@ namespace Platformer
     /// Destiny-style. Hovering a row expands its grid (via USS); clicking a grid tile
     /// equips it; clicking the equipped slot unequips. Hover shows the detail panel.
     /// </summary>
-    [RequireComponent(typeof(UIDocument))]
+    [RequireComponent(typeof(PanelRenderer))]
     public class CharacterUIController : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] UIDocument document;
+        [SerializeField] PanelRenderer document;
         [SerializeField] PlayerEquipment equipment;
         [SerializeField] Inventory inventory;
 
@@ -32,11 +32,22 @@ namespace Platformer
 
         VisualElement detailPanel;
 
-        void Reset() => document = GetComponent<UIDocument>();
+        void Reset() => document = GetComponent<PanelRenderer>();
 
         void OnEnable()
         {
-            var root = document.rootVisualElement;
+            document.RegisterUIReloadCallback(OnUIReload);
+            SubscribeEvents();
+        }
+
+        void OnDisable()
+        {
+            document.UnregisterUIReloadCallback(OnUIReload);
+            UnsubscribeEvents();
+        }
+
+        void OnUIReload(PanelRenderer _, VisualElement root)
+        {
             detailPanel = root.Q<VisualElement>("detail-panel");
             // Force-hide so it can be left visible in UI Builder while editing.
             ItemDetailPanel.Hide(detailPanel);
@@ -44,12 +55,9 @@ namespace Platformer
             BindEquipSlots(root);
             BindSlotGrids(root);
 
-            SubscribeEvents();
             Refresh();
             RefreshAllSlotGrids();
         }
-
-        void OnDisable() => UnsubscribeEvents();
 
         // ─── binding ───────────────────────────────────────────────────────────
 

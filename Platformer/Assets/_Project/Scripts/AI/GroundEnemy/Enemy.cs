@@ -50,7 +50,7 @@ namespace Platformer
         [field: Header("Timers & StateMachine")]
         List<Timer> timers;
         CountdownTimer attackTimer;
-        public CountdownTimer knockbackTimer;
+        [System.NonSerialized] public CountdownTimer knockbackTimer;
         StateMachine stateMachine;
 
         Vector3 startPoint;

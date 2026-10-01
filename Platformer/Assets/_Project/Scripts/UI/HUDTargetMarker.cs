@@ -10,11 +10,11 @@ namespace Platformer
     /// and hides when nothing is targeted.
     /// Attach to the HUD GameObject; drag the player's EnemyDetection in.
     /// </summary>
-    [RequireComponent(typeof(UIDocument))]
+    [RequireComponent(typeof(PanelRenderer))]
     public class HUDTargetMarker : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] UIDocument document;
+        [SerializeField] PanelRenderer document;
         [SerializeField] EnemyDetection enemyDetection;
 
         [Header("Feel")]
@@ -32,11 +32,17 @@ namespace Platformer
         float pulseTime = 1f;   // normalized; >= 1 means no pulse running
         bool visible;
 
-        void Reset() => document = GetComponent<UIDocument>();
+        void Reset() => document = GetComponent<PanelRenderer>();
 
-        void OnEnable()
+        void OnEnable() => document.RegisterUIReloadCallback(OnUIReload);
+
+        void OnDisable() => document.UnregisterUIReloadCallback(OnUIReload);
+
+        void OnUIReload(PanelRenderer _, VisualElement root)
         {
-            marker = document.rootVisualElement.Q<VisualElement>("TargetMarker");
+            marker = root.Q<VisualElement>("TargetMarker");
+            if (marker == null) return;
+            visible = true;          // force SetVisible through its early-out
             SetVisible(false);
         }
 

@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Fresnel01_Unlit_bright
-  m_Shader: {fileID: -6465566751694194690, guid: 62d758d66c4e3b047b28048239fe6e16,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 62d758d66c4e3b047b28048239fe6e16, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

@@ -10504,6 +10504,7 @@ VisualEffect:
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1
+  m_ReleaseInstanceOnDisable: 0
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
@@ -16445,15 +16446,15 @@ GameObject:
   - component: {fileID: 7769549678911398334}
   - component: {fileID: 3241314837616943475}
   - component: {fileID: 1229641303510719885}
-  - component: {fileID: 6872202849703906677}
-  - component: {fileID: 4936039224817202029}
-  - component: {fileID: 8658574019465771431}
   - component: {fileID: 6144222893173468980}
+  - component: {fileID: 6872202849703906677}
+  - component: {fileID: 8658574019465771431}
+  - component: {fileID: 4936039224817202029}
   - component: {fileID: 8082517846523955052}
+  - component: {fileID: 1211468806083090755}
   - component: {fileID: 6813328673174259966}
   - component: {fileID: 6357914704879248392}
   - component: {fileID: 4089536895332177213}
-  - component: {fileID: 1211468806083090755}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
@@ -16471,7 +16472,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5215, y: 1.5215, z: 1.5215}
+  m_LocalScale: {x: 2.0595024, y: 2.0595024, z: 2.0595024}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6876045288439242452}
@@ -16525,78 +16526,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &6872202849703906677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6065085835916078131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32ef1d4de3a9e7141882f9e7af0fe002, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionAngle: 60
-  detectionRadius: 10
-  innerDetectionRadius: 7.36
-  detectionCooldown: 1
-  attackRange: 4.74
---- !u!114 &4936039224817202029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6065085835916078131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5be910496a7841ec99668a760902caf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Platformer.Health
-  entityHealth: 1
-  healthEventChannel: {fileID: 11400000, guid: 43346746591a9b34ebd62055f5db18d9, type: 2}
-  maxHealth: 100
-  freeLookCam: {fileID: 0}
-  playerMeshRenderer: {fileID: 0}
-  <iFramesDuration>k__BackingField: 2
-  numberOfFlashes: 0
-  enemySkinnedMesh: {fileID: 3283745506742292510}
-  VFXGraph: {fileID: 974349306156244473}
-  dissolveRate: 0.0125
-  refreshRate: 0.025
-  hitFlashDuration: 0.08
---- !u!114 &8658574019465771431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6065085835916078131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e9aeed20d2440f1abcc3f880fc8feb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Platformer.Enemy
-  <Controller>k__BackingField: {fileID: 6144222893173468980}
-  playerDetector: {fileID: 6872202849703906677}
-  animator: {fileID: 3241314837616943475}
-  enemyHealth: {fileID: 4936039224817202029}
-  wanderSpeed: 0.6
-  chaseSpeed: 5
-  strafeSpeed: 0.8
-  circleRadius: 4.5
-  wanderRadius: 10
-  circleDirection: 1
-  knockbackForce: 10
-  knockbackFriction: 7
-  timeBetweenAttacks: 1
-  damage: 10
-  attackHitRange: 2.5
-  hasAttackOrders: 0
-  isWaitingForTurn: 0
-  isPreparingAttack: 0
-  counterParticle: {fileID: 7770601149923395637}
 --- !u!143 &6144222893173468980
 CharacterController:
   m_ObjectHideFlags: 0
@@ -16622,6 +16551,78 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.98, z: 0}
+--- !u!114 &6872202849703906677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065085835916078131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32ef1d4de3a9e7141882f9e7af0fe002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionAngle: 60
+  detectionRadius: 10
+  innerDetectionRadius: 7.36
+  detectionCooldown: 1
+  attackRange: 4.74
+--- !u!114 &8658574019465771431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065085835916078131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e9aeed20d2440f1abcc3f880fc8feb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Platformer.Enemy
+  <Controller>k__BackingField: {fileID: 6144222893173468980}
+  playerDetector: {fileID: 6872202849703906677}
+  animator: {fileID: 3241314837616943475}
+  enemyHealth: {fileID: 4936039224817202029}
+  wanderSpeed: 0
+  chaseSpeed: 0
+  strafeSpeed: 0
+  circleRadius: 0
+  wanderRadius: 0
+  circleDirection: 0
+  knockbackForce: 10
+  knockbackFriction: 7
+  timeBetweenAttacks: 0
+  damage: 0
+  attackHitRange: 0
+  hasAttackOrders: 0
+  isWaitingForTurn: 0
+  isPreparingAttack: 0
+  counterParticle: {fileID: 7770601149923395637}
+--- !u!114 &4936039224817202029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065085835916078131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be910496a7841ec99668a760902caf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Platformer.Health
+  entityHealth: 1
+  healthEventChannel: {fileID: 11400000, guid: 43346746591a9b34ebd62055f5db18d9, type: 2}
+  maxHealth: 100
+  freeLookCam: {fileID: 0}
+  playerMeshRenderer: {fileID: 0}
+  <iFramesDuration>k__BackingField: 2
+  numberOfFlashes: 0
+  enemySkinnedMesh: {fileID: 3283745506742292510}
+  VFXGraph: {fileID: 974349306156244473}
+  dissolveRate: 0.0125
+  refreshRate: 0.025
+  hitFlashDuration: 0.08
 --- !u!114 &8082517846523955052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16635,12 +16636,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Platformer.DropItemOnDeath
   drops:
-  - pickupPrefab: {fileID: 1079361986339554897, guid: 07c2d59ae2f3fcf43bec9514f3b48aa4,
-      type: 3}
-    chance: 0.8
   - pickupPrefab: {fileID: 4874118715646994917, guid: c1858fe3033794f46a355dae839de3f2,
       type: 3}
     chance: 0.35
+  scatterRadius: 1.2
+  spawnHeight: 0.75
+--- !u!114 &1211468806083090755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065085835916078131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eb496d41cecec649bef507380c5418f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Platformer.DropExperienceOnDeath
+  orbPrefab: {fileID: 6256020390064353572, guid: 33896d75ee3b2114caa4d65cd4fc2d46,
+    type: 3}
+  orbCount: 3
   scatterRadius: 1.2
   spawnHeight: 0.75
 --- !u!114 &6813328673174259966
@@ -16686,23 +16701,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f7636d8e2a261458e9d90cc17cb825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Platformer.playerFootStepsSfx
---- !u!114 &1211468806083090755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6065085835916078131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2eb496d41cecec649bef507380c5418f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Platformer.DropExperienceOnDeath
-  orbPrefab: {fileID: 6256020390064353572, guid: 33896d75ee3b2114caa4d65cd4fc2d46,
-    type: 3}
-  orbCount: 3
-  scatterRadius: 1.2
-  spawnHeight: 0.75
 --- !u!1 &6239864451502369962
 GameObject:
   m_ObjectHideFlags: 0

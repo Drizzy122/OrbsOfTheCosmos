@@ -100,7 +100,7 @@ namespace theaaa
             var type = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneHierarchyWindow");
             var window = EditorWindow.GetWindow(type);
             var exprec = type.GetMethod("SetExpandedRecursive");
-            exprec?.Invoke(window, new object[] { Selection.activeGameObject.transform.GetInstanceID(), true });
+            exprec?.Invoke(window, new object[] { Selection.activeGameObject.transform.GetEntityId(), true });
 
         }
 
@@ -117,7 +117,7 @@ namespace theaaa
                 Debug.Log(root.name);
                 if (root != Selection.activeGameObject)
                 {
-                    expandMethodInfo.Invoke(hierarchyWindow, new object[] { root.GetInstanceID(), true });
+                    expandMethodInfo.Invoke(hierarchyWindow, new object[] { root.GetEntityId(), true });
                     //return;
                 }
 

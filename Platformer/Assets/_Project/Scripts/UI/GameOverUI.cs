@@ -6,7 +6,7 @@ namespace Platformer
 {
     public class GameOverUI : MonoBehaviour
     {
-        [SerializeField] UIDocument uiDocument;
+        [SerializeField] PanelRenderer uiDocument;
         [SerializeField] Health playerHealth;
         [SerializeField] float fadeInDuration = 1.5f;
 
@@ -14,7 +14,18 @@ namespace Platformer
 
         void Awake()
         {
-            root = uiDocument.rootVisualElement.Q<VisualElement>("GameOverRoot");
+            if (uiDocument != null) uiDocument.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        void OnDestroy()
+        {
+            if (uiDocument != null) uiDocument.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        void OnUIReload(PanelRenderer _, VisualElement newRoot)
+        {
+            root = newRoot.Q<VisualElement>("GameOverRoot");
+            if (root == null) return;
             root.style.opacity = 0f;
             root.style.display = DisplayStyle.None;
         }
@@ -24,6 +35,7 @@ namespace Platformer
 
         void ShowGameOver()
         {
+            if (root == null) return;
             root.style.display = DisplayStyle.Flex;
             StartCoroutine(FadeIn());
         }

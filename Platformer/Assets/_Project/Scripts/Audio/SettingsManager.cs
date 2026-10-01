@@ -13,7 +13,7 @@ namespace Platformer
         public static SettingsManager instance { get; private set; }
 
         [field: Header("UI Document")]
-        [field: SerializeField] private UIDocument document;
+        [field: SerializeField] private PanelRenderer document;
         private VisualElement rootContainer;
 
         [Header("Behavior")]
@@ -70,12 +70,31 @@ namespace Platformer
 
         private void Start()
         {
-            // 1. Core Initialization Flow (The Initialization Pattern)
-            InitializeUIElements();
+            // Settings data doesn't need the UI; the UI wiring runs from the
+            // PanelRenderer reload callback (fires on first build and immediately
+            // if the panel already exists).
             InitializeSettingsData();
+
+            if (document == null) document = GetComponent<PanelRenderer>();
+            document.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnDestroy()
+        {
+            if (document != null) document.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnUIReload(PanelRenderer _, VisualElement root)
+        {
+            rootContainer = root.Q<VisualElement>("SettingsContainer");
+            if (rootContainer == null)
+            {
+                Debug.LogWarning("SettingsManager: 'SettingsContainer' not found in the loaded UI.");
+                return;
+            }
+
+            InitializeUIElements();
             BindUIEvents();
-            
-            // 2. Set initial state
             RefreshAllUI();
             if (startHidden) DeactivateMenu();
         }
@@ -83,9 +102,6 @@ namespace Platformer
         #region Initialization Methods
         private void InitializeUIElements()
         {
-            document = GetComponent<UIDocument>();
-            rootContainer = document.rootVisualElement.Q<VisualElement>("SettingsContainer");
-
             windowModeText = rootContainer.Q<Label>("WindowValueText");
             resolutionText = rootContainer.Q<Label>("ResValueText");
             qualityText = rootContainer.Q<Label>("QualityValueText");

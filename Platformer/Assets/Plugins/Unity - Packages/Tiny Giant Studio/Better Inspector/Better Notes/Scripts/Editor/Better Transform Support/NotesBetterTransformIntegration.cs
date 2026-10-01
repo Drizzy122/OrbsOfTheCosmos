@@ -123,7 +123,7 @@ namespace TinyGiantStudio.BetterInspector
             if (thisIsAnAsset && prefabNotes == null) return;
 
             Note note = thisIsAnAsset
-                ? prefabNotes.MyNote(GetID(targetTransform))
+                ? prefabNotes.MyNote(NoteUtility.GetAssetGUID(targetTransform))
                 : sceneNotesManager.MyNote(targetTransform);
             if (note == null || note.noteType == NoteType.Hidden || note.noteType == NoteType.Tooltip)
             {
@@ -268,12 +268,7 @@ namespace TinyGiantStudio.BetterInspector
 
         #endregion
 
-        static string GetID(Transform transform)
-        {
-            if (!AssetDatabase.Contains(transform)) return transform.GetInstanceID().ToString();
-            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(transform, out string guid, out long _);
-            return guid;
-        }
+     
 
         void UpdateGizmoButton_Note(Button notesGizmoOn, Button notesGizmoOff)
         {

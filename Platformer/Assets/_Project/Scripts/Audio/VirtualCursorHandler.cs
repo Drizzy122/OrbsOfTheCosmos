@@ -4,15 +4,25 @@ using UnityEngine.InputSystem.UI;
 
 public class UIToolkitCursorSync : MonoBehaviour
 {
-    [SerializeField] private UIDocument uiDocument;
+    [SerializeField] private PanelRenderer uiDocument;
     [SerializeField] private VirtualMouseInput virtualMouseInput;
-    
+
     private VisualElement cursorElement;
 
     void OnEnable()
     {
+        if (uiDocument != null) uiDocument.RegisterUIReloadCallback(OnUIReload);
+    }
+
+    void OnDisable()
+    {
+        if (uiDocument != null) uiDocument.UnregisterUIReloadCallback(OnUIReload);
+    }
+
+    void OnUIReload(PanelRenderer _, VisualElement root)
+    {
         // Grab the cursor we made in UI Builder
-        cursorElement = uiDocument.rootVisualElement.Q<VisualElement>("VirtualCursor");
+        cursorElement = root.Q<VisualElement>("VirtualCursor");
     }
 
     

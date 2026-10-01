@@ -8,8 +8,8 @@ namespace Platformer
 {
     public class AudioManager : MonoBehaviour
     {
-        [field: Header("Game Volume")] 
-        [SerializeField] UIDocument settingsUIDocument;
+        [field: Header("Game Volume")]
+        [SerializeField] PanelRenderer settingsUIDocument;
         [field: Range(0, 1)] public float masterVolume = 1;
         [field: Range(0, 1)] public float musicVolume = 1;
         [field: Range(0, 1)] public float ambienceVolume = 1;
@@ -155,6 +155,7 @@ namespace Platformer
 
         private void OnDestroy()
         {
+            if (settingsUIDocument != null) settingsUIDocument.UnregisterUIReloadCallback(OnSettingsUIReload);
             CleanUp();
         }
 
@@ -164,9 +165,11 @@ namespace Platformer
         private void SetupUIToolkit()
         {
             if (settingsUIDocument == null) return;
+            settingsUIDocument.RegisterUIReloadCallback(OnSettingsUIReload);
+        }
 
-            var root = settingsUIDocument.rootVisualElement;
-
+        private void OnSettingsUIReload(PanelRenderer _, VisualElement root)
+        {
             Slider masterSlider   = root.Q<Slider>("MasterVolumeSlider");
             Slider musicSlider    = root.Q<Slider>("MusicVolumeSlider");
             Slider sfxSlider      = root.Q<Slider>("SFXVolumeSlider");

@@ -11,11 +11,11 @@
                 <ui:Toggle label="Hide Gizmo during Playmode" name="NoGizmoDuringPlaymode" value="true" />
                 <ui:GroupBox tooltip="Should be 0,0 for most use cases" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 3px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: row;">
                     <ui:Label tabindex="-1" text="Notes Gizmo Offset" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: middle-left;" />
-                    <uie:Vector2Field name="NotesGizmoOffset" style="flex-grow: 1;" />
+                    <ui:Vector2Field name="NotesGizmoOffset" style="flex-grow: 1;" />
                     <ui:Button text="Reset" parse-escape-sequences="true" display-tooltip-when-elided="true" tooltip="Sets gizmo offset to 0,0" name="ResetGizmoOffset" />
                 </ui:GroupBox>
             </ui:GroupBox>
-            <uie:EnumField type="TinyGiantStudio.BetterInspector.NoteSettings+NoteClickActions, TinyGiantStudio.BetterInspector.BetterNotes.Editor" label="On Clicking Note" name="OnClickAction" tooltip="This is for Better Transform&apos;s inspector. This change doesn&apos;t apply to the currently selected object if there is any. Applies the next time an object is selected." />
+            <ui:EnumField type="TinyGiantStudio.BetterInspector.NoteSettings+NoteClickActions, TinyGiantStudio.BetterInspector.BetterNotes.Editor" label="On Clicking Note" name="OnClickAction" tooltip="This is for Better Transform&apos;s inspector. This change doesn&apos;t apply to the currently selected object if there is any. Applies the next time an object is selected." />
         </ui:GroupBox>
         <ui:GroupBox name="PrefabNotes" class="custom-foldout" style="display: flex; margin-top: 15px; flex-shrink: 1;">
             <ui:GroupBox name="Header" class="header" style="align-items: stretch; flex-shrink: 0;">

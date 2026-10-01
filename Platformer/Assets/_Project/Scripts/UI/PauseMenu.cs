@@ -11,7 +11,7 @@ namespace Platformer
         [field: SerializeField, Anywhere] InputReader input;
         
         // Swapped GameObject for UIDocument
-        [field: SerializeField] UIDocument pauseDocument; 
+        [field: SerializeField] PanelRenderer pauseDocument;
         [field: SerializeField] private SaveSlotsMenu saveSlotsMenu;
         
         [field: SerializeField, Anywhere] PlayerMovement playerMovement;
@@ -30,8 +30,19 @@ namespace Platformer
 
         private void Awake()
         {
-            // Note: Using "PaueMenuContent" exactly as it is spelled in your UI Builder screenshot!
-            rootContainer = pauseDocument.rootVisualElement.Q<VisualElement>("PauseMenuContents");
+            if (pauseDocument == null) pauseDocument = GetComponent<PanelRenderer>();
+            pauseDocument.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnDestroy()
+        {
+            if (pauseDocument != null) pauseDocument.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnUIReload(PanelRenderer _, VisualElement root)
+        {
+            rootContainer = root.Q<VisualElement>("PauseMenuContents");
+            if (rootContainer == null) return;
 
             continueButton = rootContainer.Q<Button>("ContinueGameButton");
             loadButton = rootContainer.Q<Button>("LoadGameButton");
@@ -43,11 +54,14 @@ namespace Platformer
             quitButton.clicked += QuitGame;
             loadButton.clicked += OnLoadClicked;
             settingsButton.clicked += OnSettingsClicked;
-            
+
             AudioManager.instance.RegisterButtonAudio(continueButton);
             AudioManager.instance.RegisterButtonAudio(loadButton);
             AudioManager.instance.RegisterButtonAudio(settingsButton);
             AudioManager.instance.RegisterButtonAudio(quitButton, isCloseAction: true);
+
+            // Re-apply state whenever the UI (re)builds
+            rootContainer.style.display = isPaused ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         void Start()
@@ -55,8 +69,9 @@ namespace Platformer
             if (!isPaused)
             {
                 Time.timeScale = 1;
-                // Hide the menu using UI Toolkit display style
-                rootContainer.style.display = DisplayStyle.None; 
+                // Hide the menu using UI Toolkit display style (may not be built yet —
+                // OnUIReload applies the hidden state again once it is)
+                if (rootContainer != null) rootContainer.style.display = DisplayStyle.None;
                 isPaused = false;
                 AudioManager.instance.SetMusicParameter(musicName, musicValue);
                 AudioManager.instance.SetAmbienceParameter(musicName, musicValue);

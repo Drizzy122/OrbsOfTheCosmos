@@ -11,10 +11,8 @@ ScriptedImporter:
   disableValidation: 0
 AssetOrigin:
   serializedVersion: 1
-  productId: 321300
-  packageName: Better Transform - Size, Notes, Global-Local Workspace & Parent/Child
-    Inspector
-  packageVersion: 3.2.0a
-  assetPath: Assets/Plugins/Unity - Packages/Tiny Giant Studio/Better Inspector/Common
-    Scripts/Editor/StyleSheets/Footer.uss
-  uploadId: 837198
+  productId: 321364
+  packageName: Better Mesh - Mesh Preview & Full-insight at a glance
+  packageVersion: 2.3.0b
+  assetPath: Assets/Plugins/Unity - Packages/Tiny Giant Studio/Better Inspector/Common Scripts/Editor/StyleSheets/Footer.uss
+  uploadId: 985906

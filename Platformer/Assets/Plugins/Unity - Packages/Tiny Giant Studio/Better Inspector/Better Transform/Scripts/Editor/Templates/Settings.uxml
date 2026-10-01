@@ -1,138 +1,138 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <ui:Template name="SettingsFilePathUI" src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/SettingsPath/SettingsFilePathUI.uxml?fileID=9197481963319205126&amp;guid=5b6a26beba278b04b987c093f57fa421&amp;type=3#SettingsFilePathUI" />
+    <ui:Template name="SettingsFilePathUI" src="project://database/Assets/Plugins/Tiny%20Giant%20Studio/Better%20Inspector/Common%20Scripts/Editor/SettingsPath/SettingsFilePathUI.uxml?fileID=9197481963319205126&amp;guid=5b6a26beba278b04b987c093f57fa421&amp;type=3#SettingsFilePathUI"/>
     <ui:GroupBox name="Settings" class="custom-foldout" style="margin-top: 10px;">
         <ui:GroupBox name="Header" class="header" style="overflow: hidden; align-items: stretch;">
-            <ui:Toggle name="FoldoutToggle" text="Settings" value="false" tooltip="The foldout will disappear if closed and can be reopened by the settings icon." class="unity-foldout__toggle foldout-toggle" />
-            <ui:VisualElement style="flex-grow: 1; flex-shrink: 1;" />
+            <ui:Toggle name="FoldoutToggle" text="Settings" value="false" tooltip="The foldout will disappear if closed and can be reopened by the settings icon." class="unity-foldout__toggle foldout-toggle"/>
+            <ui:VisualElement style="flex-grow: 1; flex-shrink: 1;"/>
             <ui:GroupBox style="flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-shrink: 1;">
-                <ui:Label text="Reset to" display-tooltip-when-elided="true" class="unimportant-information-label" style="flex-shrink: 1;" />
-                <ui:Button text="Default" display-tooltip-when-elided="true" name="ResetButton" class="myButton" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-width: 0; border-bottom-width: 0;" />
-                <ui:Button text="Minimal" display-tooltip-when-elided="true" name="ResetInspectorSettingsToMinimal" class="myButton" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-width: 0; border-bottom-width: 0; border-right-width: 0;" />
-                <ui:Button text="Empty" display-tooltip-when-elided="true" name="ResetInspectorSettingsToNothing" class="myButton" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-width: 0; border-bottom-width: 0; border-right-width: 0; display: none;" />
+                <ui:Label text="Reset to" display-tooltip-when-elided="true" class="unimportant-information-label" style="flex-shrink: 1;"/>
+                <ui:Button text="Default" display-tooltip-when-elided="true" name="ResetButton" class="myButton" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-width: 0; border-bottom-width: 0;"/>
+                <ui:Button text="Minimal" display-tooltip-when-elided="true" name="ResetInspectorSettingsToMinimal" class="myButton" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-width: 0; border-bottom-width: 0; border-right-width: 0;"/>
+                <ui:Button text="Empty" display-tooltip-when-elided="true" name="ResetInspectorSettingsToNothing" class="myButton" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-width: 0; border-bottom-width: 0; border-right-width: 0; display: none;"/>
             </ui:GroupBox>
         </ui:GroupBox>
         <ui:GroupBox name="Content" class="container content" style="padding-top: 0; display: flex;">
             <ui:GroupBox name="Footer" class="customToolbar footer">
-                <uie:ToolbarButton text="v3.2.0a" display-tooltip-when-elided="true" name="AssetLink" tooltip="Click to check if there are updates available." class="version" />
-                <uie:ToolbarButton text="Documentation" display-tooltip-when-elided="true" name="Documentation" tooltip="Better Transform Documentation." />
-                <uie:ToolbarButton text="Other Assets" display-tooltip-when-elided="true" name="OtherAssetsLink" tooltip="Checkout other awesome assets." />
+                <uie:ToolbarButton text="v3.3.0" display-tooltip-when-elided="true" name="AssetLink" tooltip="Click to check if there are updates available." class="version"/>
+                <uie:ToolbarButton text="Documentation" display-tooltip-when-elided="true" name="Documentation" tooltip="Better Transform Documentation."/>
+                <uie:ToolbarButton text="Other Assets" display-tooltip-when-elided="true" name="OtherAssetsLink" tooltip="Checkout other awesome assets."/>
             </ui:GroupBox>
             <ui:GroupBox name="InspectorCustomizationSettings" class="custom-foldout">
                 <ui:GroupBox name="Header" class="header">
-                    <ui:Toggle name="FoldoutToggle" text="Visual" value="false" view-data-key="inspectorsViewDataKey" class="unity-foldout__toggle foldout-toggle" />
+                    <ui:Toggle name="FoldoutToggle" text="Visual" value="false" view-data-key="inspectorsViewDataKey" class="unity-foldout__toggle foldout-toggle"/>
                 </ui:GroupBox>
                 <ui:GroupBox name="Content" class="container content" style="display: flex;">
-                    <ui:Toggle name="OverrideInspectorColorToggle" label="Enable Inspector Colors" />
-                    <uie:ColorField label="Local Space" value="#0000FF05" name="InspectorLocalSpaceColorField" style="margin-left: 22px; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-grow: 1; flex-shrink: 1;" />
-                    <uie:ColorField label="World Space" value="#0000FF05" name="InspectorWorldSpaceColorField" style="margin-left: 22px; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-grow: 1; flex-shrink: 1;" />
-                    <ui:VisualElement class="group-separator" />
-                    <ui:Toggle label="Foldout Animations" name="FoldoutAnimationsToggle" />
+                    <ui:Toggle name="OverrideInspectorColorToggle" label="Enable Inspector Colors"/>
+                    <uie:ColorField label="Local Space" value="#0000FF05" name="InspectorLocalSpaceColorField" style="margin-left: 22px; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-grow: 1; flex-shrink: 1;"/>
+                    <uie:ColorField label="World Space" value="#0000FF05" name="InspectorWorldSpaceColorField" style="margin-left: 22px; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-grow: 1; flex-shrink: 1;"/>
+                    <ui:VisualElement class="group-separator"/>
+                    <ui:Toggle label="Foldout Animations" name="FoldoutAnimationsToggle"/>
                     <ui:GroupBox style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; flex-direction: row; flex-grow: 1; align-items: center;">
-                        <ui:Toggle name="OverrideFoldoutColorToggle" tooltip="Toggle Foldout Colors" style="margin-bottom: 1px; margin-right: 5px;" />
-                        <uie:ColorField label="Foldout Color" value="#0000FF05" name="FoldoutColorField" style="flex-grow: 1; margin-left: 3px;" />
+                        <ui:Toggle name="OverrideFoldoutColorToggle" tooltip="Toggle Foldout Colors" style="margin-bottom: 1px; margin-right: 5px;"/>
+                        <uie:ColorField label="Foldout Color" value="#0000FF05" name="FoldoutColorField" style="flex-grow: 1; margin-left: 3px;"/>
                     </ui:GroupBox>
-                    <ui:SliderInt label="Foldout Style" high-value="3" name="FoldoutStyle" low-value="1" tooltip="Some changes are applied after changing selection." />
-                    <ui:SliderInt label="Button Style" high-value="3" name="ButtonStyle" low-value="1" tooltip="Some changes are applied after changing selection." />
+                    <ui:SliderInt label="Foldout Style" high-value="3" name="FoldoutStyle" low-value="1" tooltip="Some changes are applied after changing selection."/>
+                    <ui:SliderInt label="Button Style" high-value="3" name="ButtonStyle" low-value="1" tooltip="Some changes are applied after changing selection."/>
                 </ui:GroupBox>
             </ui:GroupBox>
             <ui:GroupBox name="MainInformationSettings" class="custom-foldout">
                 <ui:GroupBox name="Header" class="header">
-                    <ui:Toggle name="FoldoutToggle" text="Main Information" view-data-key="mainInformationSettingsDataKey" class="unity-foldout__toggle foldout-toggle" />
+                    <ui:Toggle name="FoldoutToggle" text="Main Information" view-data-key="mainInformationSettingsDataKey" class="unity-foldout__toggle foldout-toggle"/>
                 </ui:GroupBox>
                 <ui:GroupBox name="Content" class="container content">
-                    <ui:Toggle label="Copy, Paste &amp; Reset Buttons" name="CopyPasteButtonsToggle" tooltip="If enabled, it will show three buttons besides the vector3 fields" />
-                    <ui:Toggle label="Show Sibling Index" name="ShowSiblingIndexToggle" tooltip=" If a GameObject shares a parent with other GameObjects and are on the same level (i.e. they share the same direct parent), these GameObjects are known as siblings. The sibling index shows where each GameObject sits in this sibling hierarchy. If an object has no parent, meaning its a root object, it has no sibling index." />
-                    <ui:Toggle label="Show Asset GUID" name="ShowAssetGUID" tooltip="GUID is a Globally Unique Identifier for the asset. So, it&apos;s only available for prefabs in this context." />
-                    <ui:Toggle label="Use Unity&apos;s Transform Inspector for Local Fields " name="DefaultUnityInspectorToggle" tooltip="If turned off, instead of using Unity&apos;s default transform inspector, the asset will use custom fields made in UI Toolkit. Minor behavior change might be seen in edge cases. It is adviced to keep this turned on. This setting is ignored when both workspace is enabled." />
+                    <ui:Toggle label="Copy, Paste &amp; Reset Buttons" name="CopyPasteButtonsToggle" tooltip="If enabled, it will show three buttons besides the vector3 fields"/>
+                    <ui:Toggle label="Show Sibling Index" name="ShowSiblingIndexToggle" tooltip=" If a GameObject shares a parent with other GameObjects and are on the same level (i.e. they share the same direct parent), these GameObjects are known as siblings. The sibling index shows where each GameObject sits in this sibling hierarchy. If an object has no parent, meaning its a root object, it has no sibling index."/>
+                    <ui:Toggle label="Show Asset GUID" name="ShowAssetGUID" tooltip="GUID is a Globally Unique Identifier for the asset. So, it&apos;s only available for prefabs in this context."/>
+                    <ui:Toggle label="Use Unity&apos;s Transform Inspector for Local Fields " name="DefaultUnityInspectorToggle" tooltip="If turned off, instead of using Unity&apos;s default transform inspector, the asset will use custom fields made in UI Toolkit. Minor behavior change might be seen in edge cases. It is adviced to keep this turned on. This setting is ignored when both workspace is enabled."/>
                 </ui:GroupBox>
             </ui:GroupBox>
             <ui:GroupBox name="SizeGroupBox" class="custom-foldout">
                 <ui:GroupBox name="Header" class="header">
-                    <ui:Toggle name="FoldoutToggle" text="Size Settings" value="false" view-data-key="SizeSettingsViewDataKey" class="unity-foldout__toggle foldout-toggle" />
+                    <ui:Toggle name="FoldoutToggle" text="Size Settings" value="false" view-data-key="SizeSettingsViewDataKey" class="unity-foldout__toggle foldout-toggle"/>
                 </ui:GroupBox>
                 <ui:GroupBox name="Content" class="container content" style="display: flex;">
-                    <ui:Toggle label="Size In Line View" name="ShowSizeInlineToggle" style="flex-direction: row;" />
-                    <ui:Toggle label="Size Foldout" name="ShowSizeFoldoutToggle" style="flex-direction: row;" />
-                    <ui:Toggle label="Show Size Center" name="ShowSizeCenterToggle" style="flex-direction: row;" />
-                    <ui:VisualElement class="group-separator" style="flex-grow: 1;" />
-                    <uie:IntegerField label="Max Child Count For Automatic Calculation" name="MaxChildCountForSizeCalculation" tooltip="If an object has more than this amount of child object, the size calculation is not done automatically." />
-                    <ui:Toggle label="Ignore Particle and VFX Graph renderers" tooltip="If enabled, when calculating size using renderers, calculation will exclude rendererers in child objects if they have Particle System or VFX Graph component." name="IgnoreParticleAndVFX" />
-                    <ui:Toggle label="Show why size foldout is hidden" name="ShowWhySizeFoldoutIsHidden" />
+                    <ui:Toggle label="Size In Line View" name="ShowSizeInlineToggle" style="flex-direction: row;"/>
+                    <ui:Toggle label="Size Foldout" name="ShowSizeFoldoutToggle" style="flex-direction: row;"/>
+                    <ui:Toggle label="Show Size Center" name="ShowSizeCenterToggle" style="flex-direction: row;"/>
+                    <ui:VisualElement class="group-separator" style="flex-grow: 1;"/>
+                    <uie:IntegerField label="Max Child Count For Automatic Calculation" name="MaxChildCountForSizeCalculation" tooltip="If an object has more than this amount of child object, the size calculation is not done automatically."/>
+                    <ui:Toggle label="Ignore Particle and VFX Graph renderers" tooltip="If enabled, when calculating size using renderers, calculation will exclude rendererers in child objects if they have Particle System or VFX Graph component." name="IgnoreParticleAndVFX"/>
+                    <ui:Toggle label="Show why size foldout is hidden" name="ShowWhySizeFoldoutIsHidden"/>
                     <ui:GroupBox tooltip="Automatically updates the size every few seconds. This is not required for most use cases." style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: row;">
-                        <ui:Toggle label="Constantly Update Size" name="ConstantlyUpdateSize" style="margin-right: 5px; margin-bottom: 1px;" />
-                        <ui:VisualElement tooltip="Avoid Turning it on unless necessary." class="warning-icon" style="height: 15px; width: 15px; display: flex; margin-left: 5px;" />
+                        <ui:Toggle label="Constantly Update Size" name="ConstantlyUpdateSize" style="margin-right: 5px; margin-bottom: 1px;"/>
+                        <ui:VisualElement tooltip="Avoid Turning it on unless necessary." class="warning-icon" style="height: 15px; width: 15px; display: flex; margin-left: 5px;"/>
                     </ui:GroupBox>
                     <ui:GroupBox name="GizmoSettingsGroupBox" class="custom-foldout" style="margin-bottom: 10px; margin-top: 10px;">
                         <ui:GroupBox name="Header" class="header">
-                            <ui:Toggle name="FoldoutToggle" text="Gizmo Outline" view-data-key="GizmoSettingsParentViewDataKey" tooltip="Outline that visually show the size of the object." class="unity-foldout__toggle foldout-toggle" />
+                            <ui:Toggle name="FoldoutToggle" text="Gizmo Outline" view-data-key="GizmoSettingsParentViewDataKey" tooltip="Outline that visually show the size of the object." class="unity-foldout__toggle foldout-toggle"/>
                         </ui:GroupBox>
                         <ui:GroupBox name="Content" class="container content">
-                            <uie:ColorField label="X Axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="OutlineColorX" />
-                            <uie:ColorField label="Y Axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="OutlineColorY" />
-                            <uie:ColorField label="Z Axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="OutlineColorZ" />
-                            <uie:FloatField label="Thiccness" value="42.2" name="OutlineThickness" />
+                            <uie:ColorField label="X Axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="OutlineColorX"/>
+                            <uie:ColorField label="Y Axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="OutlineColorY"/>
+                            <uie:ColorField label="Z Axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="OutlineColorZ"/>
+                            <ui:FloatField label="Thiccness" value="42.2" name="OutlineThickness"/>
                         </ui:GroupBox>
                     </ui:GroupBox>
                     <ui:GroupBox name="GizmoLabelSettingsGroupBox" class="custom-foldout" style="margin-bottom: 10px;">
                         <ui:GroupBox name="Header" class="header">
-                            <ui:Toggle name="FoldoutToggle" text="Gizmo Label" class="unity-foldout__toggle foldout-toggle" />
+                            <ui:Toggle name="FoldoutToggle" text="Gizmo Label" class="unity-foldout__toggle foldout-toggle"/>
                         </ui:GroupBox>
                         <ui:GroupBox name="Content" class="container content">
-                            <uie:IntegerField label="Label Size" value="42" name="SizeGizmoLabelSize" />
-                            <uie:ColorField label="Label Color X axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelColorX" />
-                            <uie:ColorField label="Label Color Y axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelColorY" />
-                            <uie:ColorField label="Label Color Z axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelColorZ" />
-                            <uie:ColorField label="Label Background Color X axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelBackgroundColorX" />
-                            <uie:ColorField label="Label Background Color Y axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelBackgroundColorY" />
-                            <uie:ColorField label="Label Background Color Z axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelBackgroundColorZ" />
-                            <ui:Toggle label="Show Axis on Label" name="AxisOnLabel" />
-                            <ui:Toggle label="Show Unit on Label" name="UnitOnLabel" />
-                            <uie:IntegerField label="Maximum Decimal Points" value="42" name="GizmoMaximumDecimalPoints" tooltip="The amount of digits after zero shown in the gizmo label" />
-                            <ui:Toggle label="Label Handles" name="LabelHandles" tooltip="If on, tiny arrows are drawn below labels to show which axis they are being applied to." style="display: none;" />
-                            <ui:Toggle label="Double Label" name="SizeGizmoLabelBothSide" tooltip="If true, gizmo label is shown on both side if size exceeds a certain amount" />
-                            <uie:IntegerField label="Minimum size for Double Label" value="42" name="MinimumSizeForDoubleLabel" tooltip="If an exis&apos;s width is minimum of this amount, it will show label on both sides." />
+                            <uie:IntegerField label="Label Size" value="42" name="SizeGizmoLabelSize"/>
+                            <uie:ColorField label="Label Color X axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelColorX"/>
+                            <uie:ColorField label="Label Color Y axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelColorY"/>
+                            <uie:ColorField label="Label Color Z axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelColorZ"/>
+                            <uie:ColorField label="Label Background Color X axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelBackgroundColorX"/>
+                            <uie:ColorField label="Label Background Color Y axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelBackgroundColorY"/>
+                            <uie:ColorField label="Label Background Color Z axis" value="RGBA(0.000, 1.000, 1.000, 1.000)" name="GizmoLabelBackgroundColorZ"/>
+                            <ui:Toggle label="Show Axis on Label" name="AxisOnLabel"/>
+                            <ui:Toggle label="Show Unit on Label" name="UnitOnLabel"/>
+                            <uie:IntegerField label="Maximum Decimal Points" value="42" name="GizmoMaximumDecimalPoints" tooltip="The amount of digits after zero shown in the gizmo label"/>
+                            <ui:Toggle label="Label Handles" name="LabelHandles" tooltip="If on, tiny arrows are drawn below labels to show which axis they are being applied to." style="display: none;"/>
+                            <ui:Toggle label="Double Label" name="SizeGizmoLabelBothSide" tooltip="If true, gizmo label is shown on both side if size exceeds a certain amount"/>
+                            <uie:IntegerField label="Minimum size for Double Label" value="42" name="MinimumSizeForDoubleLabel" tooltip="If an exis&apos;s width is minimum of this amount, it will show label on both sides."/>
                             <ui:GroupBox name="LabelPositionSettings" class="custom-foldout">
                                 <ui:GroupBox name="Header" class="header">
-                                    <ui:Label tabindex="-1" text="Label Position" parse-escape-sequences="true" display-tooltip-when-elided="true" class="foldout-toggle" />
-                                    <ui:Label tabindex="-1" text="Offset" parse-escape-sequences="true" display-tooltip-when-elided="true" tooltip="In certain position, labels will be offset by this value for clarity." style="-unity-text-align: middle-left;" />
-                                    <uie:FloatField value="42.2" name="LabelOffset" tooltip="In certain position, labels will be offset by this value for clarity." style="margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px;" />
+                                    <ui:Label tabindex="-1" text="Label Position" parse-escape-sequences="true" display-tooltip-when-elided="true" class="foldout-toggle"/>
+                                    <ui:Label tabindex="-1" text="Offset" parse-escape-sequences="true" display-tooltip-when-elided="true" tooltip="In certain position, labels will be offset by this value for clarity." style="-unity-text-align: middle-left;"/>
+                                    <ui:FloatField value="42.2" name="LabelOffset" tooltip="In certain position, labels will be offset by this value for clarity." style="margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px;"/>
                                 </ui:GroupBox>
                                 <ui:GroupBox name="Content" class="container content">
-                                    <ui:RadioButton label="Closest Axis" name="ClosestAxis" />
-                                    <ui:RadioButton label="Corner" name="CornerAxis" />
-                                    <ui:RadioButton label="Center" name="PositionLabelAtCenter" />
+                                    <ui:RadioButton label="Closest Axis" name="ClosestAxis"/>
+                                    <ui:RadioButton label="Corner" name="CornerAxis"/>
+                                    <ui:RadioButton label="Center" name="PositionLabelAtCenter"/>
                                 </ui:GroupBox>
                             </ui:GroupBox>
                         </ui:GroupBox>
                     </ui:GroupBox>
-                    <ui:Button text="Scale Settings" display-tooltip-when-elided="true" name="ScaleSettingsButton" style="margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;" />
+                    <ui:Button text="Scale Settings" display-tooltip-when-elided="true" name="ScaleSettingsButton" style="margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"/>
                 </ui:GroupBox>
             </ui:GroupBox>
             <ui:GroupBox name="UtilitySettings" class="custom-foldout">
                 <ui:GroupBox name="Header" class="header">
-                    <ui:Toggle name="FoldoutToggle" text="Utility" class="unity-foldout__toggle foldout-toggle" />
+                    <ui:Toggle name="FoldoutToggle" text="Utility" class="unity-foldout__toggle foldout-toggle"/>
                 </ui:GroupBox>
                 <ui:GroupBox name="Content" class="container content">
-                    <ui:Toggle label="Parent/Child Information" name="ParentChildTransformsToggle" />
-                    <uie:IntegerField label="Max Child Inspector" value="42" name="MaxChildInspector" />
-                    <ui:Toggle label="Ping Self Button" tooltip="Button to Ping this object in the in the hierarchy. Please note that this was added because of a user request." name="PingSelfButton" />
-                    <ui:Label tabindex="-1" text="The settings below are ignored when using Unity&apos;s default inspector for local transform" parse-escape-sequences="true" display-tooltip-when-elided="true" class="unimportant-information-label" style="margin-top: 10px; margin-left: 0;" />
+                    <ui:Toggle label="Parent/Child Information" name="ParentChildTransformsToggle"/>
+                    <uie:IntegerField label="Max Child Inspector" value="42" name="MaxChildInspector"/>
+                    <ui:Toggle label="Ping Self Button" tooltip="Button to Ping this object in the in the hierarchy. Please note that this was added because of a user request." name="PingSelfButton"/>
+                    <ui:Label tabindex="-1" text="The settings below are ignored when using Unity&apos;s default inspector for local transform" parse-escape-sequences="true" display-tooltip-when-elided="true" class="unimportant-information-label" style="margin-top: 10px; margin-left: 0;"/>
                     <ui:GroupBox style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: row; justify-content: space-between;">
-                        <uie:IntegerField label="Field Rounding Amount" value="42" name="FieldRounding" tooltip="Numbers in the fileds are rounded to a specific number of digits after the decimal point for cleanliness." style="flex-grow: 1;" />
-                        <ui:Label text="(Rounding just changes the value in the inspector. Doesn&apos;t impact the real value)" style="-unity-font-style: italic; -unity-text-align: middle-left; opacity: 0.74; display: none;" />
+                        <uie:IntegerField label="Field Rounding Amount" value="42" name="FieldRounding" tooltip="Numbers in the fileds are rounded to a specific number of digits after the decimal point for cleanliness." style="flex-grow: 1;"/>
+                        <ui:Label text="(Rounding just changes the value in the inspector. Doesn&apos;t impact the real value)" style="-unity-font-style: italic; -unity-text-align: middle-left; opacity: 0.74; display: none;"/>
                     </ui:GroupBox>
-                    <ui:Toggle name="RoundPositionFieldToggle" label="Round Position Field" />
-                    <ui:Toggle name="RoundRotationFieldToggle" label="Round Rotation Field" />
-                    <ui:Toggle name="RoundScaleFieldToggle" label="Round Scale Field" />
+                    <ui:Toggle name="RoundPositionFieldToggle" label="Round Position Field"/>
+                    <ui:Toggle name="RoundRotationFieldToggle" label="Round Rotation Field"/>
+                    <ui:Toggle name="RoundScaleFieldToggle" label="Round Scale Field"/>
                 </ui:GroupBox>
             </ui:GroupBox>
             <ui:GroupBox style="margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-direction: row; flex-wrap: wrap; justify-content: flex-start;">
                 <ui:Toggle name="DetailedPerformanceLoggingToggle" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-shrink: 1;">
-                    <ui:Label text="Full" style="margin-left: 5px;" />
+                    <ui:Label text="Full" style="margin-left: 5px;"/>
                 </ui:Toggle>
-                <ui:Toggle label="Performance Logging" name="PerformanceLoggingToggle" style="margin-left: 0; margin-right: 20px; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Toggle label="Performance Logging" name="PerformanceLoggingToggle" style="margin-left: 0; margin-right: 20px; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;"/>
             </ui:GroupBox>
-            <ui:Instance template="SettingsFilePathUI" style="margin-bottom: 15px; margin-top: 5px;" />
+            <ui:Instance template="SettingsFilePathUI" style="margin-bottom: 15px; margin-top: 5px;"/>
         </ui:GroupBox>
     </ui:GroupBox>
 </ui:UXML>

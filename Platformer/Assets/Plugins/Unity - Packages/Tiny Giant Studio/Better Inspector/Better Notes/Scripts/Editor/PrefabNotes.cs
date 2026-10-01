@@ -25,14 +25,16 @@ namespace TinyGiantStudio.BetterInspector
 
         public void SetNote(string id, string note)
         {
-            foreach (Note n in notes.Where(n => n.id == id))
+            Note targetNote = GetNote(id);
+            if (targetNote != null)
             {
-                n.note = note;
+                targetNote.note = note;
                 Save(true);
-                return;
             }
-
-            notes.Add(new(id, note, NoteType.Tooltip, Color.white, Color.gray, true));
+            else
+            {
+                notes.Add(new Note(id, note, NoteType.Tooltip, Color.white, Color.gray, true));
+            }
         }
 
         public void SetNote(string id, NoteType noteType)
@@ -82,6 +84,14 @@ namespace TinyGiantStudio.BetterInspector
             }
 
             notes.Add(new(id, "", NoteType.Tooltip, textColor, backgroundColor, true));
+        }
+
+        public Note GetNote(string id)
+        {
+            foreach (Note t in notes.Where(t => t.id == id))
+                return t;
+
+            return null;
         }
 
 

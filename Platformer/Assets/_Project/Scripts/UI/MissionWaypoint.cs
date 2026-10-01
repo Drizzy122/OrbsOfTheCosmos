@@ -23,7 +23,7 @@ namespace Platformer
         [SerializeField] Transform player;
 
         [Header("UI Toolkit")]
-        public UIDocument uiDocument;
+        public PanelRenderer uiDocument;
 
         // UI Elements queried from the document
         private VisualElement waypointContainer;
@@ -45,7 +45,16 @@ namespace Platformer
 
         private void Start()
         {
-            var root = uiDocument.rootVisualElement;
+            if (uiDocument != null) uiDocument.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnDestroy()
+        {
+            if (uiDocument != null) uiDocument.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnUIReload(PanelRenderer _, VisualElement root)
+        {
             waypointContainer = root.Q<VisualElement>("WaypointContainer");
             meterLabel = root.Q<Label>("MeterLabel");
 

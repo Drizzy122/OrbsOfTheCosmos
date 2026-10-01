@@ -116,7 +116,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 321364
   packageName: Better Mesh - Mesh Preview & Full-insight at a glance
-  packageVersion: 2.2.1
-  assetPath: Assets/Plugins/AssetStore/UnityPackages/Tiny Giant Studio/Better Inspector/Better
-    Mesh Filter/Artworks/TGS_BetterMesh_EditBounds_Icon.png
-  uploadId: 801492
+  packageVersion: 2.3.0b
+  assetPath: Assets/Plugins/Unity - Packages/Tiny Giant Studio/Better Inspector/Better Mesh Filter/Artworks/TGS_BetterMesh_EditBounds_Icon.png
+  uploadId: 985906
