@@ -25,7 +25,12 @@ namespace Platformer
         [SerializeField] private float autoSaveTimeSeconds = 60f;
 
         private GameData gameData;
-        private List<IDataPersistence> dataPersistenceObjects;
+        // Must start empty, not null. OnSceneLoaded rebuilds this on every scene load, but it
+        // never fires for the scene this manager boots in — OnEnable subscribes to sceneLoaded
+        // after that scene's event has already gone past. LoadGame and SaveGame both iterate
+        // this list, so a null here breaks Continue, Load and Clear at once. An empty list is
+        // also the correct contents for the menu, which has no IDataPersistence objects.
+        private List<IDataPersistence> dataPersistenceObjects = new List<IDataPersistence>();
         private FileDataHandler dataHandler;
 
         private string selectedProfileId = "";
@@ -83,6 +88,15 @@ namespace Platformer
             autoSaveCoroutine = StartCoroutine(AutoSave());
         }
 
+        private void Start()
+        {
+            // OnSceneLoaded is what normally calls LoadGame, but it never fires for the scene
+            // this manager boots in — OnEnable subscribes after that scene's event has passed.
+            // Without this, gameData stays null in the main menu, HasGameData() reports false,
+            // and Continue and Load sit disabled even though a save exists on disk.
+            if (gameData == null) LoadGame();
+        }
+
         public void ChangeSelectedProfileId(string newProfileId)
         {
             // update the profile to use for saving and loading
@@ -95,6 +109,8 @@ namespace Platformer
         {
             // delete the data for this profile id
             dataHandler.Delete(profileId);
+            // and its thumbnail, or a cleared slot keeps showing the old screenshot
+            SaveThumbnail.Delete(profileId);
             // initialize the selected profile id
             InitializeSelectedProfileId();
             // reload the game so that our data matches the newly selected profile id
@@ -200,6 +216,13 @@ namespace Platformer
         public GameData GetSelectedGameData()
         {
             return gameData;
+        }
+
+        /// <summary>Profile the save system is currently writing to. Needed by anything that
+        /// stores files alongside the save, such as slot thumbnails.</summary>
+        public string GetSelectedProfileId()
+        {
+            return selectedProfileId;
         }
 
         public Dictionary<string, GameData> GetAllProfilesGameData()

@@ -2,65 +2,108 @@
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=1e607d4d39bbf3c4aa48749712dc3062&amp;type=3#MainMenuStyle"/>
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/SaveSlotStyle.uss?fileID=7433441132597879392&amp;guid=8aa850633b2030f419e37bf580b98b53&amp;type=3#SaveSlotStyle"/>
     <ui:VisualElement name="SaveSlotsMenuContainer" class="save-root" style="display: none;">
-        <ui:VisualElement class="save-backdrop"/>
-        <ui:VisualElement name="Title" class="save-header">
-            <ui:VisualElement class="header-line"/>
+        <ui:VisualElement class="save-backdrop" picking-mode="Ignore"/>
+
+        <ui:VisualElement name="Title" class="save-header" picking-mode="Ignore">
+            <ui:VisualElement class="header-line" picking-mode="Ignore"/>
+            <ui:VisualElement class="header-mark" picking-mode="Ignore"/>
             <ui:Label text="SAVE SELECT" name="SaveSelect" class="save-title-label"/>
-            <ui:VisualElement class="header-line"/>
+            <ui:VisualElement class="header-line" picking-mode="Ignore"/>
         </ui:VisualElement>
+
         <ui:VisualElement class="slots-area">
+
             <ui:VisualElement name="SaveSlot1" class="slot-card">
                 <ui:Button text="" name="SaveSlotButton" class="slot-main-btn">
+                    <ui:VisualElement class="slot-rail" picking-mode="Ignore"/>
                     <ui:VisualElement name="HasDataContent" class="slot-has-data" style="display: flex;">
-                        <ui:VisualElement name="ThumbnailImage" class="slot-thumb"/>
-                        <ui:VisualElement class="slot-info">
+                        <ui:VisualElement name="ThumbnailImage" class="slot-thumb" picking-mode="Ignore"/>
+                        <ui:VisualElement class="slot-info" picking-mode="Ignore">
                             <ui:Label text="Orbs of the Cosmos" name="GameName" class="slot-game-name"/>
-                            <ui:Image name="UnderLine" class="slot-divider"/>
+                            <ui:VisualElement name="UnderLine" class="slot-divider" picking-mode="Ignore"/>
                             <ui:Label text="0% Completed" name="PercentageCompleteText" class="slot-detail-text"/>
+                        </ui:VisualElement>
+                        <ui:VisualElement class="slot-meta" picking-mode="Ignore">
+                            <ui:Label text="SLOT 01" class="slot-id"/>
                             <ui:Label text="05/06/2025  12:00" name="SaveDateText" class="slot-detail-text slot-date"/>
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:VisualElement name="NoDataContent" class="slot-no-data" style="display: none;">
-                        <ui:Label text="— New Save —" name="NoDataText" class="slot-new-label"/>
+                        <ui:VisualElement class="slot-empty-box" picking-mode="Ignore"/>
+                        <ui:Label text="EMPTY — START A NEW GAME" name="NoDataText" class="slot-new-label"/>
+                        <ui:Label text="SLOT 01" class="slot-id slot-id--empty"/>
                     </ui:VisualElement>
                 </ui:Button>
-                <ui:Button text="Clear" name="ClearButton" class="slot-clear-btn"/>
+                <ui:Button text="✕" name="ClearButton" class="slot-clear-btn"/>
             </ui:VisualElement>
+
             <ui:VisualElement name="SaveSlot2" class="slot-card">
                 <ui:Button text="" name="SaveSlotButton" class="slot-main-btn">
+                    <ui:VisualElement class="slot-rail" picking-mode="Ignore"/>
                     <ui:VisualElement name="HasDataContent" class="slot-has-data" style="display: flex;">
-                        <ui:VisualElement name="ThumbnailImage" class="slot-thumb"/>
-                        <ui:VisualElement class="slot-info">
+                        <ui:VisualElement name="ThumbnailImage" class="slot-thumb" picking-mode="Ignore"/>
+                        <ui:VisualElement class="slot-info" picking-mode="Ignore">
                             <ui:Label text="Orbs of the Cosmos" name="GameName" class="slot-game-name"/>
-                            <ui:Image name="UnderLine" class="slot-divider"/>
+                            <ui:VisualElement name="UnderLine" class="slot-divider" picking-mode="Ignore"/>
                             <ui:Label text="0% Completed" name="PercentageCompleteText" class="slot-detail-text"/>
+                        </ui:VisualElement>
+                        <ui:VisualElement class="slot-meta" picking-mode="Ignore">
+                            <ui:Label text="SLOT 02" class="slot-id"/>
                             <ui:Label text="05/06/2025  12:00" name="SaveDateText" class="slot-detail-text slot-date"/>
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:VisualElement name="NoDataContent" class="slot-no-data" style="display: none;">
-                        <ui:Label text="— New Save —" name="NoDataText" class="slot-new-label"/>
+                        <ui:VisualElement class="slot-empty-box" picking-mode="Ignore"/>
+                        <ui:Label text="EMPTY — START A NEW GAME" name="NoDataText" class="slot-new-label"/>
+                        <ui:Label text="SLOT 02" class="slot-id slot-id--empty"/>
                     </ui:VisualElement>
                 </ui:Button>
-                <ui:Button text="Clear" name="ClearButton" class="slot-clear-btn"/>
+                <ui:Button text="✕" name="ClearButton" class="slot-clear-btn"/>
             </ui:VisualElement>
+
             <ui:VisualElement name="SaveSlot3" class="slot-card">
                 <ui:Button text="" name="SaveSlotButton" class="slot-main-btn">
+                    <ui:VisualElement class="slot-rail" picking-mode="Ignore"/>
                     <ui:VisualElement name="HasDataContent" class="slot-has-data" style="display: flex;">
-                        <ui:VisualElement name="ThumbnailImage" class="slot-thumb"/>
-                        <ui:VisualElement class="slot-info">
+                        <ui:VisualElement name="ThumbnailImage" class="slot-thumb" picking-mode="Ignore"/>
+                        <ui:VisualElement class="slot-info" picking-mode="Ignore">
                             <ui:Label text="Orbs of the Cosmos" name="GameName" class="slot-game-name"/>
-                            <ui:Image name="UnderLine" class="slot-divider"/>
+                            <ui:VisualElement name="UnderLine" class="slot-divider" picking-mode="Ignore"/>
                             <ui:Label text="0% Completed" name="PercentageCompleteText" class="slot-detail-text"/>
+                        </ui:VisualElement>
+                        <ui:VisualElement class="slot-meta" picking-mode="Ignore">
+                            <ui:Label text="SLOT 03" class="slot-id"/>
                             <ui:Label text="05/06/2025  12:00" name="SaveDateText" class="slot-detail-text slot-date"/>
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:VisualElement name="NoDataContent" class="slot-no-data" style="display: none;">
-                        <ui:Label text="— New Save —" name="NoDataText" class="slot-new-label"/>
+                        <ui:VisualElement class="slot-empty-box" picking-mode="Ignore"/>
+                        <ui:Label text="EMPTY — START A NEW GAME" name="NoDataText" class="slot-new-label"/>
+                        <ui:Label text="SLOT 03" class="slot-id slot-id--empty"/>
                     </ui:VisualElement>
                 </ui:Button>
-                <ui:Button text="Clear" name="ClearButton" class="slot-clear-btn"/>
+                <ui:Button text="✕" name="ClearButton" class="slot-clear-btn"/>
+            </ui:VisualElement>
+
+        </ui:VisualElement>
+
+        <ui:VisualElement class="save-footer">
+            <ui:Button text="← BACK" name="BackButton" class="save-back-btn"/>
+            <ui:VisualElement class="prompt-spacer" picking-mode="Ignore"/>
+            <ui:VisualElement class="prompt" picking-mode="Ignore">
+                <ui:VisualElement class="prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/Cross.png?fileID=2800000&amp;guid=84c576f4fdf149f43a098f7c77f01b2a&amp;type=3#Cross&quot;);"/>
+                <ui:Label text="SELECT" class="prompt-label"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="prompt" picking-mode="Ignore">
+                <ui:VisualElement class="prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/Square.png?fileID=2800000&amp;guid=7f2ebf585f806ab488bfc1f0687f7c77&amp;type=3#Square&quot;);"/>
+                <ui:Label text="DELETE SAVE" class="prompt-label"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="prompt" picking-mode="Ignore">
+                <ui:VisualElement class="prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/Circle.png?fileID=2800000&amp;guid=8bd1b4c6c0ed555459dda26f85b6a8fe&amp;type=3#Circle&quot;);"/>
+                <ui:Label text="BACK" class="prompt-label"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:Button text="← Back" name="BackButton" class="save-back-btn"/>
+
+        <ui:Label text="ORB//SAVE.REGISTRY  ·  LOCAL" class="save-techmark" picking-mode="Ignore"/>
     </ui:VisualElement>
 </ui:UXML>

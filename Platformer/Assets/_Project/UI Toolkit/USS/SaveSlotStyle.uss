@@ -1,8 +1,24 @@
-/* ═══════════════════════════════════════════════════════════
-   Save & Load Screen  —  SaveSlotStyle.uss
-   ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   Save / Load  —  SaveSlotStyle.uss
 
-/* ── Root ─────────────────────────────────────────────────── */
+   Structure borrowed from Cyberpunk's load screen: full-width rows rather than
+   cards, thumbnail left, title and detail centre, slot id and timestamp right,
+   a centred rule-and-mark header, and an input-prompt bar along the bottom.
+
+   Palette stays the menu's cyan/violet rather than Cyberpunk's crimson — the
+   density and rhythm are what make that screen read, not the red.
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+    --star: rgb(238, 244, 255);
+    --cyan: rgb(120, 220, 240);
+    --violet: rgb(155, 109, 255);
+    --dust: rgb(150, 162, 186);
+    --dim: rgb(92, 99, 122);
+}
+
+/* ---------- shell ---------- */
+
 .save-root {
     flex-grow: 1;
     flex-direction: column;
@@ -10,230 +26,278 @@
 
 .save-backdrop {
     position: absolute;
-    top: 0;
     left: 0;
+    top: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(5, 3, 15, 0.94);
+    background-color: rgba(4, 6, 14, 0.93);
 }
 
-/* ── Title Bar ────────────────────────────────────────────── */
+/* ---------- header ----------
+   Label flanked by rules that run to both screen edges. */
+
 .save-header {
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-    height: 100px;
-    padding-left: 64px;
-    padding-right: 64px;
-    background-color: rgba(8, 5, 22, 0.98);
-    border-bottom-width: 2px;
-    border-bottom-color: rgba(190, 150, 50, 0.5);
+    margin-top: 54px;
+    margin-left: 7%;
+    margin-right: 7%;
 }
 
 .header-line {
     flex-grow: 1;
     height: 1px;
-    background-color: rgba(190, 150, 50, 0.3);
-    margin-top: 4px;
+    background-color: rgba(120, 220, 240, 0.35);
+}
+
+/* Small rotated square before the title — a mark, not an icon asset. */
+.header-mark {
+    width: 9px;
+    height: 9px;
+    rotate: 45deg;
+    background-color: var(--cyan);
+    margin-left: 18px;
+    margin-right: 14px;
 }
 
 .save-title-label {
-    -unity-font-definition: url("project://database/Assets/_Project/Fonts/Ottselesque-Regular.otf?fileID=12800000&guid=b00bfdbd79d843a46b8b3fb62f619d32&type=3#Ottselesque-Regular");
-    font-size: 52px;
-    color: rgb(215, 170, 65);
-    -unity-text-align: middle-center;
-    margin-left: 32px;
-    margin-right: 32px;
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: var(--star);
+    font-size: 26px;
+    letter-spacing: 9px;
+    background-color: rgba(0, 0, 0, 0);
+    margin-right: 22px;
 }
 
-/* ── Slots Container ──────────────────────────────────────── */
+/* ---------- rows ---------- */
+
 .slots-area {
     flex-grow: 1;
     flex-direction: column;
-    align-items: stretch;
     justify-content: center;
-    padding-left: 100px;
-    padding-right: 100px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    margin-left: 7%;
+    margin-right: 7%;
 }
 
-/* ── Card ─────────────────────────────────────────────────── */
 .slot-card {
     flex-direction: row;
-    align-items: stretch;
-    height: 158px;
-    margin-bottom: 20px;
-    border-radius: 14px;
-    border-left-width: 4px;
-    border-left-color: rgb(190, 150, 50);
-    border-top-width: 1px;
-    border-top-color: rgba(255, 255, 255, 0.06);
-    border-right-width: 1px;
-    border-right-color: rgba(255, 255, 255, 0.04);
-    border-bottom-width: 1px;
-    border-bottom-color: rgba(0, 0, 0, 0.35);
-    background-color: rgba(12, 8, 30, 0.88);
-    overflow: hidden;
-    transition-duration: 0.18s;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* The row itself. Transparent at rest; the fill and rail arrive on hover/focus. */
+.slot-main-btn {
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+    height: 92px;
+    padding-left: 0;
+    padding-right: 20px;
+    margin: 0;
+    background-color: rgba(255, 255, 255, 0.025);
+    border-width: 0;
+    border-radius: 0;
+    transition-property: background-color, translate;
+    transition-duration: 0.14s;
     transition-timing-function: ease-out;
 }
 
-/* ── Main Click Button ────────────────────────────────────── */
-.slot-main-btn {
-    flex-grow: 1;
-    align-items: stretch;
-    background-color: rgba(0, 0, 0, 0);
-    border-width: 0;
-    border-radius: 0;
-    padding: 0;
-    margin: 0;
-}
-
 .slot-main-btn:hover {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: rgba(120, 220, 240, 0.1);
+    translate: 5px 0;
 }
 
 .slot-main-btn:focus {
-    background-color: rgba(190, 150, 50, 0.10);
-    border-left-color: rgb(235, 190, 75);
+    background-color: rgba(120, 220, 240, 0.16);
+    translate: 5px 0;
 }
 
-/* ── HasDataContent  (thumbnail + info row) ───────────────── */
+/* Accent bar down the left edge of the active row. */
+.slot-rail {
+    width: 3px;
+    height: 100%;
+    flex-shrink: 0;
+    background-color: rgba(120, 220, 240, 0);
+    transition-property: background-color;
+    transition-duration: 0.14s;
+}
+
+.slot-main-btn:hover .slot-rail {
+    background-color: var(--violet);
+}
+
+.slot-main-btn:focus .slot-rail {
+    background-color: var(--cyan);
+}
+
 .slot-has-data {
     flex-grow: 1;
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
 }
 
-/* Screenshot / thumbnail placeholder */
 .slot-thumb {
-    width: 200px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-right-width: 1px;
-    border-right-color: rgba(190, 150, 50, 0.2);
+    width: 124px;
+    height: 70px;
+    flex-shrink: 0;
+    margin-left: 16px;
+    margin-right: 20px;
+    background-color: rgb(10, 14, 26);
+    border-width: 1px;
+    border-color: rgba(120, 220, 240, 0.28);
+    -unity-background-scale-mode: scale-and-crop;
 }
 
-/* Info column */
 .slot-info {
     flex-grow: 1;
     flex-direction: column;
     justify-content: center;
-    padding-left: 26px;
-    padding-right: 22px;
-    padding-top: 16px;
-    padding-bottom: 16px;
 }
 
 .slot-game-name {
-    -unity-font-definition: url("project://database/Assets/_Project/Fonts/Ottselesque-Regular.otf?fileID=12800000&guid=b00bfdbd79d843a46b8b3fb62f619d32&type=3#Ottselesque-Regular");
-    font-size: 30px;
-    color: rgb(235, 225, 205);
-    -unity-text-align: middle-left;
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: var(--star);
+    font-size: 21px;
+    letter-spacing: 3px;
+    background-color: rgba(0, 0, 0, 0);
 }
 
+/* Short rule under the title, not a full-width divider. */
 .slot-divider {
+    width: 44px;
     height: 1px;
-    background-color: rgba(190, 150, 50, 0.35);
-    margin-top: 8px;
-    margin-bottom: 8px;
+    background-color: rgba(155, 109, 255, 0.6);
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .slot-detail-text {
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
-    font-size: 17px;
-    color: rgb(150, 142, 122);
-    -unity-text-align: middle-left;
+    color: var(--cyan);
+    font-size: 13px;
+    letter-spacing: 2px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/* ---------- right-hand metadata ---------- */
+
+.slot-meta {
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.slot-id {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: var(--dust);
+    font-size: 13px;
+    letter-spacing: 4px;
+    background-color: rgba(0, 0, 0, 0);
+    margin-bottom: 6px;
+}
+
+.slot-id--empty {
+    color: var(--dim);
 }
 
 .slot-date {
-    color: rgb(115, 108, 90);
-    font-size: 15px;
-    margin-top: 3px;
+    color: var(--dust);
+    letter-spacing: 1px;
 }
 
-/* ── NoDataContent  (empty slot) ─────────────────────────── */
+/* ---------- empty slot ---------- */
+
 .slot-no-data {
     flex-grow: 1;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+}
+
+/* Dashed-looking placeholder where the thumbnail would be. */
+.slot-empty-box {
+    width: 124px;
+    height: 70px;
+    flex-shrink: 0;
+    margin-left: 16px;
+    margin-right: 20px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-width: 1px;
+    border-color: rgba(150, 162, 186, 0.22);
 }
 
 .slot-new-label {
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
-    font-size: 22px;
-    color: rgba(190, 150, 50, 0.45);
-    -unity-text-align: middle-center;
-}
-
-/* ── Clear Button ─────────────────────────────────────────── */
-.slot-clear-btn {
-    width: auto;
-    height: auto;
-    align-self: center;
-    margin-left: 12px;
-    margin-right: 16px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 16px;
-    padding-right: 16px;
-    background-color: rgba(180, 30, 30, 0.10);
-    border-width: 1px;
-    border-color: rgba(200, 50, 50, 0.3);
-    border-radius: 10px;
-    color: rgb(200, 70, 70);
+    flex-grow: 1;
+    color: var(--dim);
     font-size: 15px;
+    letter-spacing: 4px;
+    -unity-text-align: middle-left;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/* ---------- clear ---------- */
+
+.slot-clear-btn {
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
-    -unity-text-align: middle-center;
-    transition-duration: 0.15s;
+    width: 46px;
+    height: 92px;
+    margin-left: 6px;
+    font-size: 17px;
+    color: var(--dim);
+    background-color: rgba(255, 255, 255, 0.025);
+    border-width: 0;
+    border-radius: 0;
+    transition-property: background-color, color;
+    transition-duration: 0.14s;
 }
 
-.slot-clear-btn:hover {
-    background-color: rgba(210, 40, 40, 0.28);
-    border-color: rgb(210, 60, 60);
-    color: rgb(255, 110, 110);
-    scale: 1.05;
-}
-
+.slot-clear-btn:hover,
 .slot-clear-btn:focus {
-    background-color: rgba(210, 40, 40, 0.28);
-    border-color: rgb(210, 60, 60);
-    color: rgb(255, 110, 110);
+    background-color: rgba(226, 75, 75, 0.22);
+    color: rgb(255, 196, 196);
 }
 
-.slot-clear-btn:active {
-    scale: 0.95;
+/* ---------- footer ---------- */
+
+.save-footer {
+    flex-direction: row;
+    align-items: center;
+    margin-left: 7%;
+    margin-right: 7%;
+    margin-bottom: 30px;
+    padding-top: 12px;
+    border-top-width: 1px;
+    border-top-color: rgba(120, 220, 240, 0.22);
 }
 
-/* ── Back Button ──────────────────────────────────────────── */
 .save-back-btn {
-    align-self: flex-start;
-    margin-left: 100px;
-    margin-bottom: 42px;
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
-    color: rgb(190, 150, 50);
-    font-size: 22px;
-    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
-    -unity-text-align: middle-left;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 14px;
+    color: var(--cyan);
+    font-size: 16px;
+    letter-spacing: 4px;
+    padding-left: 0;
     padding-right: 14px;
-    transition-duration: 0.15s;
+    margin: 0;
+    transition-duration: 0.14s;
 }
 
-.save-back-btn:hover {
-    color: rgb(235, 190, 75);
-    padding-left: 24px;
-}
-
+.save-back-btn:hover,
 .save-back-btn:focus {
-    color: rgb(235, 190, 75);
-    padding-left: 24px;
+    color: var(--star);
+    padding-left: 8px;
 }
 
-.save-back-btn:active {
-    scale: 0.97;
+/* Small technical stamp, the way that screen litters its corners with readouts. */
+.save-techmark {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    position: absolute;
+    left: 7%;
+    top: 22px;
+    color: rgba(92, 99, 122, 0.8);
+    font-size: 11px;
+    letter-spacing: 3px;
+    background-color: rgba(0, 0, 0, 0);
 }

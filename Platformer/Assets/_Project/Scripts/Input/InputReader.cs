@@ -29,6 +29,8 @@ namespace Platformer
         public event UnityAction<bool> Aim = delegate { };
         public event UnityAction<bool> submit = delegate { };
         public event UnityAction Paused = delegate { };
+        public event UnityAction SkipIntro = delegate { };
+        public event UnityAction CharacterMenu = delegate { };
         public event UnityAction PreviousTab = delegate { };
         public event UnityAction NextTab = delegate { };
         public event UnityAction<RaycastHit> Click = delegate { };
@@ -217,7 +219,27 @@ namespace Platformer
                 inputActions.Disable();
             }
         }
-        public void OnEscape(InputAction.CallbackContext context)
+        // Generated from the Menu map. IMenuActions requires this once SkipIntro exists in
+        // the asset, so it has to land in the same change or nothing compiles.
+        public void OnSkipIntro(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed)
+            {
+                SkipIntro.Invoke();
+            }
+        }
+
+        // Opens the tabbed hub. Separate from Pause so the system menu and the gameplay
+        // screen no longer fight over one button.
+        public void OnCharacterMenu(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed)
+            {
+                CharacterMenu.Invoke();
+            }
+        }
+
+        public void OnPause(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
             {

@@ -1,47 +1,25 @@
 :root {
-    --void: rgb(5, 3, 14);
-    --violet: rgb(155, 109, 255);
-    --cyan: rgb(95, 230, 255);
-    --star: rgb(234, 230, 255);
-    --dust: rgb(110, 101, 144);
-    --dim: rgb(61, 54, 96);
+    --star: rgb(255, 255, 255);
+    --dust: rgb(176, 186, 205);
+    --dim: rgb(104, 112, 132);
+    --cyan: rgb(150, 225, 245);
 }
 
-/* ---------- screen scaffold ---------- */
+/* ---------- screen ----------
+   No scrim, no panel. The menu sits straight on the scene; legibility comes from the
+   capsule fill behind the active item and a soft shadow on the type. */
 
 .screen {
     flex-grow: 1;
     flex-direction: row;
-    background-color: rgba(0, 0, 0, 0);
-}
-
-/* USS has no linear-gradient, so the soft left edge is two stacked solids. */
-.scrim {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 30%;
-    background-color: rgba(5, 3, 14, 0.94);
-}
-
-.scrim-falloff {
-    position: absolute;
-    left: 30%;
-    top: 0;
-    bottom: 0;
-    width: 14%;
-    background-color: rgba(5, 3, 14, 0.45);
 }
 
 .menu-column {
-    width: 34%;
-    min-width: 320px;
+    width: 520px;
     flex-direction: column;
-    justify-content: space-between;
-    padding-left: 7%;
-    padding-top: 7%;
-    padding-bottom: 5%;
+    justify-content: flex-start;
+    padding-left: 86px;
+    padding-top: 90px;
 }
 
 /* ---------- title ---------- */
@@ -49,126 +27,376 @@
 .title {
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/Ottselesque-Regular.otf?fileID=12800000&guid=b00bfdbd79d843a46b8b3fb62f619d32&type=3#Ottselesque-Regular");
     color: var(--star);
-    font-size: 62px;
+    font-size: 56px;
+    letter-spacing: 3px;
     -unity-font-style: bold-and-italic;
     -unity-text-align: upper-left;
     white-space: normal;
     background-color: rgba(0, 0, 0, 0);
-    text-shadow: 0 3px 0 rgba(0, 0, 0, 0.65);
-    margin-bottom: 14px;
+    text-shadow: 0 2px 16px rgb(0, 0, 0);
 }
 
+/* The reference has no rule under its wordmark - the lens flare does that job. */
 .title-rule {
-    width: 170px;
-    height: 2px;
-    background-color: var(--violet);
+    width: 0;
+    height: 0;
 }
 
-/* ---------- menu items ---------- */
+/* ---------- menu ---------- */
 
 .menu-items {
     flex-direction: column;
+    margin-top: 150px;
 }
 
+/* The capsule. Transparent at rest so only the type shows, exactly as the reference:
+   the shape appears on hover rather than framing every item permanently. */
 .button {
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(255, 255, 255, 0);
     color: var(--star);
-    font-size: 30px;
-    letter-spacing: 6px;
+    font-size: 23px;
+    letter-spacing: 4px;
     -unity-text-align: middle-left;
-    align-self: flex-start;
-    height: auto;
-    width: auto;
+    width: 380px;
+    height: 46px;
     margin: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-right: 26px;
-    padding-left: 16px;
-    /* The rail is always present and transparent, so hover causes no layout shift. */
-    border-left-width: 3px;
-    border-left-color: rgba(155, 109, 255, 0);
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom-width: 0;
-    border-radius: 0;
-    text-shadow: 2px 2px 0 rgb(0, 0, 0);
-    transition-property: color, background-color, border-left-color, padding-left, letter-spacing;
-    transition-duration: 0.18s;
+    margin-bottom: 20px;
+    padding-left: 22px;
+    padding-right: 22px;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0);
+    /* Half the height, so the ends are true semicircles rather than soft corners. */
+    border-radius: 23px;
+    text-shadow: 0 2px 10px rgb(0, 0, 0);
+    transition-property: background-color, border-color, color, opacity, translate;
+    transition-duration: 0.14s;
     transition-timing-function: ease-out;
 }
 
 .button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.55);
     color: var(--star);
-    background-color: rgba(155, 109, 255, 0.09);
-    border-left-color: var(--violet);
-    padding-left: 26px;
-    letter-spacing: 8px;
 }
 
-/* Focus is cyan so gamepad navigation never looks like a mouse hover. */
+/* Focus carries a touch of cyan so gamepad navigation stays distinguishable from a
+   mouse hover without breaking the reference's look. */
 .button:focus {
-    color: var(--cyan);
-    background-color: rgba(95, 230, 255, 0.11);
-    border-left-color: var(--cyan);
-    padding-left: 26px;
-    letter-spacing: 8px;
+    background-color: rgba(180, 235, 255, 0.13);
+    border-color: rgba(190, 240, 255, 0.75);
+    color: var(--star);
 }
 
 .button:active {
-    color: var(--star);
-    background-color: rgba(95, 230, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Explicit opacity so we control the look instead of UI Toolkit's default dimming. */
 .button:disabled {
     opacity: 1;
     color: var(--dim);
-    background-color: rgba(0, 0, 0, 0);
-    border-left-color: rgba(155, 109, 255, 0);
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    background-color: rgba(255, 255, 255, 0);
+    border-color: rgba(255, 255, 255, 0);
+    text-shadow: 0 2px 8px rgb(0, 0, 0);
 }
 
-/* ---------- save context under Continue ---------- */
 
-.meta {
-    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
-    color: var(--dust);
-    font-size: 14px;
-    letter-spacing: 2px;
-    margin-left: 19px;
-    margin-top: -4px;
-    margin-bottom: 6px;
-    background-color: rgba(0, 0, 0, 0);
-}
-
-/* ---------- footer ---------- */
+/* ---------- exit ----------
+   Set apart by a gap, the way the reference separates EXIT from the rest. */
 
 .menu-footer {
     flex-direction: column;
+    margin-top: 26px;
 }
 
 .button--quiet {
-    font-size: 18px;
-    color: var(--dust);
-    letter-spacing: 5px;
+    font-size: 23px;
+    color: var(--star);
+    letter-spacing: 4px;
 }
 
 .button--quiet:hover {
-    color: rgb(201, 182, 255);
-    background-color: rgba(155, 109, 255, 0.07);
+    color: var(--star);
 }
 
-.button--quiet:focus {
-    color: var(--cyan);
+/* ---------- support panel ----------
+   Sits beside the menu rather than replacing it, so the links read as an aside and the
+   screen never goes blank. Hidden until SUPPORT is pressed. */
+
+.support {
+    position: absolute;
+    left: 560px;
+    top: 330px;
+    width: 400px;
+    flex-direction: column;
+    display: none;
+    opacity: 0;
+    translate: -14px 0;
+    transition-property: opacity, translate;
+    transition-duration: 0.18s;
+    transition-timing-function: ease-out;
 }
+
+.support--open {
+    opacity: 1;
+    translate: 0 0;
+}
+
+.support-heading {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: var(--star);
+    font-size: 17px;
+    letter-spacing: 4px;
+    background-color: rgba(0, 0, 0, 0);
+    text-shadow: 0 2px 10px rgb(0, 0, 0);
+    margin-bottom: 6px;
+    margin-left: 22px;
+}
+
+.support-blurb {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: var(--dust);
+    font-size: 13px;
+    letter-spacing: 1px;
+    white-space: normal;
+    background-color: rgba(0, 0, 0, 0);
+    text-shadow: 0 1px 6px rgb(0, 0, 0);
+    margin-bottom: 20px;
+    margin-left: 22px;
+    max-width: 330px;
+}
+
+/* ---------- controller diagram labels ----------
+   ControllerVisualTree's labels carry class="Text" and set their own size, width and
+   position inline. All they need from here is colour and legibility over the live scene.
+   middle-center matters: the Controller heading relies on it, while the callout labels
+   each override the alignment inline. */
+
+.Text {
+    color: var(--star);
+    background-color: rgba(0, 0, 0, 0);
+    -unity-text-align: middle-center;
+    text-shadow: 0 2px 10px rgb(0, 0, 0);
+}
+
+/* ---------- settings footer ----------
+   The tab sidebar's background stops at the bottom of the tab view, which left the back
+   button sitting on bare container with a visible notch. This gives the bottom strip its
+   own bar so the edge reads as deliberate. */
+
+.settings-footer {
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(8, 5, 22, 0.7);
+    border-top-width: 1px;
+    border-top-color: rgba(120, 200, 225, 0.25);
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-right: 30px;
+}
+
+/* Eats the slack so the back button stays left and the prompts sit hard right. */
+.prompt-spacer {
+    flex-grow: 1;
+}
+
+/* ---------- controller prompts ----------
+   Glyph plus action label, the way a console settings screen signs its own controls.
+   The buttons shown are the real Menu-map bindings: L1/R1 cycle tabs, Triangle submits,
+   Options backs out. */
+
+.prompt {
+    flex-direction: row;
+    align-items: center;
+    margin-left: 26px;
+}
+
+.prompt-glyph {
+    width: 30px;
+    height: 30px;
+    -unity-background-scale-mode: scale-to-fit;
+    margin-right: 9px;
+    flex-shrink: 0;
+}
+
+.prompt-label {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: rgb(208, 218, 232);
+    font-size: 14px;
+    letter-spacing: 2px;
+    background-color: rgba(0, 0, 0, 0);
+    -unity-text-align: middle-left;
+}
+
+/* ---------- confirmation dialog ----------
+   The script toggles display on the scrim, so keep flex-grow here rather than in UXML. */
+
+.dialog-scrim {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(3, 5, 12, 0.72);
+}
+
+.dialog-card {
+    width: 620px;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 46px;
+    padding-bottom: 38px;
+    padding-left: 46px;
+    padding-right: 46px;
+    background-color: rgba(10, 14, 26, 0.94);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.28);
+    border-radius: 16px;
+}
+
+.dialog-text {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: var(--star);
+    font-size: 24px;
+    letter-spacing: 1px;
+    -unity-text-align: middle-center;
+    white-space: normal;
+    background-color: rgba(0, 0, 0, 0);
+    text-shadow: 0 2px 10px rgb(0, 0, 0);
+    margin-bottom: 34px;
+}
+
+.dialog-actions {
+    flex-direction: row;
+    justify-content: center;
+}
+
+/* Narrower than a menu row, centred text, side by side - the full 380px capsule is
+   sized for a left-aligned list, not a pair of dialog actions. */
+.button--dialog {
+    width: 220px;
+    margin-bottom: 0;
+    margin-left: 9px;
+    margin-right: 9px;
+    -unity-text-align: middle-center;
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ---------- version ----------
+   Bottom-left under the menu, as the reference places it. */
 
 .version {
     position: absolute;
-    right: 24px;
-    bottom: 18px;
+    left: 86px;
+    bottom: 26px;
     color: var(--dim);
-    font-size: 13px;
-    letter-spacing: 2px;
+    font-size: 12px;
+    letter-spacing: 3px;
     background-color: rgba(0, 0, 0, 0);
+    text-shadow: 0 1px 6px rgb(0, 0, 0);
+}
+
+/* ---------- settings screen heading ----------
+   Sits above the sidebar, matching the section header on the content side so the two
+   read as one line across the divider. */
+
+.settings-heading {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    letter-spacing: 7px;
+    background-color: rgba(0, 0, 0, 0);
+    text-shadow: 0 2px 10px rgb(0, 0, 0);
+    margin-left: 46px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* ---------- settings header ----------
+   Mirror of .settings-footer. Without it the top strip was bare scene while the content
+   panel started below it, which read as the chrome being unfinished rather than airy. */
+
+.settings-header {
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(8, 5, 22, 0.7);
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(120, 200, 225, 0.25);
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/* ---------- sidebar backdrop ----------
+   Unity's .unity-tab-view__header-container sizes to its tabs rather than stretching, so a
+   background on it paints only a band around the list. This absolute sibling spans the row
+   outright, which is why the fill lives here and not on the TabView's own element. */
+
+.sidebar-backdrop {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 340px;
+    background-color: rgba(11, 8, 28, 0.88);
+}
+
+/* ---------- start gate ----------
+   Attract screen. The title stays visible behind it; only the menu items and footer are
+   held back, so the screen reads as one continuous shot rather than two separate screens. */
+
+.start-gate {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 13%;
+}
+
+.start-prompt {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: rgb(255, 255, 255);
+    font-size: 21px;
+    letter-spacing: 8px;
+    background-color: rgba(0, 0, 0, 0);
+    text-shadow: 0 2px 14px rgb(0, 0, 0);
+}
+
+/* Menu items are hidden rather than faded, so they cannot be focused or clicked
+   through while the gate is still up. */
+.gated {
+    display: none;
+}
+
+/* ---------- opening veil ----------
+   Full black over everything on load, then fades off. The radial darkening is the URP
+   Vignette override; USS has no radial gradient, so the two layers do different jobs. */
+
+.veil {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(0, 0, 0);
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 1.2s;
+    transition-timing-function: ease-out;
+}
+
+.veil--clear {
+    opacity: 0;
+}
+
+/* ---------- item entrance ----------
+   Resting state for an item that has not popped in yet. MainMenu.cs removes this class
+   one item at a time; the stagger is scheduled in C# rather than set as transition-delay
+   here, because a delay on .button would also delay every hover and focus transition. */
+
+.pop {
+    opacity: 0;
+    translate: 0 18px;
 }

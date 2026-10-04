@@ -1,125 +1,159 @@
-:root {
+/* ═══════════════════════════════════════════════════════
+   Pause Menu  —  PauseMenuStyle.uss
 
+   Left-hand panel over the frozen game, after Cyberpunk's pause screen: a tinted
+   column with a lit edge, a short list, Quit set apart by a rule, a system stamp
+   at the bottom and input prompts bottom-right.
+
+   Item styling matches the main menu's capsules so pausing feels like the same
+   product rather than a different screen.
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+    --star: rgb(238, 244, 255);
+    --cyan: rgb(120, 220, 240);
+    --violet: rgb(155, 109, 255);
+    --dust: rgb(150, 162, 186);
+    --dim: rgb(92, 99, 122);
 }
 
-/* Full-screen dim overlay */
+.pause-root {
+    flex-grow: 1;
+    flex-direction: row;
+}
+
+/* Dims the whole frame so the panel is not competing with gameplay behind it. */
 .pause-backdrop {
     position: absolute;
-    top: 0;
     left: 0;
+    top: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(5, 3, 15, 0.68);
+    background-color: rgba(3, 5, 12, 0.6);
 }
 
-/* Left panel */
 .pause-panel {
-    width: 460px;
+    width: 430px;
     flex-direction: column;
-    background-color: rgba(8, 5, 22, 0.97);
-    border-right-width: 2px;
-    border-right-color: rgba(190, 150, 50, 0.35);
-    padding-bottom: 50px;
+    background-color: rgba(6, 8, 20, 0.9);
+    padding-left: 56px;
+    padding-right: 32px;
+    padding-top: 13%;
+    padding-bottom: 34px;
 }
 
-/* Decorative header row inside panel */
+/* A single lit line down the panel's inner edge — the whole "this is a system
+   overlay" read comes from this one element. */
+.pause-edge {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: rgba(120, 220, 240, 0.5);
+}
+
+/* ---------- title ---------- */
+
 .pause-title-area {
     flex-direction: row;
     align-items: center;
-    padding-top: 52px;
-    padding-bottom: 20px;
-    padding-left: 36px;
-    padding-right: 36px;
 }
 
-.pause-title-line {
-    flex-grow: 1;
-    height: 1px;
-    background-color: rgba(190, 150, 50, 0.3);
-    margin-top: 4px;
+/* Rotated square, not an icon asset. */
+.pause-mark {
+    width: 9px;
+    height: 9px;
+    rotate: 45deg;
+    background-color: var(--cyan);
+    margin-right: 15px;
 }
 
-/* "GAME PAUSED" label */
 .pause-title-label {
-    -unity-font-definition: url("project://database/Assets/_Project/Fonts/Ottselesque-Regular.otf?fileID=12800000&guid=b00bfdbd79d843a46b8b3fb62f619d32&type=3#Ottselesque-Regular");
-    font-size: 30px;
-    color: rgb(215, 170, 65);
-    -unity-text-align: middle-center;
-    margin-left: 16px;
-    margin-right: 16px;
-    height: auto;
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: var(--star);
+    font-size: 27px;
+    letter-spacing: 9px;
     background-color: rgba(0, 0, 0, 0);
+    text-shadow: 0 2px 10px rgb(0, 0, 0);
 }
 
-/* Gold separator under title */
 .pause-divider {
     height: 1px;
-    background-color: rgba(190, 150, 50, 0.22);
-    margin-left: 36px;
-    margin-right: 36px;
+    background-color: rgba(120, 220, 240, 0.28);
+    margin-top: 18px;
+    margin-bottom: 30px;
 }
 
-/* Buttons column */
+/* Separates Quit from the rest, the way the reference sets it apart. */
+.pause-divider--tight {
+    margin-top: 18px;
+    margin-bottom: 18px;
+    background-color: rgba(150, 162, 186, 0.22);
+}
+
+/* ---------- items ---------- */
+
+/* Centres the list in the space under the title instead of stacking it at the top,
+   which left the lower half of the panel empty. */
 .pause-btn-list {
-    flex-direction: column;
     flex-grow: 1;
-    padding-top: 36px;
-    padding-left: 36px;
-    padding-right: 36px;
+    flex-direction: column;
     justify-content: center;
+    padding-bottom: 12%;
 }
 
-/* Pause menu button */
+/* Inherits everything from .button in MainMenuStyle - typography, capsule, hover and
+   focus states - so pausing looks like the same product. Only the width differs,
+   because the panel is 430px wide and the main menu button is 380px plus padding. */
 .pause-btn {
-    background-color: rgba(0, 0, 0, 0);
-    border-width: 0;
-    border-left-width: 3px;
-    border-left-color: rgba(190, 150, 50, 0);
-    border-radius: 0;
-    color: rgb(190, 178, 150);
-    font-size: 24px;
-    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
-    -unity-text-align: middle-left;
-    height: 54px;
-    width: auto;
-    margin-bottom: 6px;
-    padding-left: 18px;
-    transition-duration: 0.18s;
-    transition-timing-function: ease-out;
-    transform-origin: left;
+    width: 310px;
+    margin-bottom: 12px;
 }
 
-.pause-btn:hover {
-    color: rgb(255, 245, 215);
-    border-left-color: rgb(190, 150, 50);
-    padding-left: 28px;
-    scale: 1.03;
-}
-
-.pause-btn:focus {
-    color: rgb(255, 245, 215);
-    border-left-color: rgb(190, 150, 50);
-    padding-left: 28px;
-    scale: 1.03;
-}
-
-.pause-btn:active {
-    scale: 1.01;
-}
-
-/* Quit gets a red tint */
+/* Quit reads as the one destructive option without shouting. */
 .pause-btn-quit {
-    color: rgb(175, 80, 80);
-    margin-top: 24px;
-    border-left-color: rgba(200, 50, 50, 0);
+    color: var(--dust);
 }
 
 .pause-btn-quit:hover {
-    color: rgb(255, 110, 110);
-    border-left-color: rgb(200, 50, 50);
+    background-color: rgba(226, 75, 75, 0.18);
+    border-color: rgba(255, 150, 150, 0.6);
+    color: rgb(255, 205, 205);
 }
 
 .pause-btn-quit:focus {
-    color: rgb(255, 110, 110);
-    border-left-color: rgb(200, 50, 50);
+    background-color: rgba(226, 75, 75, 0.22);
+    border-color: rgba(255, 170, 170, 0.8);
+    color: rgb(255, 215, 215);
+}
+
+/* Prompts sit bottom-right of the screen, clear of the panel. */
+.pause-prompts {
+    position: absolute;
+    right: 34px;
+    bottom: 28px;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Confirmation line under Quicksave. Collapsed at rest so it does not reserve a gap
+   in the list; PauseMenu.cs shows it briefly after a save. */
+
+.pause-feedback {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
+    color: rgb(120, 220, 240);
+    font-size: 12px;
+    letter-spacing: 3px;
+    background-color: rgba(0, 0, 0, 0);
+    margin-left: 20px;
+    margin-top: -4px;
+    margin-bottom: 6px;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.18s;
+}
+
+.pause-feedback--shown {
+    opacity: 1;
 }

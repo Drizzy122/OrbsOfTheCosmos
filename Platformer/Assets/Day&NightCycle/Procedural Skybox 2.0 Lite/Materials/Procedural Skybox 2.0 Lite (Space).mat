@@ -105,16 +105,16 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _StarDensity: 250
+    - _StarDensity: 500
     - _StarHeight: -1
-    - _StarIntensity: 0.25
+    - _StarIntensity: 0.279
     - _StarSeed: 0
     - _SunConvergence: 9.12
     - _SunFlareIntensity: 0.1
     - _SunFlareLength: 0
     - _SunFlareRayCount: 8
-    - _SunHaze: 0.2
-    - _SunSize: 0.085
+    - _SunHaze: 0.5
+    - _SunSize: 0.017
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
@@ -127,3 +127,4 @@ Material:
     - _HorizonFogColor: {r: 1, g: 1, b: 1, a: 1}
     - _ZenithColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

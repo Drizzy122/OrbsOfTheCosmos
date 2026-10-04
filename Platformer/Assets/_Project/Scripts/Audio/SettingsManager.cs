@@ -15,12 +15,8 @@ namespace Platformer
         [field: Header("UI Document")]
         [field: SerializeField] private PanelRenderer document;
         private VisualElement rootContainer;
-
-        [Header("Behavior")]
-        [SerializeField, Tooltip(
-            "True (standalone): SettingsContainer starts hidden, shown via ActivateMenu().\n" +
-            "False (embedded in MenuHub): TabView controls visibility — don't auto-hide.")]
-        private bool startHidden = true;
+        // Every panel we are listening to, so OnDestroy can let go of all of them.
+        private readonly List<PanelRenderer> listening = new List<PanelRenderer>();
 
         [field: Header("Window Mode")]
         [field: SerializeField] private string[] windowModes = { "Fullscreen", "Borderless", "Maximized", "Windowed" };
@@ -76,27 +72,68 @@ namespace Platformer
             InitializeSettingsData();
 
             if (document == null) document = GetComponent<PanelRenderer>();
-            document.RegisterUIReloadCallback(OnUIReload);
+            Listen(document);
+
+            // The settings tree is not always carried by the panel this component sits on -
+            // in the Game scene it rides along inside the pause panel - and a PanelRenderer
+            // exposes no root outside its reload callback. So listen to every panel in the
+            // scene and keep whichever one answers to SettingsContainer.
+            foreach (var panel in FindObjectsByType<PanelRenderer>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                Listen(panel);
+            }
+
+            StartCoroutine(WarnIfUnbound());
+        }
+
+        private void Listen(PanelRenderer panel)
+        {
+            if (panel == null || listening.Contains(panel)) return;
+            listening.Add(panel);
+            panel.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        /// <summary>Panels can build a frame late, so the complaint waits a frame before
+        /// deciding that nothing in the scene hosts the settings tree at all.</summary>
+        private System.Collections.IEnumerator WarnIfUnbound()
+        {
+            yield return null;
+            if (rootContainer == null)
+            {
+                Debug.LogWarning("SettingsManager: no panel in this scene contains 'SettingsContainer'. " +
+                                 "Instance SettingsVisualTree into one of the scene's UI panels.");
+            }
         }
 
         private void OnDestroy()
         {
-            if (document != null) document.UnregisterUIReloadCallback(OnUIReload);
+            foreach (var panel in listening)
+            {
+                if (panel != null) panel.UnregisterUIReloadCallback(OnUIReload);
+            }
+            listening.Clear();
         }
 
-        private void OnUIReload(PanelRenderer _, VisualElement root)
+        private void OnUIReload(PanelRenderer panel, VisualElement root)
         {
-            rootContainer = root.Q<VisualElement>("SettingsContainer");
-            if (rootContainer == null)
-            {
-                Debug.LogWarning("SettingsManager: 'SettingsContainer' not found in the loaded UI.");
-                return;
-            }
+            var container = root.Q<VisualElement>("SettingsContainer");
+
+            // Not this panel's tree. Stay registered: the hosting panel may not have built yet.
+            if (container == null) return;
+
+            // Already bound to a different panel - first one to answer wins.
+            if (rootContainer != null && document != panel) return;
+
+            document = panel;
+            rootContainer = container;
 
             InitializeUIElements();
             BindUIEvents();
             RefreshAllUI();
-            if (startHidden) DeactivateMenu();
+
+            // Hidden until something asks for it. Every host opens Settings through
+            // ActivateMenu(), so it never wants to be visible straight off a reload.
+            DeactivateMenu();
         }
 
         #region Initialization Methods

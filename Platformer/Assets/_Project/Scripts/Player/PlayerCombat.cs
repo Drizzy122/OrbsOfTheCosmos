@@ -62,6 +62,10 @@ namespace Platformer
         [field: SerializeField] [Range(0, 20)] float targetingRadius = 8f;
         [field: SerializeField] float slideDuration = 0.2f;
         [field: SerializeField] float maxLungeRange = 6f;
+        [Tooltip("Geometry the lunge must not pass through. Without this the warp goes straight through walls to an enemy on the other side.")]
+        [field: SerializeField] LayerMask lungeObstacles;
+        [Tooltip("Skip the lunge when the target is further than this above or below us — otherwise an enemy on a ledge drags the warp into thin air.")]
+        [field: SerializeField] float maxLungeHeightDifference = 3f;
 
         private Tween lungeMoveTween;
         private Tween pendingAttackCall;
@@ -290,6 +294,33 @@ namespace Platformer
         }
 
 
+        /// <summary>Gates the warp. The lunge is a DOMove straight to a point beside the enemy,
+        /// so without these checks it passes through walls and yanks us off ledges — it ignores
+        /// the collider entirely because it writes the transform rather than moving the body.</summary>
+        private bool CanLungeTo(Transform target, Vector3 flatDirection, Vector3 stopPosition)
+        {
+            // An enemy on a balcony is a valid target to face, but not one to warp to.
+            if (Mathf.Abs(target.position.y - transform.position.y) > maxLungeHeightDifference)
+            {
+                return false;
+            }
+
+            if (lungeObstacles.value == 0) return true;
+
+            // Cast from chest height so floor geometry doesn't count as a blocker.
+            Vector3 origin = transform.position + Vector3.up;
+            float distanceToStop = Vector3.Distance(transform.position, stopPosition);
+
+            if (Physics.Raycast(origin, flatDirection, out RaycastHit hit, distanceToStop, lungeObstacles,
+                    QueryTriggerInteraction.Ignore))
+            {
+                // Something solid is nearer than where we would land, so stay put and swing.
+                return false;
+            }
+
+            return true;
+        }
+
         public void lunge(Vector3 inputDirection)
         {
             float lungeDistance = 0f;
@@ -312,7 +343,7 @@ namespace Platformer
                 transform.DOLookAt(target.position, 0.1f, AxisConstraint.Y);
 
                 // Only warp within a sane range — beyond it we just face the target
-                if (lungeDistance <= maxLungeRange)
+                if (lungeDistance <= maxLungeRange && CanLungeTo(target, directionToTarget, stopPosition))
                 {
                     lungeMoveTween = transform.DOMove(stopPosition, slideDuration).SetEase(Ease.OutQuad);
                 }

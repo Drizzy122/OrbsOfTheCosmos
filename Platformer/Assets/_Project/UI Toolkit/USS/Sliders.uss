@@ -8,14 +8,14 @@
 
 /* ── Fill (progress portion) ───────────────────── */
 .unity-base-slider__fill {
-    background-color: rgb(165, 125, 40);
+    background-color: rgb(80, 140, 165);
     border-radius: 5px;
     border-width: 0;
 }
 
 /* ── Drag handle ────────────────────────────────── */
 .unity-base-slider__dragger {
-    background-color: rgb(220, 180, 75);
+    background-color: rgb(150, 220, 242);
     border-radius: 50%;
     border-width: 0;
     width: 18px;
@@ -25,7 +25,7 @@
 /* ── Label (the text left of the slider) ────────── */
 .unity-base-field__label {
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
-    color: rgb(210, 200, 180);
+    color: rgb(208, 218, 232);
     font-size: 22px;
     -unity-text-align: middle-left;
     flex-basis: 380px;
@@ -48,12 +48,12 @@
 
 /* ── Focused by controller ──────────────────────── */
 .unity-base-slider:focus {
-    background-color: rgba(190, 150, 50, 0.10);
-    border-color: rgba(190, 150, 50, 0.5);
+    background-color: rgba(120, 200, 225, 0.10);
+    border-color: rgba(120, 200, 225, 0.5);
 }
 
 .unity-base-slider:focus .unity-base-slider__dragger {
-    background-color: rgb(255, 215, 100);
+    background-color: rgb(200, 240, 255);
     width: 22px;
     height: 22px;
 }

@@ -1119,7 +1119,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""88e412cc-76df-4e21-9003-fcc920ce4594"",
             ""actions"": [
                 {
-                    ""name"": ""Escape"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""5e4caa00-a1c5-4e7c-8598-ef9cf687421b"",
                     ""expectedControlType"": """",
@@ -1167,6 +1167,26 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""initialStateCheck"": false,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""SkipIntro"",
+                    ""type"": ""Button"",
+                    ""id"": ""d9026de8-a43b-41f0-9697-ee42fffe3e23"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
+                    ""name"": ""CharacterMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""683cea52-8e97-45f9-bba3-2e773f68d79f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -1177,7 +1197,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Escape"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1188,7 +1208,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Escape"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1271,12 +1291,45 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""cf2d20fd-0433-49c1-b72d-29b85c4ac4f8"",
-                    ""path"": ""<DualShockGamepad>/touchpadButton"",
+                    ""id"": ""f35e9ef0-3e96-4d1f-b89c-69b1b9357842"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""QuestLogToggle"",
+                    ""action"": ""SkipIntro"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd942d77-11a0-48fb-b2e4-d1c48f3815e6"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipIntro"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3e481dc-a58f-4cca-88a3-dacc849c3fcd"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CharacterMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e382902-11d1-480d-b32b-f7e5077ee4b5"",
+                    ""path"": ""<DualSenseGamepadHID>/touchpadButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CharacterMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1376,11 +1429,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
-        m_Menu_Escape = m_Menu.FindAction("Escape", throwIfNotFound: true);
+        m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
         m_Menu_PreviousTab = m_Menu.FindAction("PreviousTab", throwIfNotFound: true);
         m_Menu_NextTab = m_Menu.FindAction("NextTab", throwIfNotFound: true);
         m_Menu_Submit = m_Menu.FindAction("Submit", throwIfNotFound: true);
         m_Menu_QuestLogToggle = m_Menu.FindAction("QuestLogToggle", throwIfNotFound: true);
+        m_Menu_SkipIntro = m_Menu.FindAction("SkipIntro", throwIfNotFound: true);
+        m_Menu_CharacterMenu = m_Menu.FindAction("CharacterMenu", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -1897,11 +1952,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Menu
     private readonly InputActionMap m_Menu;
     private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
-    private readonly InputAction m_Menu_Escape;
+    private readonly InputAction m_Menu_Pause;
     private readonly InputAction m_Menu_PreviousTab;
     private readonly InputAction m_Menu_NextTab;
     private readonly InputAction m_Menu_Submit;
     private readonly InputAction m_Menu_QuestLogToggle;
+    private readonly InputAction m_Menu_SkipIntro;
+    private readonly InputAction m_Menu_CharacterMenu;
     /// <summary>
     /// Provides access to input actions defined in input action map "Menu".
     /// </summary>
@@ -1914,9 +1971,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public MenuActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Menu/Escape".
+        /// Provides access to the underlying input action "Menu/Pause".
         /// </summary>
-        public InputAction @Escape => m_Wrapper.m_Menu_Escape;
+        public InputAction @Pause => m_Wrapper.m_Menu_Pause;
         /// <summary>
         /// Provides access to the underlying input action "Menu/PreviousTab".
         /// </summary>
@@ -1933,6 +1990,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Menu/QuestLogToggle".
         /// </summary>
         public InputAction @QuestLogToggle => m_Wrapper.m_Menu_QuestLogToggle;
+        /// <summary>
+        /// Provides access to the underlying input action "Menu/SkipIntro".
+        /// </summary>
+        public InputAction @SkipIntro => m_Wrapper.m_Menu_SkipIntro;
+        /// <summary>
+        /// Provides access to the underlying input action "Menu/CharacterMenu".
+        /// </summary>
+        public InputAction @CharacterMenu => m_Wrapper.m_Menu_CharacterMenu;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1959,9 +2024,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MenuActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MenuActionsCallbackInterfaces.Add(instance);
-            @Escape.started += instance.OnEscape;
-            @Escape.performed += instance.OnEscape;
-            @Escape.canceled += instance.OnEscape;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
             @PreviousTab.started += instance.OnPreviousTab;
             @PreviousTab.performed += instance.OnPreviousTab;
             @PreviousTab.canceled += instance.OnPreviousTab;
@@ -1974,6 +2039,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @QuestLogToggle.started += instance.OnQuestLogToggle;
             @QuestLogToggle.performed += instance.OnQuestLogToggle;
             @QuestLogToggle.canceled += instance.OnQuestLogToggle;
+            @SkipIntro.started += instance.OnSkipIntro;
+            @SkipIntro.performed += instance.OnSkipIntro;
+            @SkipIntro.canceled += instance.OnSkipIntro;
+            @CharacterMenu.started += instance.OnCharacterMenu;
+            @CharacterMenu.performed += instance.OnCharacterMenu;
+            @CharacterMenu.canceled += instance.OnCharacterMenu;
         }
 
         /// <summary>
@@ -1985,9 +2056,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="MenuActions" />
         private void UnregisterCallbacks(IMenuActions instance)
         {
-            @Escape.started -= instance.OnEscape;
-            @Escape.performed -= instance.OnEscape;
-            @Escape.canceled -= instance.OnEscape;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
             @PreviousTab.started -= instance.OnPreviousTab;
             @PreviousTab.performed -= instance.OnPreviousTab;
             @PreviousTab.canceled -= instance.OnPreviousTab;
@@ -2000,6 +2071,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @QuestLogToggle.started -= instance.OnQuestLogToggle;
             @QuestLogToggle.performed -= instance.OnQuestLogToggle;
             @QuestLogToggle.canceled -= instance.OnQuestLogToggle;
+            @SkipIntro.started -= instance.OnSkipIntro;
+            @SkipIntro.performed -= instance.OnSkipIntro;
+            @SkipIntro.canceled -= instance.OnSkipIntro;
+            @CharacterMenu.started -= instance.OnCharacterMenu;
+            @CharacterMenu.performed -= instance.OnCharacterMenu;
+            @CharacterMenu.canceled -= instance.OnCharacterMenu;
         }
 
         /// <summary>
@@ -2290,12 +2367,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface IMenuActions
     {
         /// <summary>
-        /// Method invoked when associated input action "Escape" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnEscape(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "PreviousTab" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -2324,5 +2401,19 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnQuestLogToggle(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SkipIntro" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkipIntro(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "CharacterMenu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCharacterMenu(InputAction.CallbackContext context);
     }
 }

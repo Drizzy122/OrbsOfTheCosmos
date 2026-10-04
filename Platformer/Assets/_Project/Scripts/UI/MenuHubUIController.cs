@@ -6,7 +6,7 @@ using Cursor = UnityEngine.Cursor;
 
 namespace Platformer
 {
-    public enum MenuTab { Map, QuestLog, Character, Inventory, Abilities, Settings }
+    public enum MenuTab { Map, QuestLog, Character, Inventory, Abilities }
 
     /// <summary>
     /// Owns the menu hub shell: toggle via pause button, cycle tabs with LB/RB,
@@ -30,7 +30,7 @@ namespace Platformer
         // LB/RB cycle through this order. Must match the Tab order in the UXML.
         static readonly MenuTab[] TabOrder =
         {
-            MenuTab.Map, MenuTab.QuestLog, MenuTab.Character, MenuTab.Inventory, MenuTab.Abilities, MenuTab.Settings
+            MenuTab.Map, MenuTab.QuestLog, MenuTab.Character, MenuTab.Inventory, MenuTab.Abilities
         };
 
         VisualElement panel;
@@ -38,6 +38,12 @@ namespace Platformer
 
         MenuTab activeTab;
         bool isOpen;
+
+        /// <summary>Lets PauseMenu refuse to open on top of this screen.</summary>
+        public bool IsOpen => isOpen;
+
+        [Tooltip("Found automatically when left empty. Used only to refuse opening while paused.")]
+        [SerializeField] PauseMenu pauseMenu;
 
         // Context to restore on close — pausing mid-dialogue must return to
         // DIALOGUE, not DEFAULT, so NPCs don't react to menu button presses.
@@ -85,6 +91,11 @@ namespace Platformer
             Cursor.visible = true;
             if (input != null) input.EnablePlayerMap();
 
+            // Clear this before leaving. The scene stays alive behind the loading screen and
+            // is torn down at activation, where OnDisable calls Close() if we are still open —
+            // and Close() re-locks the cursor for gameplay we are in the middle of leaving.
+            isOpen = false;
+
             SceneLoader.Load(mainMenuSceneName);
         }
 
@@ -100,7 +111,9 @@ namespace Platformer
         void SubscribeInput()
         {
             if (input == null) return;
-            input.Paused      += Toggle;
+            // The tabbed hub is a gameplay screen, not the system menu — it opens on its own
+            // button (I / touchpad) so PauseMenu can own Escape and Start.
+            input.CharacterMenu += Toggle;
             input.PreviousTab += OnPreviousTab;
             input.NextTab     += OnNextTab;
         }
@@ -108,7 +121,7 @@ namespace Platformer
         void UnsubscribeInput()
         {
             if (input == null) return;
-            input.Paused      -= Toggle;
+            input.CharacterMenu -= Toggle;
             input.PreviousTab -= OnPreviousTab;
             input.NextTab     -= OnNextTab;
         }
@@ -136,8 +149,14 @@ namespace Platformer
 
         void Toggle()
         {
-            if (isOpen) Close();
-            else Open();
+            if (isOpen) { Close(); return; }
+
+            // The two screens are both full-frame overlays; opening one over the other
+            // leaves both visible and both taking input.
+            if (pauseMenu == null) pauseMenu = FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
+            if (pauseMenu != null && pauseMenu.IsPaused) return;
+
+            Open();
         }
 
         void Open()

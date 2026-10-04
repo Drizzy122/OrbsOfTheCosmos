@@ -40,6 +40,7 @@ namespace Platformer
         // Longest single frame the bar animation will honour. Caps load-hitch spikes.
         const float MaxAnimationStep = 0.05f;
 
+        VisualElement panelRoot;
         VisualElement root;
         VisualElement barFill;
         Label percentLabel;
@@ -72,6 +73,7 @@ namespace Platformer
 
         void OnUIReload(PanelRenderer _, VisualElement uiRoot)
         {
+            panelRoot = uiRoot;
             root = uiRoot.Q<VisualElement>("LoadingRoot");
             barFill = uiRoot.Q<VisualElement>("BarFill");
             percentLabel = uiRoot.Q<Label>("LoadingPercent");
@@ -106,6 +108,13 @@ namespace Platformer
         IEnumerator LoadRoutine(string sceneName)
         {
             isLoading = true;
+
+            // The renderer is kept off between loads so this panel is not in UI Toolkit's
+            // panel stack at all. Re-enabling rebuilds it, which re-fires OnUIReload and
+            // re-queries every element — so wait a frame before touching any of them.
+            if (panel != null) panel.enabled = true;
+            yield return null;
+
             ShowOverlay();
 
             // Let the overlay actually paint at 0% before the load starts hitching the
@@ -124,8 +133,8 @@ namespace Platformer
                 // Belt and braces: never leave isLoading stuck true, or every later
                 // load would silently no-op behind a permanent overlay.
                 Debug.LogError($"[SceneLoader] Could not begin loading '{sceneName}'.");
-                HideOverlay();
                 isLoading = false;
+                HideOverlay();
                 yield break;
             }
             op.allowSceneActivation = false;
@@ -169,8 +178,8 @@ namespace Platformer
             // One frame for the new scene's Awake/Start to run before we uncover it.
             yield return null;
 
-            HideOverlay();
             isLoading = false;
+            HideOverlay();
         }
 
         void Paint(float t)
@@ -182,6 +191,9 @@ namespace Platformer
         void ShowOverlay()
         {
             if (root == null) return;
+
+            // Taking picking back only while the overlay is actually up.
+            if (panelRoot != null) panelRoot.pickingMode = PickingMode.Position;
 
             if (tipLabel != null && tips != null && tips.Length > 0)
             {
@@ -199,6 +211,16 @@ namespace Platformer
             if (root == null) return;
             root.style.opacity = 0f;
             root.style.display = DisplayStyle.None;
+
+            // Hiding the content is not enough. This panel is DontDestroyOnLoad at sorting
+            // order 200, so its own root outlives every scene and sits above the menu's panel.
+            // Left pickable it swallows clicks meant for whatever loaded underneath.
+            if (panelRoot != null) panelRoot.pickingMode = PickingMode.Ignore;
+
+            // Picking only governs the mouse. Keyboard and gamepad navigation are routed by
+            // panel, so a live panel above the menu can still swallow those. Turning the
+            // renderer off takes it out of the stack entirely. Never while a load is running.
+            if (!isLoading && panel != null) panel.enabled = false;
         }
     }
 }

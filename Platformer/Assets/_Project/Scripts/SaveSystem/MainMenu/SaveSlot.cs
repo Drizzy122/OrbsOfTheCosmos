@@ -66,22 +66,22 @@ namespace Platformer
         private void LoadDynamicThumbnail()
         {
             
-            string thumbnailPath = $"Thumbnails/{profileId}";
-            Texture2D loadedTexture = Resources.Load<Texture2D>(thumbnailPath);
+            // The real shot, captured when the player last paused, lives next to the save in
+            // persistentDataPath. There is no Resources fallback any more — those could only
+            // ever be static placeholders, and a profile that has not been quicksaved simply
+            // shows the styled empty frame instead.
+            Texture2D loadedTexture = SaveThumbnail.Load(profileId);
 
             if (loadedTexture != null)
             {
-                // Apply the texture to the element.
-                thumbnailImage.style.backgroundImage = new StyleBackground(loadedTexture); // Use Texture2D
-
-                // Ensure the background scales correctly within the element
-                thumbnailImage.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+                thumbnailImage.style.backgroundImage = new StyleBackground(loadedTexture);
+                thumbnailImage.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Cover);
             }
             else
             {
-                // Safety: If the texture couldn't be loaded, reset the background.
-                Debug.LogWarning($"Thumbnail image not found at path: {thumbnailPath}");
-                // thumbnailImage.style.backgroundImage = null;
+                // Cleared rather than left as-is: slots are reused across profiles, so a
+                // stale texture would otherwise linger on a save that has no thumbnail.
+                thumbnailImage.style.backgroundImage = StyleKeyword.None;
             }
         }
 

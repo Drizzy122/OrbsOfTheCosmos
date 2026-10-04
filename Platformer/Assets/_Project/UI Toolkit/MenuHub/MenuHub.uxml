@@ -2,7 +2,6 @@
     <ui:Template name="AbilityTreeUI" src="project://database/Assets/_Project/UI%20Toolkit/AbilityTree/AbilityTreeUI.uxml?fileID=9197481963319205126&amp;guid=5963d354c01f46540863b22dcc5a5752&amp;type=3#AbilityTreeUI"/>
     <ui:Template name="CharacterUI" src="project://database/Assets/_Project/UI%20Toolkit/Inventory/CharacterUI.uxml?fileID=9197481963319205126&amp;guid=9de00a6c0cb40ca469cf5f4a7e8c6804&amp;type=3#CharacterUI"/>
     <ui:Template name="InventoryUI" src="project://database/Assets/_Project/UI%20Toolkit/Inventory/InventoryUI.uxml?fileID=9197481963319205126&amp;guid=aa5766b19237d15468765576c59a60b2&amp;type=3#InventoryUI"/>
-    <ui:Template name="SettingsVisualTree" src="project://database/Assets/_Project/UI%20Toolkit/VisualTrees/SettingsUI/SettingsVisualTree.uxml?fileID=9197481963319205126&amp;guid=2a731d1fdb16de14587eeb9e1c972a5c&amp;type=3#SettingsVisualTree"/>
     <Style src="project://database/Assets/_Project/UI%20Toolkit/MenuHub/MenuHub.uss?fileID=7433441132597879392&amp;guid=19309dbc850e9154eb99380dc1fb81d7&amp;type=3#MenuHub"/>
     <ui:VisualElement name="menu-hub" class="menu-hub" style="display: flex;">
         <ui:VisualElement name="info-bar" class="info-bar">
@@ -31,12 +30,20 @@
             <ui:Tab name="tab-Abilities" label="ABILITIES">
                 <ui:Instance template="AbilityTreeUI"/>
             </ui:Tab>
-            <ui:Tab name="tab-Settings" label="SETTINGS">
-                <ui:Instance template="SettingsVisualTree"/>
-            </ui:Tab>
         </ui:TabView>
         <ui:VisualElement name="hints-bar" class="hints-bar">
-            <ui:Label name="hint-label" text="LB / RB  ·  Switch Tabs        B  ·  Close" class="hint-label"/>
+            <ui:VisualElement class="hub-prompt" picking-mode="Ignore">
+                <ui:VisualElement class="hub-prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/L1.png?fileID=2800000&amp;guid=65d282dc2d15bc34eab281ee375c5eba&amp;type=3#L1&quot;);"/>
+                <ui:Label text="PREV TAB" class="hub-prompt-label"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="hub-prompt" picking-mode="Ignore">
+                <ui:VisualElement class="hub-prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/R1.png?fileID=2800000&amp;guid=3f2efc65f946eef4ea8fe6cc99733248&amp;type=3#R1&quot;);"/>
+                <ui:Label text="NEXT TAB" class="hub-prompt-label"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="hub-prompt" picking-mode="Ignore">
+                <ui:VisualElement class="hub-prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/Touch%20Pad%20Press.png?fileID=2800000&amp;guid=489109e8582a58d4b8ffe5c14c2aa39e&amp;type=3#Touch Pad Press&quot;);"/>
+                <ui:Label text="CLOSE" class="hub-prompt-label"/>
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

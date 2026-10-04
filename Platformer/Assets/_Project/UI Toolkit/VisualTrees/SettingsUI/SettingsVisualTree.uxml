@@ -8,8 +8,12 @@
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/Sliders.uss?fileID=7433441132597879392&amp;guid=75107247cfbf21d45bd25fc08921f8d5&amp;type=3#Sliders"/>
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/Toggles.uss?fileID=7433441132597879392&amp;guid=556ece4fc6adc734d95e8d4ea03bd7ae&amp;type=3#Toggles"/>
     <ui:VisualElement name="SettingsContainer" style="flex-grow: 1; flex-direction: column; background-color: rgba(5, 3, 15, 0.96); display: flex;">
+        <ui:VisualElement name="SettingsHeader" class="settings-header" picking-mode="Ignore">
+            <ui:Label text="SETTINGS" name="SettingsHeading" class="settings-heading" picking-mode="Ignore"/>
+        </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 1; flex-direction: row; position: relative;">
-            <ui:VisualElement name="Border" style="position: absolute; left: 340px; top: 0; bottom: 0; width: 2px; background-color: rgba(190, 150, 50, 0.35);"/>
+            <ui:VisualElement name="SidebarBackdrop" class="sidebar-backdrop" picking-mode="Ignore"/>
+            <ui:VisualElement name="Border" style="position: absolute; left: 340px; top: 0; bottom: 0; width: 2px; background-color: rgba(120, 200, 225, 0.35);"/>
             <ui:TabView style="flex-grow: 1; border-width: 0;">
                 <ui:Tab label="Audio" name="AudioTab">
                     <ui:Instance template="AudioSettingsVisualTree"/>
@@ -25,7 +29,28 @@
                 </ui:Tab>
             </ui:TabView>
         </ui:VisualElement>
-        <ui:Button text="← Back" name="BackButton" class="back-btn"/>
-        <ui:Button text="RETURN TO MAIN MENU" name="ReturnToMenuButton" class="back-btn" style="display: none;"/>
+        <ui:VisualElement name="SettingsFooter" class="settings-footer">
+            <ui:Button text="← Back" name="BackButton" class="back-btn"/>
+            <ui:Button text="RETURN TO MAIN MENU" name="ReturnToMenuButton" class="back-btn" style="display: none;"/>
+
+            <ui:VisualElement name="PromptSpacer" class="prompt-spacer" picking-mode="Ignore"/>
+
+            <ui:VisualElement name="PromptPrevTab" class="prompt" picking-mode="Ignore">
+                <ui:VisualElement class="prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/L1.png?fileID=2800000&amp;guid=65d282dc2d15bc34eab281ee375c5eba&amp;type=3#L1&quot;);"/>
+                <ui:Label text="PREV TAB" class="prompt-label" picking-mode="Ignore"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="PromptNextTab" class="prompt" picking-mode="Ignore">
+                <ui:VisualElement class="prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/R1.png?fileID=2800000&amp;guid=3f2efc65f946eef4ea8fe6cc99733248&amp;type=3#R1&quot;);"/>
+                <ui:Label text="NEXT TAB" class="prompt-label" picking-mode="Ignore"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="PromptSelect" class="prompt" picking-mode="Ignore">
+                <ui:VisualElement class="prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/Triangle.png?fileID=2800000&amp;guid=5e35625cb808b5449aacb853b23469ba&amp;type=3#Triangle&quot;);"/>
+                <ui:Label text="SELECT" class="prompt-label" picking-mode="Ignore"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="PromptBack" class="prompt" picking-mode="Ignore">
+                <ui:VisualElement class="prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/Options.png?fileID=2800000&amp;guid=0000f5c6f22e0c84eafa6d5108aa6370&amp;type=3#Options&quot;);"/>
+                <ui:Label text="BACK" class="prompt-label" picking-mode="Ignore"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

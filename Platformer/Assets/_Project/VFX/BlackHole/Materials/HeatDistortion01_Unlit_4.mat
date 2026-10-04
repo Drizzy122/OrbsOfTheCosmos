@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeatDistortion01_Unlit_4
-  m_Shader: {fileID: -6465566751694194690, guid: 790492006ae46434489d848effb078eb,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 790492006ae46434489d848effb078eb, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

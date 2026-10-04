@@ -1,21 +1,46 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="SettingsVisualTree" src="project://database/Assets/_Project/UI%20Toolkit/VisualTrees/SettingsUI/SettingsVisualTree.uxml?fileID=9197481963319205126&amp;guid=2a731d1fdb16de14587eeb9e1c972a5c&amp;type=3#SettingsVisualTree"/>
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=1e607d4d39bbf3c4aa48749712dc3062&amp;type=3#MainMenuStyle"/>
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/PauseMenuStyle.uss?fileID=7433441132597879392&amp;guid=b9e14283c6890e44f882f2d60de6a6e8&amp;type=3#PauseMenuStyle"/>
-    <ui:VisualElement name="PauseMenuContents" style="flex-grow: 1; display: none; flex-direction: row;">
-        <ui:VisualElement class="pause-backdrop"/>
+    <ui:VisualElement name="PauseMenuContents" class="pause-root" style="display: none;">
+        <ui:VisualElement class="pause-backdrop" picking-mode="Ignore"/>
+
         <ui:VisualElement class="pause-panel">
-            <ui:VisualElement class="pause-title-area">
-                <ui:VisualElement class="pause-title-line"/>
-                <ui:Label text="GAME PAUSED" name="Header" class="pause-title-label"/>
-                <ui:VisualElement class="pause-title-line"/>
+            <ui:VisualElement class="pause-edge" picking-mode="Ignore"/>
+
+            <ui:VisualElement class="pause-title-area" picking-mode="Ignore">
+                <ui:VisualElement class="pause-mark" picking-mode="Ignore"/>
+                <ui:Label text="PAUSED" name="Header" class="pause-title-label"/>
             </ui:VisualElement>
-            <ui:VisualElement class="pause-divider"/>
+            <ui:VisualElement class="pause-divider" picking-mode="Ignore"/>
+
             <ui:VisualElement name="ButtonContent" class="pause-btn-list">
-                <ui:Button text="Continue Game" name="ContinueGameButton" class="pause-btn"/>
-                <ui:Button text="Load Game" name="LoadGameButton" class="pause-btn"/>
-                <ui:Button text="Settings" name="SettingsButton" class="pause-btn"/>
-                <ui:Button text="Quit Game" name="QuitButton" class="pause-btn pause-btn-quit"/>
+                <ui:Button text="RESUME" name="ContinueGameButton" class="button pause-btn"/>
+                <ui:Button text="QUICKSAVE" name="QuickSaveButton" class="button pause-btn"/>
+                <ui:Label name="QuickSaveFeedback" class="pause-feedback" picking-mode="Ignore"/>
+                <ui:Button text="LOAD LAST SAVE" name="LoadLastSaveButton" class="button pause-btn"/>
+                <ui:Button text="LOAD GAME" name="LoadGameButton" class="button pause-btn"/>
+                <ui:Button text="SETTINGS" name="SettingsButton" class="button pause-btn"/>
+                <ui:VisualElement class="pause-divider pause-divider--tight" picking-mode="Ignore"/>
+                <ui:Button text="QUIT GAME" name="QuitButton" class="button pause-btn pause-btn-quit"/>
+            </ui:VisualElement>
+
+        </ui:VisualElement>
+
+        <ui:VisualElement class="pause-prompts" picking-mode="Ignore">
+            <ui:VisualElement class="prompt" picking-mode="Ignore">
+                <ui:VisualElement class="prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/Cross.png?fileID=2800000&amp;guid=84c576f4fdf149f43a098f7c77f01b2a&amp;type=3#Cross&quot;);"/>
+                <ui:Label text="SELECT" class="prompt-label"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="prompt" picking-mode="Ignore">
+                <ui:VisualElement class="prompt-glyph" picking-mode="Ignore" style="background-image: url(&quot;project://database/Assets/_Project/Art/PS5%20Button%20Icons%20and%20Controls/PS5%20Button%20Icons%20and%20Controls/Buttons%20Full%20Solid/White/256w/Options.png?fileID=2800000&amp;guid=0000f5c6f22e0c84eafa6d5108aa6370&amp;type=3#Options&quot;);"/>
+                <ui:Label text="RESUME" class="prompt-label"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
+
+    <!-- Settings is hosted here, as a sibling of PauseMenuContents: OnSettingsClicked
+         hides PauseMenuContents, so a nested Settings would vanish along with it.
+         SettingsManager locates it by name, so its presence is the whole wiring. -->
+    <ui:Instance template="SettingsVisualTree" name="SettingsOverlay" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;"/>
 </ui:UXML>

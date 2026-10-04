@@ -81,10 +81,30 @@ namespace Platformer
                 }
             }
 
+            // Pad out to capacity with empty cells. Without these the grid only draws the
+            // tiles you own, so a single consumable reads as one stray square in a wide
+            // panel rather than an inventory with room in it.
+            for (int i = shown; i < inventory.Capacity; i++)
+            {
+                itemGrid.Add(BuildEmptyTile());
+            }
+
             if (capacityLabel != null)
                 capacityLabel.text = $"{shown}/{inventory.Capacity}";
+
+            // The grid itself now communicates emptiness, so the prose only appears when
+            // there is genuinely nothing at all.
             if (emptyState != null)
                 emptyState.style.display = shown == 0 ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        static VisualElement BuildEmptyTile()
+        {
+            var tile = new VisualElement();
+            tile.AddToClassList("item-tile");
+            tile.AddToClassList("item-tile--empty");
+            tile.pickingMode = PickingMode.Ignore;
+            return tile;
         }
 
         VisualElement BuildItemTile(InventoryItem item)

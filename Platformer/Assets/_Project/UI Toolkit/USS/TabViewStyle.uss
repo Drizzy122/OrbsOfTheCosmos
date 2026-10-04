@@ -18,7 +18,7 @@
     padding-left: 36px;
     padding-top: 20px;
     padding-bottom: 20px;
-    background-color: rgba(8, 5, 22, 0.7);
+    background-color: rgba(0, 0, 0, 0);
     border-width: 0;
 }
 
@@ -26,7 +26,7 @@
 .unity-tab-view__content-container {
     flex-grow: 1;
     height: auto;
-    background-color: rgba(12, 8, 30, 0.55);
+    background-color: rgba(16, 11, 38, 0.72);
     border-width: 0;
 }
 
@@ -38,12 +38,12 @@
     padding-left: 16px;
     padding-right: 16px;
     font-size: 26px;
-    color: rgb(100, 95, 82);
+    color: rgb(124, 136, 156);
     -unity-text-align: middle-left;
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
     border-left-width: 3px;
-    border-left-color: rgba(190, 150, 50, 0);
+    border-left-color: rgba(120, 200, 225, 0);
     border-radius: 0;
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
     transition-duration: 0.18s;
@@ -52,25 +52,25 @@
 
 /* ── Tab button (active) ────────────────────────── */
 .unity-tab__header:checked {
-    color: rgb(215, 170, 65);
-    border-left-width: 3px;
-    border-left-color: rgb(190, 150, 50);
+    color: rgb(170, 230, 248);
+    border-left-width: 6px;
+    border-left-color: rgb(120, 200, 225);
     padding-left: 26px;
-    background-color: rgba(190, 150, 50, 0.07);
+    background-color: rgba(120, 200, 225, 0.07);
 }
 
 /* ── Tab button (hover) ─────────────────────────── */
 .unity-tab__header:hover {
-    color: rgb(210, 200, 170);
+    color: rgb(208, 218, 232);
     padding-left: 24px;
 }
 
 /* ── Tab button (focused by controller) ─────────── */
 .unity-tab__header:focus {
-    color: rgb(235, 210, 120);
-    border-left-color: rgba(235, 210, 120, 0.9);
+    color: rgb(205, 242, 255);
+    border-left-color: rgba(205, 242, 255, 0.9);
     padding-left: 26px;
-    background-color: rgba(190, 150, 50, 0.14);
+    background-color: rgba(120, 200, 225, 0.14);
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -92,7 +92,7 @@
 .settings-section-header {
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/Ottselesque-Regular.otf?fileID=12800000&guid=b00bfdbd79d843a46b8b3fb62f619d32&type=3#Ottselesque-Regular");
     font-size: 42px;
-    color: rgb(215, 170, 65);
+    color: rgb(170, 230, 248);
     -unity-text-align: middle-left;
     height: auto;
     margin-bottom: 10px;
@@ -102,7 +102,7 @@
 /* Thin gold line below section header */
 .settings-separator {
     height: 1px;
-    background-color: rgba(190, 150, 50, 0.35);
+    background-color: rgba(120, 200, 225, 0.35);
     margin-bottom: 22px;
 }
 
@@ -116,7 +116,7 @@
     padding-right: 12px;
     border-radius: 8px;
     margin-bottom: 6px;
-    color: rgb(210, 200, 180);
+    color: rgb(208, 218, 232);
     font-size: 22px;
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
     -unity-text-align: middle-left;
@@ -125,7 +125,7 @@
 }
 
 .settings-row-alt {
-    background-color: rgba(190, 150, 50, 0.04);
+    background-color: rgba(120, 200, 225, 0.04);
 }
 
 /* ◄ ► buttons inside cycle rows */
@@ -139,12 +139,12 @@
 }
 
 .settings-cycle-btn:hover {
-    background-color: rgba(190, 150, 50, 0.18);
+    background-color: rgba(120, 200, 225, 0.18);
 }
 
 .settings-cycle-btn:focus {
-    background-color: rgba(190, 150, 50, 0.26);
-    border-color: rgba(190, 150, 50, 0.6);
+    background-color: rgba(120, 200, 225, 0.26);
+    border-color: rgba(120, 200, 225, 0.6);
     border-width: 1px;
 }
 
@@ -152,19 +152,19 @@
 .settings-value-label {
     width: 160px;
     -unity-text-align: middle-center;
-    color: rgb(215, 170, 65);
+    color: rgb(170, 230, 248);
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
     font-size: 20px;
 }
 
 /* ── Shared back button ─────────────────────────── */
 .back-btn {
-    align-self: flex-start;
+    align-self: center;
     margin-left: 36px;
-    margin-bottom: 36px;
+    margin-bottom: 0;
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
-    color: rgb(190, 150, 50);
+    color: rgb(120, 200, 225);
     font-size: 22px;
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
     -unity-text-align: middle-left;
@@ -176,12 +176,12 @@
 }
 
 .back-btn:hover {
-    color: rgb(235, 190, 75);
+    color: rgb(190, 238, 255);
     padding-left: 24px;
 }
 
 .back-btn:focus {
-    color: rgb(235, 190, 75);
+    color: rgb(190, 238, 255);
     padding-left: 24px;
 }
 

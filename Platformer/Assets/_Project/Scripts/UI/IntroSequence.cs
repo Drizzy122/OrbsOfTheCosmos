@@ -21,7 +21,34 @@ public class IntroSequence : MonoBehaviour
     [Header("Transition Settings")]
     public float fadeDuration = 1.0f;
 
+    [Header("Skip")]
+    [Tooltip("InputReader asset. Leave empty to disable skipping.")]
+    public Platformer.InputReader input;
+
     private int videoIndex = 0;
+    private bool skipRequested;
+
+    void OnEnable()
+    {
+        if (input != null)
+        {
+            // The Menu map owns SkipIntro, and the intro scene has no gameplay — enable the
+            // whole set so the action is live without the player having touched anything.
+            input.EnablePlayerActions();
+            input.SkipIntro += RequestSkip;
+        }
+    }
+
+    void OnDisable()
+    {
+        if (input != null) input.SkipIntro -= RequestSkip;
+    }
+
+    // Each press raises the flag for exactly one segment; FullSequence consumes it, so
+    // holding or mashing advances one clip at a time rather than skipping the sequence.
+    void RequestSkip() => skipRequested = true;
+
+    void ConsumeSkip() => skipRequested = false;
 
     void Start()
     {
@@ -34,14 +61,15 @@ public class IntroSequence : MonoBehaviour
         if (splashImage != null)
         {
             yield return StartCoroutine(Fade(imageCanvasGroup, 0, 1));
-            yield return new WaitForSeconds(imageDuration);
+            yield return WaitOrSkip(imageDuration);
+
+            // One press advances one segment, so the flag is consumed here rather than left
+            // set - otherwise a single press would tear through the whole sequence.
+            ConsumeSkip();
             yield return StartCoroutine(Fade(imageCanvasGroup, 1, 0));
         }
 
         // --- PART 2: THE VIDEOS ---
-        // Make the video group visible
-        videoCanvasGroup.alpha = 1; 
-
         while (videoIndex < introClips.Count)
         {
             videoPlayer.clip = introClips[videoIndex];
@@ -49,28 +77,44 @@ public class IntroSequence : MonoBehaviour
 
             while (!videoPlayer.isPrepared) yield return null;
 
+            // Restored every iteration. The loop fades this to 0 after each clip, so without
+            // this the second and later videos would play fully transparent.
+            videoCanvasGroup.alpha = 1;
             videoPlayer.Play();
 
             // Wait until the video is almost done (minus fade time)
             float waitTime = (float)videoPlayer.length - fadeDuration;
-            yield return new WaitForSeconds(Mathf.Max(0, waitTime));
+            yield return WaitOrSkip(Mathf.Max(0, waitTime));
 
-            // If it's not the last video, we might want a quick dip to black
-            if (videoIndex < introClips.Count - 1)
+            // Skipped mid-clip: stop it, consume the press, and fall through to the same
+            // fade the clip would have got on its own.
+            if (skipRequested)
             {
-                yield return StartCoroutine(Fade(videoCanvasGroup, 1, 0));
+                videoPlayer.Stop();
+                ConsumeSkip();
             }
-            else
-            {
-                // Final video fade out
-                yield return StartCoroutine(Fade(videoCanvasGroup, 1, 0));
-            }
+
+            yield return StartCoroutine(Fade(videoCanvasGroup, 1, 0));
 
             videoIndex++;
         }
 
+
+
         // --- PART 3: LOAD SCENE ---
         SceneManager.LoadScene(nextSceneName);
+    }
+
+    /// <summary>WaitForSeconds cannot be interrupted, so skipping would still sit through the
+    /// rest of a clip's runtime. This polls the flag instead.</summary>
+    IEnumerator WaitOrSkip(float seconds)
+    {
+        float elapsed = 0f;
+        while (elapsed < seconds && !skipRequested)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
     }
 
     IEnumerator Fade(CanvasGroup cg, float start, float end)

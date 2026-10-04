@@ -1,5 +1,6 @@
 using UnityEngine;
 using KBCore.Refs;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor; // Changed from UnityEngine.UI
 
@@ -17,6 +18,21 @@ namespace Platformer
         [field: SerializeField, Anywhere] PlayerMovement playerMovement;
         
         [field: SerializeField] bool isPaused = false;
+
+        /// <summary>Lets MenuHubUIController refuse to open on top of the pause screen.</summary>
+        public bool IsPaused => isPaused;
+
+        [Tooltip("Found automatically when left empty. Used only to refuse pausing while the hub is open.")]
+        [field: SerializeField] MenuHubUIController menuHub;
+        [field: Header("Save Thumbnail")]
+        [Tooltip("Camera the thumbnail is rendered from. Falls back to Camera.main.")]
+        [field: SerializeField] Camera thumbnailCamera;
+        [Tooltip("Layers kept out of the shot - HUD, menus, anything screen-space.")]
+        [field: SerializeField] LayerMask thumbnailExcludeLayers;
+
+        // Grabbed the instant the player pauses, before any menu is drawn.
+        private byte[] pendingThumbnail;
+
         [field: SerializeField] string musicName;
         [field: SerializeField] float musicValue = 1f; 
         private float pausedValue = 0f;
@@ -27,6 +43,9 @@ namespace Platformer
         private Button loadButton;
         private Button settingsButton;
         private Button quitButton;
+        private Button quickSaveButton;
+        private Button loadLastSaveButton;
+        private Label quickSaveFeedback;
 
         private void Awake()
         {
@@ -48,12 +67,26 @@ namespace Platformer
             loadButton = rootContainer.Q<Button>("LoadGameButton");
             settingsButton = rootContainer.Q<Button>("SettingsButton");
             quitButton = rootContainer.Q<Button>("QuitButton");
+            quickSaveButton = rootContainer.Q<Button>("QuickSaveButton");
+            loadLastSaveButton = rootContainer.Q<Button>("LoadLastSaveButton");
+            quickSaveFeedback = rootContainer.Q<Label>("QuickSaveFeedback");
 
             // Bind the buttons to their actions
             continueButton.clicked += DeactivateMenu;
             quitButton.clicked += QuitGame;
             loadButton.clicked += OnLoadClicked;
             settingsButton.clicked += OnSettingsClicked;
+
+            if (quickSaveButton != null)
+            {
+                quickSaveButton.clicked += OnQuickSaveClicked;
+                AudioManager.instance.RegisterButtonAudio(quickSaveButton);
+            }
+            if (loadLastSaveButton != null)
+            {
+                loadLastSaveButton.clicked += OnLoadLastSaveClicked;
+                AudioManager.instance.RegisterButtonAudio(loadLastSaveButton);
+            }
 
             AudioManager.instance.RegisterButtonAudio(continueButton);
             AudioManager.instance.RegisterButtonAudio(loadButton);
@@ -80,6 +113,18 @@ namespace Platformer
 
         private void OnPause()
         {
+            // Refuse to pause over the character hub - both are full-frame overlays, and
+            // stacking them leaves two menus visible with both consuming navigation.
+            if (!isPaused)
+            {
+                if (menuHub == null) menuHub = FindFirstObjectByType<MenuHubUIController>(FindObjectsInactive.Include);
+                if (menuHub != null && menuHub.IsOpen) return;
+
+                // Grab the shot now, while the world is still the only thing on screen.
+                // Capturing at save time instead would photograph the pause menu.
+                CaptureThumbnail();
+            }
+
             isPaused = !isPaused;
             if (isPaused)
             {
@@ -148,6 +193,67 @@ namespace Platformer
             AudioManager.instance.PlayOneShot(FMODEvents.instance.uiclose, this.transform.position);
         }
         
+        /// <summary>Writes the current profile where it stands. No slot picker, no scene
+        /// change — the point of a quicksave is that it costs one button press.</summary>
+        private void OnQuickSaveClicked()
+        {
+            if (DataPersistenceManager.instance == null) return;
+
+            DataPersistenceManager.instance.SaveGame();
+
+            // Written after the save, so a thumbnail never exists for a profile with no data.
+            string profileId = DataPersistenceManager.instance.GetSelectedProfileId();
+            if (pendingThumbnail != null) SaveThumbnail.Write(profileId, pendingThumbnail);
+
+            ShowQuickSaveFeedback();
+        }
+
+        private void CaptureThumbnail()
+        {
+            Camera source = thumbnailCamera != null ? thumbnailCamera : Camera.main;
+            if (source == null) return;
+
+            pendingThumbnail = SaveThumbnail.Capture(source, thumbnailExcludeLayers);
+        }
+
+        private void ShowQuickSaveFeedback()
+        {
+            if (quickSaveFeedback == null) return;
+
+            quickSaveFeedback.text = "SAVED  ·  " + System.DateTime.Now.ToString("HH:mm");
+            quickSaveFeedback.AddToClassList("pause-feedback--shown");
+
+            // Unscaled: the game is frozen while this menu is up.
+            quickSaveFeedback.schedule
+                .Execute(() => quickSaveFeedback.RemoveFromClassList("pause-feedback--shown"))
+                .StartingIn(2000);
+        }
+
+        /// <summary>Reloads the scene rather than just re-reading the file. LoadGame alone
+        /// restores the player and inventory but leaves enemies, pickups and world state as
+        /// they are — a scene reload resets those, and OnSceneLoaded re-applies the save.</summary>
+        private void OnLoadLastSaveClicked()
+        {
+            if (DataPersistenceManager.instance == null) return;
+            if (!DataPersistenceManager.instance.HasGameData()) return;
+
+            DisableMenuButtons();
+
+            // Restore time before leaving, or the next scene starts frozen.
+            Time.timeScale = 1f;
+            isPaused = false;
+
+            SceneLoader.Load(SceneManager.GetActiveScene().name);
+        }
+
+        private void DisableMenuButtons()
+        {
+            quickSaveButton?.SetEnabled(false);
+            loadLastSaveButton?.SetEnabled(false);
+            loadButton?.SetEnabled(false);
+            continueButton?.SetEnabled(false);
+        }
+
         private void OnLoadClicked()
         {
             // Hide the pause menu visually
@@ -170,7 +276,7 @@ namespace Platformer
 
         // Temporarily disabled while building the new MenuHub.
         // Once PauseMenu's buttons are folded into the Settings tab, this can be deleted.
-        private void OnEnable() { /* input.Paused += OnPause; */ }
-        private void OnDisable() { /* input.Paused -= OnPause; */ }
+        private void OnEnable()  { if (input != null) input.Paused += OnPause; }
+        private void OnDisable() { if (input != null) input.Paused -= OnPause; }
     }
 }
