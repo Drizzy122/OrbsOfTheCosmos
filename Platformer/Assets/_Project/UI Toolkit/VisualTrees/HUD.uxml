@@ -1,51 +1,70 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=1e607d4d39bbf3c4aa48749712dc3062&amp;type=3#MainMenuStyle"/>
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/QuestStyle.uss?fileID=7433441132597879392&amp;guid=262dfd09358cb4644a169f44e7cc8489&amp;type=3#QuestStyle"/>
-    <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/player.uss?fileID=7433441132597879392&amp;guid=fa9c46055221b644c931aea204e2d9d9&amp;type=3#player"/>
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/HUD.uss?fileID=7433441132597879392&amp;guid=69cd5960cab7e7e4aa81246bf28a81ce&amp;type=3#HUD"/>
-    <ui:VisualElement name="HUD" style="flex-grow: 1; display: flex;">
-        <ui:VisualElement name="HealthContainer" class="healthbar-container hud-health" style="display: flex; position: absolute; top: 44px; left: 109px; width: 287px; rotate: 1 1 1 0; border-left-color: rgba(0, 0, 0, 0.4); border-right-color: rgba(0, 0, 0, 0.4); border-top-color: rgba(0, 0, 0, 0.4); border-bottom-color: rgba(0, 0, 0, 0.4);">
-            <ui:VisualElement name="HealthBar" data-source="project://database/Assets/_Project/ScriptableObjects/EventChannels/PlayerHealthPercentage.asset?fileID=11400000&amp;guid=8cc54737ed24e0945bcb80f3e3fd4031&amp;type=2#PlayerHealthPercentage" class="healthbar hud-health-fill" style="background-color: rgb(0, 255, 25); width: auto;"/>
+    <ui:VisualElement name="HUD" class="hud-root" picking-mode="Ignore">
+        <ui:VisualElement name="LowHealthVignette" class="hud-vignette" picking-mode="Ignore"/>
+        <ui:VisualElement name="PlayerPlate" class="hud-plate" picking-mode="Ignore">
+            <ui:VisualElement name="HealthRow" class="hud-row" picking-mode="Ignore">
+                <ui:VisualElement name="LevelBadge" class="hud-level-badge" picking-mode="Ignore">
+                    <ui:Label name="LevelBadgeLabel" text="1" class="hud-text hud-level-badge-text" picking-mode="Ignore"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="HealthContainer" class="hud-bar hud-bar--health" picking-mode="Ignore">
+                    <ui:VisualElement name="HealthBar" class="hud-bar-fill hud-bar-fill--health" picking-mode="Ignore"/>
+                </ui:VisualElement>
+                <ui:Label name="HealthLabel" text="100 / 100" class="hud-text hud-bar-value" picking-mode="Ignore"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="StaminaContainer" class="hud-bar hud-bar--stamina" picking-mode="Ignore">
+                <ui:VisualElement name="StaminaBar" class="hud-bar-fill hud-bar-fill--stamina" picking-mode="Ignore"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="XPContainer" class="hud-bar hud-bar--xp" picking-mode="Ignore">
+                <ui:VisualElement name="XPBar" class="hud-bar-fill hud-bar-fill--xp" picking-mode="Ignore"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="ChargesRow" class="hud-row hud-charges-row" picking-mode="Ignore">
+                <ui:VisualElement name="ChargesContainer" class="hud-pips" picking-mode="Ignore"/>
+                <ui:Label name="ChargesLabel" text="x0" class="hud-text hud-charges-count" picking-mode="Ignore"/>
+            </ui:VisualElement>
+            <ui:Label name="LockHint" text="TAB / R3   LOCK ON" class="hud-text hud-lock-hint" picking-mode="Ignore"/>
         </ui:VisualElement>
-        <ui:VisualElement name="StaminaContainer" class="staminabar-container hud-stamina" style="display: flex; border-left-color: rgba(0, 0, 0, 0.35); border-right-color: rgba(0, 0, 0, 0.35); border-top-color: rgba(0, 0, 0, 0.35); border-bottom-color: rgba(0, 0, 0, 0.35);">
-            <ui:VisualElement name="StaminaBar" data-source="project://database/Assets/_Project/ScriptableObjects/EventChannels/StaminaPercentage.asset?fileID=11400000&amp;guid=52ae134652707b544ba3489aa5920135&amp;type=2#StaminaPercentage" class="staminabar hud-stamina-fill" style="background-color: rgb(0, 224, 255);"/>
+        <ui:VisualElement name="ComboContainer" class="hud-combo hud-combo--hidden" picking-mode="Ignore">
+            <ui:Label name="ComboCount" text="0" class="hud-text hud-combo-count" picking-mode="Ignore"/>
+            <ui:Label name="ComboLabel" text="HITS" class="hud-text hud-combo-label" picking-mode="Ignore"/>
         </ui:VisualElement>
-        <ui:VisualElement name="WaypointContainer" class="hud-waypoint" style="display: flex; top: 901px; left: 98px; -unity-background-image-tint-color: rgb(255, 255, 255);">
-            <ui:Label name="MeterLabel" text="100m" class="Text hud-text hud-waypoint-meter"/>
-        </ui:VisualElement>
-        <ui:VisualElement name="TargetMarker" picking-mode="Ignore" class="hud-target-marker" style="display: none; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); position: absolute; left: 7px; width: 50px; rotate: 45deg; height: 50px; transform-origin: 14% 93%; translate: -4px 993px;">
-            <ui:VisualElement name="TargetMarkerDot" picking-mode="Ignore" class="hud-target-marker-dot" style="background-color: rgb(255, 255, 255); top: 19px; left: 19px; position: relative;"/>
-        </ui:VisualElement>
-        <ui:VisualElement name="DialogueContainer" class="hud-dialogue" style="display: none; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 36px; border-top-right-radius: 36px; border-bottom-right-radius: 36px; border-bottom-left-radius: 36px; top: 902px; left: 576px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);">
-            <ui:Label name="DialogueText" text="The village is a quiet cluster of timber cottages huddled along the riverbank, smelling faintly of woodsmoke and damp earth. Life here moves with the seasons, guided by the rhythm of the harvest rather than the ticking of a clock. Every cobblestone path and familiar face carries the quiet history of a community built on generations of resilience." class="Text hud-text hud-dialogue-text" style="height: auto; -unity-text-align: middle-left; -unity-font-style: normal; font-size: 16px;"/>
-        </ui:VisualElement>
-        <ui:VisualElement name="ChoicesContainer" class="hud-choices" style="display: none; width: 302px; left: 1462px; top: 805px; background-color: rgba(8, 5, 22, 0);">
-            <ui:Button name="Choice1" text="Button" class="dialogue-choice-button"/>
-            <ui:Button name="Choice2" text="Button" class="dialogue-choice-button"/>
-            <ui:Button name="Choice3" text="Button" class="dialogue-choice-button"/>
-            <ui:Button name="Choice4" text="Button" class="dialogue-choice-button"/>
-        </ui:VisualElement>
-        <ui:VisualElement name="NotificationContainer" class="hud-notification" style="top: 161px; width: 941px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); height: 99px; left: 984px; display: flex; border-top-left-radius: 37px; border-top-right-radius: 37px; border-bottom-right-radius: 37px; border-bottom-left-radius: 37px; background-color: rgb(8, 5, 22);">
-            <ui:Label name="NotificationText" text="Look" class="hud-text hud-notification-text" style="width: 109px; position: relative; left: auto; top: auto; -unity-text-align: middle-center; height: auto; align-self: center; justify-content: flex-start;"/>
-        </ui:VisualElement>
-        <ui:VisualElement name="ChargesContainer" class="hud-charges" style="display: flex; top: 44px; left: 1698px; height: 16px; width: 174px; border-left-color: rgba(0, 0, 0, 0.3); border-right-color: rgba(0, 0, 0, 0.3); border-top-color: rgba(0, 0, 0, 0.3); border-bottom-color: rgba(0, 0, 0, 0.3);">
-            <ui:VisualElement name="ChargesFill" class="hud-charges-fill" style="width: auto;"/>
-        </ui:VisualElement>
-        <ui:Label name="ChargesLabel" text="x0" class="hud-text hud-charges-count" style="display: flex; top: 35px; left: 1675px;"/>
-        <ui:Label name="ComboCount" text="0" class="hud-text" style="height: 49px; width: 32px; position: absolute; top: 28px; left: 55px; display: flex; font-size: 39px; -unity-font-definition: url(&quot;project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&amp;guid=6384753b77039dc43a7bf85678bfc68d&amp;type=3#MyFont&quot;);"/>
-        <ui:Image source="project://database/Assets/_Project/Art/MyArt/Quest.png?fileID=1674060515&amp;guid=aeb41a4175181984799ebadfb3511e56&amp;type=3#QuestStartedNotification" name="MissionBoxContainer" style="position: absolute; top: 373px; left: 690px; height: 294px; width: 599px;">
-            <ui:Image source="project://database/Assets/_Project/Art/MyArt/Quest.png?fileID=317291835&amp;guid=aeb41a4175181984799ebadfb3511e56&amp;type=3#Icon" name="Icon" style="position: absolute; top: 18px; left: 0; right: 0;"/>
-            <ui:Label text="QUEST STARTED" name="QuestStarted" style="-unity-font-definition: url(&quot;project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&amp;guid=6384753b77039dc43a7bf85678bfc68d&amp;type=3#MyFont&quot;); color: rgb(255, 255, 255); -unity-text-align: upper-center; top: 69px;"/>
-            <ui:Label name="QuestTitle" text="The Shadow Lair" class="Text hud-text hud-quest-title" style="top: 87px; right: auto; width: auto; height: auto; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; background-color: rgba(255, 255, 255, 0); font-size: 30px;"/>
-            <ui:Label name="QuestStatus" text="Journey into the Darkwood forest and confront the shadow lord" class="Text hud-text hud-quest-status" style="width: auto; height: auto; left: auto; top: 81px; -unity-text-align: upper-center;"/>
+        <ui:Image source="project://database/Assets/_Project/Art/MyArt/LevelUp.png?fileID=-494394913&amp;guid=ae2f024aecf2db845ad9fdd8b1b2ee31&amp;type=3#LevelUp_0" name="LevelUpNotification" class="hud-levelup" picking-mode="Ignore">
+            <ui:Image source="project://database/Assets/_Project/Art/MyArt/LevelUp.png?fileID=1380469893&amp;guid=ae2f024aecf2db845ad9fdd8b1b2ee31&amp;type=3#LevelUp_1" name="Icon" class="hud-levelup-icon" picking-mode="Ignore"/>
+            <ui:Label text="LEVEL UP!" name="LevelUp" class="hud-text hud-levelup-title" picking-mode="Ignore"/>
+            <ui:Label name="XPLevelLabel" text="You are now level 1" class="hud-text hud-levelup-text" picking-mode="Ignore"/>
         </ui:Image>
-        <ui:VisualElement name="XPContainer" class="hud-xp" style="display: flex; top: 38px; left: 800px; width: 350px; height: 19px; border-left-color: rgba(0, 0, 0, 0.3); border-right-color: rgba(0, 0, 0, 0.3); border-top-color: rgba(0, 0, 0, 0.3); border-bottom-color: rgba(0, 0, 0, 0.3);">
-            <ui:VisualElement name="XPBar" class="hud-xp-fill" style="width: auto; background-color: rgb(105, 255, 219);"/>
-        </ui:VisualElement>
-        <ui:Image source="project://database/Assets/_Project/Art/MyArt/LevelUp.png?fileID=-494394913&amp;guid=ae2f024aecf2db845ad9fdd8b1b2ee31&amp;type=3#LevelUp_0" name="LevelUpNotification" style="position: absolute; top: 244px; left: 0; height: 94px; opacity: 1; width: 262px;">
-            <ui:Image source="project://database/Assets/_Project/Art/MyArt/LevelUp.png?fileID=1380469893&amp;guid=ae2f024aecf2db845ad9fdd8b1b2ee31&amp;type=3#LevelUp_1" name="Icon" style="position: absolute; top: 27px; left: 20px; height: 41px; opacity: 1; width: 36px;"/>
-            <ui:Label text="LEVEL UP!" name="LevelUp" style="color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&amp;guid=6384753b77039dc43a7bf85678bfc68d&amp;type=3#MyFont&quot;); left: 59px; top: 23px; width: 79px; font-size: 11px; -unity-text-align: upper-left; height: 14px;"/>
-            <ui:Label name="XPLevelLabel" text="You are now level 100&#10;" class="hud-text" style="display: flex; top: 18px; left: 59px; color: rgb(255, 255, 255);"/>
+        <ui:Image source="project://database/Assets/_Project/Art/MyArt/Quest.png?fileID=1674060515&amp;guid=aeb41a4175181984799ebadfb3511e56&amp;type=3#QuestStartedNotification" name="MissionBoxContainer" class="hud-quest-box" picking-mode="Ignore">
+            <ui:Image source="project://database/Assets/_Project/Art/MyArt/Quest.png?fileID=317291835&amp;guid=aeb41a4175181984799ebadfb3511e56&amp;type=3#Icon" name="Icon" class="hud-quest-icon" picking-mode="Ignore"/>
+            <ui:Label text="QUEST STARTED" name="QuestStarted" class="hud-text hud-quest-heading" picking-mode="Ignore"/>
+            <ui:Label name="QuestTitle" text="The Shadow Lair" class="hud-text hud-quest-title" picking-mode="Ignore"/>
+            <ui:Label name="QuestStatus" text="Journey into the Darkwood forest and confront the shadow lord" class="hud-text hud-quest-status" picking-mode="Ignore"/>
         </ui:Image>
+        <ui:VisualElement name="TopCenter" class="hud-top-center" picking-mode="Ignore">
+            <ui:VisualElement name="NotificationSlot" class="hud-notification-slot" picking-mode="Ignore">
+                <ui:VisualElement name="NotificationContainer" class="hud-notification" picking-mode="Ignore">
+                    <ui:Label name="NotificationText" text="Notification" class="hud-text hud-notification-text" picking-mode="Ignore"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="TargetMarker" class="hud-lock" picking-mode="Ignore">
+            <ui:VisualElement name="LockCornerTL" class="hud-lock-corner hud-lock-corner--tl" picking-mode="Ignore"/>
+            <ui:VisualElement name="LockCornerTR" class="hud-lock-corner hud-lock-corner--tr" picking-mode="Ignore"/>
+            <ui:VisualElement name="LockCornerBL" class="hud-lock-corner hud-lock-corner--bl" picking-mode="Ignore"/>
+            <ui:VisualElement name="LockCornerBR" class="hud-lock-corner hud-lock-corner--br" picking-mode="Ignore"/>
+            <ui:VisualElement name="LockCenter" class="hud-lock-center" picking-mode="Ignore"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="TargetOffscreen" class="hud-lock-offscreen" picking-mode="Ignore">
+            <ui:VisualElement name="TargetOffscreenArrow" class="hud-lock-arrow" picking-mode="Ignore"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="WaypointContainer" class="hud-waypoint" picking-mode="Ignore">
+            <ui:Label name="MeterLabel" text="100m" class="hud-text hud-waypoint-meter" picking-mode="Ignore"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="BottomCenter" class="hud-bottom-center" picking-mode="Ignore">
+            <ui:VisualElement name="DialogueContainer" class="hud-dialogue" picking-mode="Ignore">
+                <ui:Label name="DialogueText" text="" class="hud-text hud-dialogue-text" picking-mode="Ignore"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="ChoicesContainer" class="hud-choices"/>
     </ui:VisualElement>
 </ui:UXML>

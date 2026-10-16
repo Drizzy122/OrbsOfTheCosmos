@@ -95,6 +95,7 @@ namespace Platformer
             input.LightAttack += OnLightAttack;
             input.BlastAttack += OnBlastAttack;
             input.SwapWeapon += OnSwapWeapon;
+            input.LockOn += OnLockOn;
         }
 
         void OnDisable()
@@ -103,6 +104,7 @@ namespace Platformer
             input.LightAttack -= OnLightAttack;
             input.BlastAttack -= OnBlastAttack;
             input.SwapWeapon -= OnSwapWeapon;
+            input.LockOn -= OnLockOn;
         }
 
         void OnSwapWeapon() => playerEquipment?.SwapActiveWeapon();
@@ -200,6 +202,13 @@ namespace Platformer
                     combo.slashObj.SetActive(false);
                 }
             }
+        }
+
+        // Hard lock-on toggle: pins the target until released, the enemy dies, or
+        // it gets out of range. The HUD reticle turns gold while locked.
+        void OnLockOn()
+        {
+            if (enemyDetection != null) enemyDetection.ToggleLockOn();
         }
 
         void Update()

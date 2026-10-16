@@ -35,7 +35,8 @@ namespace Platformer
         public event UnityAction NextTab = delegate { };
         public event UnityAction<RaycastHit> Click = delegate { };
         public event UnityAction Counter = delegate { };
-      
+        public event UnityAction LockOn = delegate { };
+
         PlayerInputActions inputActions;
         
         //public bool IsJumpKeyPressed() => inputActions.Player.Jump.IsPressed();
@@ -291,6 +292,15 @@ namespace Platformer
                 case InputActionPhase.Canceled:
                     Aim.Invoke(false);
                     break;
+            }
+        }
+
+        // Toggles the hard lock-on (EnemyDetection.ToggleLockOn via PlayerCombat).
+        public void OnLockOn(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Started)
+            {
+                LockOn.Invoke();
             }
         }
     }

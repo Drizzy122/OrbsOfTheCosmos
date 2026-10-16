@@ -145,9 +145,52 @@
                                          "interactions":  "",
                                          "initialStateCheck":  false,
                                          "priority":  0
+                                     },
+                                     {
+                                         "name":  "LockOn",
+                                         "type":  "Button",
+                                         "id":  "7f3c2a10-5b1e-4c8d-9a2f-1e4d6c8b0a21",
+                                         "expectedControlType":  "Button",
+                                         "processors":  "",
+                                         "interactions":  "",
+                                         "initialStateCheck":  false,
+                                         "priority":  0
                                      }
                                  ],
                      "bindings":  [
+                                      {
+                                          "name":  "",
+                                          "id":  "8a4d3b21-6c2f-4d9e-ab30-2f5e7d9c1b32",
+                                          "path":  "<Mouse>/middleButton",
+                                          "interactions":  "",
+                                          "processors":  "",
+                                          "groups":  ";Keyboard&Mouse",
+                                          "action":  "LockOn",
+                                          "isComposite":  false,
+                                          "isPartOfComposite":  false
+                                      },
+                                      {
+                                          "name":  "",
+                                          "id":  "9b5e4c32-7d30-4eaf-bc41-306f8ea02c43",
+                                          "path":  "<Keyboard>/tab",
+                                          "interactions":  "",
+                                          "processors":  "",
+                                          "groups":  ";Keyboard&Mouse",
+                                          "action":  "LockOn",
+                                          "isComposite":  false,
+                                          "isPartOfComposite":  false
+                                      },
+                                      {
+                                          "name":  "",
+                                          "id":  "ac6f5d43-8e41-4fb0-cd52-4170f9b13d54",
+                                          "path":  "<Gamepad>/rightStickPress",
+                                          "interactions":  "",
+                                          "processors":  "",
+                                          "groups":  ";Gamepad",
+                                          "action":  "LockOn",
+                                          "isComposite":  false,
+                                          "isPartOfComposite":  false
+                                      },
                                       {
                                           "name":  "WASD",
                                           "id":  "00ca640b-d935-4593-8157-c05846ea39b3",

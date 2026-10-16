@@ -1,26 +1,35 @@
 using UnityEngine;
-using UnityEngine.UIElements; // Required for UI Toolkit
+using UnityEngine.UIElements;
 
 namespace Platformer
 {
+    /// <summary>
+    /// Glide stamina: drains while gliding, regenerates otherwise, and drives the
+    /// HUD stamina bar (HUDBar.shader through HUDBarView). The bar dims when
+    /// full so it only draws the eye while it matters.
+    /// </summary>
     public class GlideStamina : MonoBehaviour
     {
+        const string FullClass = "is-full";
+
         [Header("Settings")]
         [SerializeField] private float staminaRegenRate = 1f;
-        
+
         [Header("Events")]
-        [SerializeField] private FloatEventChannel staminaEventChannel; // Kept in case you still want to broadcast
+        [SerializeField] private FloatEventChannel staminaEventChannel;
 
         [Header("UI Toolkit Integration")]
         [SerializeField] private PanelRenderer uiDocument;
         [SerializeField] private string targetElementID = "StaminaBar";
+        [SerializeField] private string containerElementID = "StaminaContainer";
 
         private float currentStamina;
         private bool isGliding;
         private PlayerMovement _playerMovement;
 
-        // UI Toolkit Variables
-        private VisualElement barFill;
+        private HUDBarView bar;
+        private VisualElement container;
+        private float lastPublishedFraction = -1f;
 
         private void Awake()
         {
@@ -50,7 +59,18 @@ namespace Platformer
 
         private void OnUIReload(PanelRenderer _, VisualElement root)
         {
-            barFill = root.Q<VisualElement>(targetElementID);
+            var fill = root.Q<VisualElement>(targetElementID);
+            container = root.Q<VisualElement>(containerElementID);
+
+            // Stamina drains continuously, so the chip hugs the fill instead of lagging.
+            bar?.Release();
+            bar = fill != null
+                ? new HUDBarView(fill, HUDBarView.LoadMaterial("UI/HUDStaminaBar")) { fillSpeed = 14f, chipDelay = 0f, chipSpeed = 3f }
+                : null;
+
+            lastPublishedFraction = -1f;
+            bar?.Snap(CurrentFraction());
+            PublishStamina();
         }
 
         private void Update()
@@ -64,31 +84,30 @@ namespace Platformer
                 RegenerateStamina();
             }
 
-            // Broadcast and update UI every frame it changes
             PublishStamina();
         }
 
+        private float CurrentFraction()
+        {
+            if (_playerMovement == null || _playerMovement.glideCoolDown <= 0f) return 0f;
+            return currentStamina / _playerMovement.glideCoolDown;
+        }
+
+        // Only broadcasts when the value actually moved — no per-frame event
+        // spam or style writes while the bar is sitting full.
         private void PublishStamina()
         {
-            float fraction = 0f;
-            if (_playerMovement != null && _playerMovement.glideCoolDown > 0f)
-            {
-                // Calculate the 0-1 percentage
-                fraction = currentStamina / _playerMovement.glideCoolDown;
-            }
+            float fraction = CurrentFraction();
+            if (Mathf.Abs(fraction - lastPublishedFraction) < 0.0005f) return;
+            lastPublishedFraction = fraction;
 
-            // 1. Broadcast to Event Bus (Optional, kept from your original script)
             if (staminaEventChannel != null)
             {
                 staminaEventChannel.Invoke(fraction);
             }
 
-            // 2. Direct UI Toolkit Update
-            if (barFill != null)
-            {
-                // Snap the width (Rely on USS transitions for smoothing)
-                barFill.style.width = new Length(fraction * 100f, LengthUnit.Percent);
-            }
+            bar?.SetTarget(fraction);
+            container?.EnableInClassList(FullClass, fraction >= 0.999f);
         }
 
         public void StartGlide()

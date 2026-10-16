@@ -55,6 +55,10 @@ namespace Platformer
         public event Action<int> onComboChanged;
         public void ComboChanged(int combo) => onComboChanged?.Invoke(combo);
 
+        /// <summary>Current and max health in hit points, for the HUD readout.</summary>
+        public event Action<float, float> onPlayerHealthChanged;
+        public void PlayerHealthChanged(float current, float max) => onPlayerHealthChanged?.Invoke(current, max);
+
         public event Action<float> onPlayerHit;
         public void PlayerHit(float knockback)
         {

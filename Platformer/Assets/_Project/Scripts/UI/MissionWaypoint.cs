@@ -120,34 +120,40 @@ namespace Platformer
             // Wait for the container's first layout pass before positioning
             if (float.IsNaN(waypointContainer.layout.width)) return;
 
-            // ── Screen-space projection ───────────────────────────────────────
+            var panel = waypointContainer.panel;
+            var cam = Camera.main;
+            if (panel == null || cam == null) return;
+
+            // ── Panel-space projection ────────────────────────────────────────
+            // The panel scales to a reference resolution, so raw screen pixels
+            // would land in the wrong place at anything but 1080p. Work in
+            // panel units instead (RuntimePanelUtils handles the Y flip too).
+            Rect panelRect = panel.visualTree.layout;
             float width  = waypointContainer.layout.width;
             float height = waypointContainer.layout.height;
 
             float minX = width  / 2f;
-            float maxX = Screen.width  - minX;
+            float maxX = panelRect.width  - minX;
             float minY = height / 2f;
-            float maxY = Screen.height - minY;
+            float maxY = panelRect.height - minY;
 
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(CurrentTarget.position + offset);
+            Vector3 worldPos = CurrentTarget.position + offset;
+            Vector2 panelPos = RuntimePanelUtils.CameraTransformWorldToPanel(panel, worldPos, cam);
 
             // Behind the camera the projection mirrors — flip it back and pin
             // the icon to the screen edge on the target's side.
-            if (screenPos.z < 0f)
+            if (cam.WorldToViewportPoint(worldPos).z < 0f)
             {
-                screenPos.x = Screen.width  - screenPos.x;
-                screenPos.y = Screen.height - screenPos.y;
-                screenPos.x = screenPos.x < Screen.width / 2f ? minX : maxX;
+                panelPos.x = panelRect.width  - panelPos.x;
+                panelPos.y = panelRect.height - panelPos.y;
+                panelPos.x = panelPos.x < panelRect.width / 2f ? minX : maxX;
             }
 
-            // UI Toolkit Y is flipped vs Camera
-            screenPos.y = Screen.height - screenPos.y;
+            panelPos.x = Mathf.Clamp(panelPos.x, minX, maxX);
+            panelPos.y = Mathf.Clamp(panelPos.y, minY, maxY);
 
-            screenPos.x = Mathf.Clamp(screenPos.x, minX, maxX);
-            screenPos.y = Mathf.Clamp(screenPos.y, minY, maxY);
-
-            waypointContainer.style.left = screenPos.x - (width  / 2f);
-            waypointContainer.style.top  = screenPos.y - (height / 2f);
+            waypointContainer.style.left = panelPos.x - (width  / 2f);
+            waypointContainer.style.top  = panelPos.y - (height / 2f);
 
             meterLabel.text = Mathf.RoundToInt(dist) + "m";
 

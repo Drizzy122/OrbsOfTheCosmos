@@ -100,6 +100,10 @@ namespace Platformer
         {
             if (healthEventChannel != null)
                 healthEventChannel.Invoke(currentHealth / maxHealth);
+
+            // The HUD shows "current / max" next to the player's bar.
+            if (entityHealth == EntityHealth.Player && GameEventsManager.instance != null)
+                GameEventsManager.instance.playerEvents.PlayerHealthChanged(currentHealth, maxHealth);
         }
 
         /// <summary>External i-frame control (e.g. dodge). Player-only — enemies

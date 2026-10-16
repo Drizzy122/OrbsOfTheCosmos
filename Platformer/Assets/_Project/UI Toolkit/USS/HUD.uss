@@ -1,185 +1,522 @@
+/* ───────────────────────── HUD stylesheet ─────────────────────────
+   Palette: deep navy panels, gold trim, parchment text.
+   All layout lives here — HUD.uxml carries no inline styles, so UI Builder
+   edits and this file never fight each other.
+   Bars: the *-fill elements carry a HUDBar material (Resources/UI/*.mat);
+   the shader draws track, chip and fill, driven by HUDBarView.cs. */
+
+.hud-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
 .hud-text {
     -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
-    color: rgb(220, 210, 190);
+    color: rgb(235, 228, 210);
 }
 
-.hud-health {
+/* ---- Low-health vignette (pulsed by HealthBar.cs) ---- */
+.hud-vignette {
     position: absolute;
-    top: 42px;
-    left: 112px;
-    width: 260px;
-    height: 16px;
-    background-color: rgba(8, 5, 22, 0.75);
-    border-width: 1px;
-    border-color: rgba(190, 150, 50, 0.4);
-    border-radius: 8px;
-    display: flex;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("/Assets/_Project/Art/MyArt/LowHealthVignette.png");
+    -unity-background-scale-mode: stretch-to-fill;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.55s;
+    transition-timing-function: ease-in-out;
 }
 
-.hud-health-fill {
-    border-radius: 7px;
-    border-width: 0;
-    background-color: rgb(105, 205, 115);
+.hud-vignette--on {
+    opacity: 0.85;
 }
 
-.hud-stamina {
+/* ---- Player stats (bottom-left, God of War style: no panel, bars on the game) ---- */
+.hud-plate {
     position: absolute;
-    top: 64px;
-    left: 112px;
-    width: 200px;
-    height: 9px;
-    background-color: rgba(8, 5, 22, 0.75);
-    border-width: 1px;
-    border-color: rgba(190, 150, 50, 0.35);
-    border-radius: 5px;
-    display: flex;
+    bottom: 52px;
+    left: 56px;
+    width: 520px;
+    transition-property: translate;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out-back;
 }
 
-.hud-stamina-fill {
-    border-radius: 4px;
-    border-width: 0;
-    background-color: rgb(95, 165, 255);
+/* Added for ~70ms on a hit: nudge left, then springs back. */
+.hud-plate--hit {
+    translate: -12px 0;
+    transition-duration: 0.04s;
 }
 
-.hud-xp {
+.hud-plate--low .hud-bar-value {
+    color: rgb(255, 90, 80);
+}
+
+.hud-plate--low .hud-level-badge-text {
+    color: rgb(255, 90, 80);
+}
+
+.hud-row {
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Level: a round dark emblem with a gold ring at the head of the health bar. */
+.hud-level-badge {
+    width: 52px;
+    height: 52px;
+    border-radius: 26px;
+    background-color: rgba(0, 0, 0, 0.62);
+    border-width: 2px;
+    border-color: rgb(205, 170, 90);
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.hud-level-badge-text {
+    font-size: 24px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.9);
+    -unity-text-outline-width: 1px;
+    transition-property: color;
+    transition-duration: 0.3s;
+}
+
+/* ---- Bars ---- */
+.hud-bar {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.hud-bar-fill {
     position: absolute;
-    top: 79px;
-    left: 112px;
-    width: 230px;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(255, 255, 255);
+}
+
+/* Health: flat green bar on a dark track; lost health lingers as a red chip. */
+.hud-bar--health {
+    width: 380px;
+    height: 22px;
+    transition-property: width;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out-back;
+}
+
+.hud-bar-fill--health {
+    -unity-material: resource("UI/HUDHealthBar");
+}
+
+/* Stamina: four cyan chunks under the health bar. */
+.hud-bar--stamina {
+    width: 304px;
+    height: 14px;
+    margin-top: 8px;
+    margin-left: 64px;
+    transition-property: opacity;
+    transition-duration: 0.6s;
+}
+
+.hud-bar--stamina.is-full {
+    opacity: 0.75;
+}
+
+.hud-bar-fill--stamina {
+    -unity-material: resource("UI/HUDStaminaBar");
+}
+
+/* XP: thin gold line, brightens on gain. */
+.hud-bar--xp {
+    width: 380px;
     height: 5px;
-    background-color: rgba(8, 5, 22, 0.75);
-    border-width: 1px;
-    border-color: rgba(190, 150, 50, 0.3);
-    border-radius: 3px;
+    margin-top: 8px;
+    margin-left: 64px;
+    opacity: 0.6;
     transition-property: opacity;
     transition-duration: 0.35s;
 }
 
-.hud-xp-fill {
-    width: 0%;
-    height: 100%;
-    background-color: rgb(215, 170, 65);
-    border-radius: 2px;
+.hud-bar--xp.is-active {
+    opacity: 1;
 }
 
-.hud-charges {
-    position: absolute;
-    top: 90px;
-    left: 112px;
-    width: 160px;
-    height: 5px;
-    background-color: rgba(8, 5, 22, 0.75);
+.hud-bar-fill--xp {
+    -unity-material: resource("UI/HUDXPBar");
+}
+
+.hud-bar-value {
+    margin-left: 12px;
+    font-size: 16px;
+    color: rgb(255, 255, 255);
+    -unity-text-outline-color: rgba(0, 0, 0, 0.9);
+    -unity-text-outline-width: 2px;
+    transition-property: color;
+    transition-duration: 0.3s;
+}
+
+/* ---- Lumin charges: a row of diamonds ---- */
+.hud-charges-row {
+    margin-top: 12px;
+    margin-left: 66px;
+}
+
+/* Button hint under the bars, shown while an enemy can be locked. */
+.hud-lock-hint {
+    margin-top: 10px;
+    margin-left: 64px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    -unity-text-outline-color: rgba(0, 0, 0, 0.9);
+    -unity-text-outline-width: 1px;
+    letter-spacing: 1px;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.25s;
+}
+
+.hud-lock-hint--on {
+    opacity: 1;
+}
+
+.hud-pips {
+    flex-direction: row;
+    align-items: center;
+}
+
+.hud-pip {
+    width: 11px;
+    height: 11px;
+    margin-right: 9px;
+    rotate: 45deg;
+    border-radius: 1px;
+    background-color: rgba(0, 0, 0, 0.45);
     border-width: 1px;
-    border-color: rgba(190, 150, 50, 0.3);
-    border-radius: 3px;
+    border-color: rgba(255, 255, 255, 0.55);
+    transition-property: background-color, border-color, scale;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out-back;
 }
 
-.hud-charges-fill {
-    width: 0%;
-    height: 100%;
-    background-color: rgb(150, 90, 255);
-    border-radius: 2px;
+.hud-pip--on {
+    background-color: rgb(170, 120, 255);
+    border-color: rgb(255, 255, 255);
+}
+
+.hud-pip--pop {
+    scale: 1.5 1.5;
+    transition-duration: 0.05s;
 }
 
 .hud-charges-count {
+    margin-left: 4px;
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    -unity-text-outline-color: rgba(0, 0, 0, 0.9);
+    -unity-text-outline-width: 1px;
+}
+
+/* ---- Combo counter (above the bars) ---- */
+.hud-combo {
     position: absolute;
-    top: 83px;
-    left: 280px;
+    bottom: 222px;
+    left: 120px;
+    flex-direction: row;
+    align-items: flex-end;
+    transition-property: opacity, translate, scale;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out-back;
+}
+
+.hud-combo--hidden {
+    opacity: 0;
+    translate: 0 10px;
+}
+
+.hud-combo--pop {
+    scale: 1.3 1.3;
+    transition-duration: 0.05s;
+}
+
+.hud-combo-count {
+    font-size: 58px;
+    color: rgb(255, 255, 255);
+    -unity-text-outline-color: rgb(0, 0, 0);
+    -unity-text-outline-width: 3px;
+}
+
+.hud-combo-label {
+    font-size: 16px;
+    color: rgb(255, 255, 255);
+    margin-left: 8px;
+    margin-bottom: 14px;
+    letter-spacing: 4px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    -unity-text-outline-width: 1px;
+}
+
+/* ---- Level-up toast: right-hand column (popup classes added by HUDPopup) ---- */
+.hud-levelup {
+    position: absolute;
+    top: 150px;
+    right: 48px;
+    width: 262px;
+    height: 94px;
+}
+
+.hud-levelup-icon {
+    position: absolute;
+    top: 27px;
+    left: 20px;
+    width: 36px;
+    height: 41px;
+}
+
+.hud-levelup-title {
+    position: absolute;
+    left: 66px;
+    top: 24px;
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+}
+
+.hud-levelup-text {
+    position: absolute;
+    left: 66px;
+    top: 44px;
     font-size: 14px;
-    color: rgb(180, 130, 255);
+    color: rgb(255, 255, 255);
 }
 
-.hud-quest-box {
-    top: 248px;
-    width: 563px;
-    height: 241px;
-    background-color: rgba(0, 0, 0, 0);
-    transition-timing-function: ease-in-bounce;
-}
-
-.hud-quest-deco {
+/* ---- Right-hand column: notifications (item acquired, journal-style toasts) ---- */
+.hud-top-center {
     position: absolute;
-    top: 57px;
-    left: 15px;
-    width: 20px;
-    height: 20px;
-    background-color: rgba(0, 0, 0, 0);
+    top: 40px;
+    right: 48px;
+    width: 520px;
+    align-items: flex-end;
+}
+
+.hud-notification-slot {
+    min-height: 72px;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.hud-notification {
+    flex-direction: row;
+    align-items: center;
+    min-width: 320px;
+    max-width: 520px;
+    padding: 12px 22px;
+    background-color: rgba(0, 0, 0, 0.55);
     border-width: 1px;
-    border-color: rgb(255, 255, 255);
+    border-color: rgba(255, 255, 255, 0.35);
+    border-radius: 2px;
+}
+
+.hud-notification-text {
+    font-size: 20px;
+    white-space: normal;
+    flex-shrink: 1;
+    -unity-text-align: middle-left;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    -unity-text-outline-width: 1px;
+}
+
+/* ---- Quest banner: top-left (quest update) ---- */
+.hud-quest-box {
+    position: absolute;
+    top: 36px;
+    left: 40px;
+    width: 599px;
+    height: 294px;
+}
+
+.hud-quest-icon {
+    position: absolute;
+    top: 18px;
+    left: 0;
+    right: 0;
+}
+
+.hud-quest-heading {
+    position: absolute;
+    top: 66px;
+    left: 0;
+    right: 0;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: upper-center;
+    letter-spacing: 2px;
 }
 
 .hud-quest-title {
-    font-size: 27px;
+    position: absolute;
+    top: 92px;
+    left: 0;
+    right: 0;
+    font-size: 30px;
     color: rgb(255, 255, 255);
     -unity-text-align: upper-center;
-    width: 565px;
-    height: 39px;
-    top: -31px;
-    right: 4px;
-    background-color: rgba(0, 58, 255, 0.27);
-    border-color: rgb(255, 255, 255);
-    border-bottom-width: 4px;
 }
 
 .hud-quest-status {
-    font-size: 22px;
-    color: rgb(255, 255, 255);
-    -unity-text-align: upper-left;
-    width: 516px;
-    height: 183px;
-    left: 38px;
+    position: absolute;
+    top: 140px;
+    left: 42px;
+    right: 42px;
+    font-size: 20px;
+    color: rgb(235, 228, 210);
+    -unity-text-align: upper-center;
     white-space: normal;
 }
 
-.hud-waypoint {
+/* ---- Lock-on reticle (positioned by HUDTargetMarker.cs) ---- */
+.hud-lock {
     position: absolute;
-    top: 268px;
-    left: 1319px;
-    width: 68px;
-    height: 62px;
-    background-image: url("project://database/Assets/_Project/Art/Modern%20GDR%20-%20Free%20icons%20pack/00_Atlas/BrightIcons.png?fileID=37255795&guid=132358e9bf26b60458b731bf001e31db&type=3#ToggleOn_Bright");
-    background-color: rgba(0, 0, 0, 0);
+    width: 120px;
+    height: 120px;
+    display: none;
+    transition-property: scale, opacity;
+    transition-duration: 0.18s;
+    transition-timing-function: ease-out-back;
+}
+
+/* Added for one frame on acquire so the brackets snap in from large. */
+.hud-lock--acquire {
+    scale: 1.6 1.6;
+    opacity: 0;
+    transition-duration: 0s;
+}
+
+.hud-lock-corner {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-color: rgb(240, 235, 220);
+    border-width: 0;
+    transition-property: width, height, border-color;
+    transition-duration: 0.15s;
+}
+
+.hud-lock-corner--tl { left: 0; top: 0; border-left-width: 3px; border-top-width: 3px; border-top-left-radius: 4px; }
+.hud-lock-corner--tr { right: 0; top: 0; border-right-width: 3px; border-top-width: 3px; border-top-right-radius: 4px; }
+.hud-lock-corner--bl { left: 0; bottom: 0; border-left-width: 3px; border-bottom-width: 3px; border-bottom-left-radius: 4px; }
+.hud-lock-corner--br { right: 0; bottom: 0; border-right-width: 3px; border-bottom-width: 3px; border-bottom-right-radius: 4px; }
+
+.hud-lock--hard .hud-lock-corner {
+    width: 30px;
+    height: 30px;
+    border-color: rgb(215, 170, 65);
+}
+
+.hud-lock-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    translate: -4px -4px;
+    border-radius: 4px;
+    background-color: rgba(240, 235, 220, 0.6);
+    transition-property: background-color, rotate, border-radius;
+    transition-duration: 0.15s;
+}
+
+.hud-lock--hard .hud-lock-center {
+    background-color: rgb(215, 170, 65);
+    border-radius: 1px;
+    rotate: 45deg;
+}
+
+/* Edge arrow shown when the target is off screen. */
+.hud-lock-offscreen {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.hud-lock-arrow {
+    width: 28px;
+    height: 28px;
+    background-image: url("/Assets/_Project/Art/MyArt/Triangle.png");
+    -unity-background-scale-mode: scale-to-fit;
     -unity-background-image-tint-color: rgb(215, 170, 65);
 }
 
+/* ---- Mission waypoint (positioned by MissionWaypoint.cs) ---- */
+.hud-waypoint {
+    position: absolute;
+    width: 68px;
+    height: 62px;
+    background-image: url("project://database/Assets/_Project/Art/Modern%20GDR%20-%20Free%20icons%20pack/00_Atlas/BrightIcons.png?fileID=37255795&guid=132358e9bf26b60458b731bf001e31db&type=3#ToggleOn_Bright");
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: rgb(215, 170, 65);
+    visibility: hidden;
+}
+
 .hud-waypoint-meter {
+    position: absolute;
+    top: 100%;
+    left: -20px;
+    right: -20px;
     font-size: 18px;
     -unity-text-align: upper-center;
-    top: 59px;
     color: rgb(240, 232, 210);
     -unity-text-outline-color: rgb(0, 0, 0);
     -unity-text-outline-width: 1px;
 }
 
-.hud-dialogue {
+/* ---- Dialogue (bottom-center) and choices (bottom-right) ---- */
+/* Sits above the player bars so the two never overlap. */
+.hud-bottom-center {
     position: absolute;
-    top: 920px;
-    left: 500px;
-    width: 875px;
-    height: 111px;
-    padding: 12px 20px;
-    background-color: rgba(8, 5, 22, 0.88);
+    left: 0;
+    right: 0;
+    bottom: 210px;
+    align-items: center;
+}
+
+.hud-dialogue {
+    width: 920px;
+    min-height: 110px;
+    padding: 16px 26px;
+    background-color: rgba(8, 5, 22, 0.9);
     border-width: 1px;
     border-color: rgba(190, 150, 50, 0.5);
-    border-left-width: 3px;
-    border-left-color: rgba(190, 150, 50, 0.8);
+    border-left-width: 4px;
+    border-left-color: rgb(215, 170, 65);
     border-radius: 4px;
+    justify-content: center;
     display: none;
 }
 
 .hud-dialogue-text {
     font-size: 20px;
-    color: rgb(225, 218, 200);
-    -unity-text-align: middle-center;
-    flex-grow: 1;
-    white-space: pre-wrap;
+    white-space: normal;
+    -unity-text-align: middle-left;
 }
 
 .hud-choices {
     position: absolute;
-    top: 480px;
-    left: 1316px;
-    width: 572px;
+    right: 60px;
+    bottom: 190px;
+    width: 420px;
     padding: 10px;
     background-color: rgba(8, 5, 22, 0.88);
     border-width: 1px;
@@ -188,80 +525,8 @@
     display: none;
 }
 
-.hud-notification {
-    position: absolute;
-    top: 900px;
-    left: 510px;
-    width: 900px;
-    min-height: 96px;
-    background-color: rgba(8, 5, 22, 0.9);
-    border-width: 1px;
-    border-color: rgba(190, 150, 50, 0.4);
-    border-left-width: 4px;
-    border-left-color: rgb(215, 170, 65);
-    border-radius: 4px;
-    flex-direction: row;
-    align-items: center;
-}
-
-.hud-notification-icon {
-    position: absolute;
-    top: 16px;
-    left: 18px;
-    width: 64px;
-    height: 64px;
-}
-
-.hud-notification-text {
-    position: absolute;
-    top: 0;
-    left: 100px;
-    width: 780px;
-    height: 96px;
-    font-size: 24px;
-    color: rgb(235, 228, 210);
-    -unity-text-align: middle-left;
-    -unity-text-outline-color: rgb(0, 0, 0);
-    -unity-text-outline-width: 1px;
-    white-space: normal;
-}
-
-.hud-combo {
-    position: absolute;
-    top: 112px;
-    left: 36px;
-    flex-direction: column;
-    align-items: center;
-    -unity-font-definition: url("project://database/Assets/_Project/Fonts/MyFont.ttf?fileID=12800000&guid=6384753b77039dc43a7bf85678bfc68d&type=3#MyFont");
-}
-
-
-
-
-
-.hud-target-marker {
-    position: absolute;
-    width: 34px;
-    height: 34px;
-    border-width: 2px;
-    border-color: rgb(215, 170, 65);
-    background-color: rgba(0, 0, 0, 0);
-    rotate: 45deg;
-    display: none;
-}
-
-.hud-target-marker-dot {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    width: 6px;
-    height: 6px;
-    background-color: rgb(215, 170, 65);
-    border-radius: 3px;
-}
-
-/* ---- HUD popups (quest banner, level-up toast) ---- */
-/* Classes are added by HUDPopup at runtime; base carries the pop-in transition. */
+/* ---- HUD popups (quest banner, level-up toast) ----
+   Classes are added by HUDPopup at runtime; base carries the pop-in transition. */
 .hud-popup {
     transition-property: opacity, scale, translate;
     transition-duration: 0.35s, 0.5s, 0.5s;
@@ -271,25 +536,15 @@
 /* Pose before the pop-in plays (and once a close finishes). */
 .hud-popup--hidden {
     opacity: 0;
-    scale: 0.7;
+    scale: 0.7 0.7;
     translate: 0 -45px;
 }
 
 /* Exit: quick zoom-past fade. Keep duration <= CloseAnimMs in HUDPopup.cs. */
 .hud-popup--closing {
     opacity: 0;
-    scale: 1.12;
+    scale: 1.12 1.12;
     translate: 0 -18px;
     transition-duration: 0.32s;
     transition-timing-function: ease-in-cubic;
 }
-
-
-
-
-
-
-
-
-
-
