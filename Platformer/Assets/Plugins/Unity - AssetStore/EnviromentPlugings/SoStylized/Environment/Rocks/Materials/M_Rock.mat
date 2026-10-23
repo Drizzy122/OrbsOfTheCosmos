@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_Rock
-  m_Shader: {fileID: -6465566751694194690, guid: a6fcfd526cd108942a6a8db5ebeda498,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: a6fcfd526cd108942a6a8db5ebeda498, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -34,12 +33,7 @@ Material:
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: _Grass_Base_Color _Grass_Brightness _Grass_Emission _Grass_Saturation
-    _Grass_Scale _Grass_Smoothness _Grass_Texture _Grass_Texture_Size _Grass_Tint
-    _MossTexture _Sand_Angle _Sand_Blend_Offset _Sand_Contrast _Sand_Emission _Sand_Normal_Scale
-    _Sand_Normal_Strength _Sand_Normal_Texture _Sand_Saturation _Sand_Scale _Sand_Smoothness
-    _Sand_Texture _Sand_Tint _Snow_Emission _Snow_Scale _Snow_Smoothness _Snow_Texture
-    _Snow_Tint
+  m_LockedProperties: _Grass_Base_Color _Grass_Brightness _Grass_Emission _Grass_Saturation _Grass_Scale _Grass_Smoothness _Grass_Texture _Grass_Texture_Size _Grass_Tint _MossTexture _Sand_Angle _Sand_Blend_Offset _Sand_Contrast _Sand_Emission _Sand_Normal_Scale _Sand_Normal_Strength _Sand_Normal_Texture _Sand_Saturation _Sand_Scale _Sand_Smoothness _Sand_Texture _Sand_Tint _Snow_Emission _Snow_Scale _Snow_Smoothness _Snow_Texture _Snow_Tint
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DataFile" id="{520d0085-4021-4ad2-8bce-9ca9211fec93}">
+		<property name="assetPath">
+			<value>RPG Lite Edition II/Lite #4 - Beyond Hills and Dreams/Loops.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{acad769a-8d92-4428-bfa4-ed028d918e90}</destination>
+		</relationship>
+	</object>
+</objects>

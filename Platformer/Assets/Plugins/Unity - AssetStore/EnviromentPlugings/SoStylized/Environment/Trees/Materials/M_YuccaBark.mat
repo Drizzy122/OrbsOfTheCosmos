@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_YuccaBark
-  m_Shader: {fileID: -6465566751694194690, guid: 016550df8fe3d84418b52fbdc767f495,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 016550df8fe3d84418b52fbdc767f495, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -21,12 +20,7 @@ Material:
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: _Diffuse_Texture _Emissive_Strength _Moss _MossTexture _Moss_Color
-    _Moss_Color_2 _Moss_Multiply _Moss_Offset _Moss_Sharpness _Moss_Size _Moss_Smoothness
-    _Moss_Specular _Normal_Strength _Normal_Texture _Smoothness_Multiplier _Smoothness_Texture
-    _Snow _SnowWorldAligned _Snow_Emission _Snow_Offset _Snow_Scale _Snow_Sharpness
-    _Snow_Smoothness _Snow_Texture _Snow_Tint _Specular _Specular_Color _Tint_Color
-    _Tint_Mix _XScale _YScale
+  m_LockedProperties: _Diffuse_Texture _Emissive_Strength _Moss _MossTexture _Moss_Color _Moss_Color_2 _Moss_Multiply _Moss_Offset _Moss_Sharpness _Moss_Size _Moss_Smoothness _Moss_Specular _Normal_Strength _Normal_Texture _Smoothness_Multiplier _Smoothness_Texture _Snow _SnowWorldAligned _Snow_Emission _Snow_Offset _Snow_Scale _Snow_Sharpness _Snow_Smoothness _Snow_Texture _Snow_Tint _Specular _Specular_Color _Tint_Color _Tint_Mix _XScale _YScale
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:

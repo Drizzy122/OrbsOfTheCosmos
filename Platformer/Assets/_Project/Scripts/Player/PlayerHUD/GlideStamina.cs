@@ -14,6 +14,13 @@ namespace Platformer
 
         [Header("Settings")]
         [SerializeField] private float staminaRegenRate = 1f;
+        [Tooltip("Stamina drained per second while sprinting, in the same units as gliding (a full bar is Glide Cool Down seconds of glide).")]
+        [SerializeField] private float sprintDrainRate = 0.6f;
+        [Tooltip("Fraction of the bar needed before a sprint can start again after running dry.")]
+        [SerializeField, Range(0f, 1f)] private float sprintMinToStart = 0.25f;
+
+        /// <summary>True when there is enough stamina to begin sprinting.</summary>
+        public bool CanSprint => CurrentFraction() >= sprintMinToStart;
 
         [Header("Events")]
         [SerializeField] private FloatEventChannel staminaEventChannel;
@@ -79,12 +86,25 @@ namespace Platformer
             {
                 DrainStamina();
             }
+            else if (_playerMovement != null && _playerMovement.IsSprintingActively)
+            {
+                DrainSprint();
+            }
             else
             {
                 RegenerateStamina();
             }
 
             PublishStamina();
+        }
+
+        // Running costs stamina too; when it runs out the sprint drops to a jog
+        // until the key is pressed again with some stamina back.
+        private void DrainSprint()
+        {
+            if (_playerMovement == null) return;
+            currentStamina = Mathf.Clamp(currentStamina - sprintDrainRate * Time.deltaTime, 0f, _playerMovement.glideCoolDown);
+            if (currentStamina <= 0f) _playerMovement.StopSprinting();
         }
 
         private float CurrentFraction()

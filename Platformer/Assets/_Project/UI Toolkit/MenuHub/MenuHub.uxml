@@ -17,8 +17,34 @@
                 </ui:VisualElement>
             </ui:Tab>
             <ui:Tab name="tab-QuestLog" label="QUEST LOG">
-                <ui:VisualElement name="questlog-page" class="page">
-                    <ui:Label name="questlog-placeholder" text="Quest Log (coming soon)" class="page-placeholder"/>
+                <ui:VisualElement name="questlog-page" class="page quest-page">
+                    <ui:VisualElement name="QuestListColumn" class="quest-list-column">
+                        <ui:Label text="QUESTS" class="quest-column-title"/>
+                        <ui:ScrollView name="QuestList" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" class="quest-list"/>
+                        <ui:Label name="QuestListEmpty" text="No quests yet. Talk to the villagers." class="quest-empty"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="QuestDetailColumn" class="quest-detail-column">
+                        <ui:VisualElement class="quest-detail-head">
+                            <ui:Label name="QuestName" text="Select a quest" class="quest-detail-name"/>
+                            <ui:Label name="QuestStateTag" text="" class="quest-state-tag"/>
+                        </ui:VisualElement>
+                        <ui:VisualElement class="quest-rule"/>
+                        <ui:ScrollView name="QuestDetailScroll" mode="Vertical" horizontal-scroller-visibility="Hidden" class="quest-detail-scroll">
+                            <ui:Label name="QuestStatus" text="" class="quest-detail-status"/>
+                            <ui:VisualElement class="quest-info-row">
+                                <ui:VisualElement class="quest-info-block">
+                                    <ui:Label text="REWARDS" class="quest-info-header"/>
+                                    <ui:Label name="QuestGold" text="" class="quest-info-line"/>
+                                    <ui:Label name="QuestXP" text="" class="quest-info-line"/>
+                                </ui:VisualElement>
+                                <ui:VisualElement class="quest-info-block">
+                                    <ui:Label text="REQUIREMENTS" class="quest-info-header"/>
+                                    <ui:Label name="QuestLevelReq" text="" class="quest-info-line"/>
+                                    <ui:Label name="QuestPrereqs" text="" class="quest-info-line"/>
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:ScrollView>
+                    </ui:VisualElement>
                 </ui:VisualElement>
             </ui:Tab>
             <ui:Tab name="tab-Character" label="CHARACTER">

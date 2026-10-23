@@ -35,6 +35,12 @@ public class LightAttackCommand : HeroCommand
         this.comboResetWindow = comboResetWindow;
     }
 
+    /// <summary>Index of the swing Advance() last returned (0 = first swing of the chain).</summary>
+    public int ComboIndex => Mathf.Max(comboCounter, 0);
+
+    /// <summary>True when the current swing is the last one of the chain (the finisher).</summary>
+    public bool IsFinisher => animations.Length > 0 && comboCounter == animations.Length - 1;
+
     public string Advance()
     {
         if (Time.time - lastAttackTime > comboResetWindow)

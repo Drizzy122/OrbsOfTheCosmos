@@ -51,6 +51,14 @@ namespace Platformer
 
         void Reset() => document = GetComponent<PanelRenderer>();
 
+        void Awake()
+        {
+            if (document == null) document = GetComponent<PanelRenderer>();
+            // The Quest Log tab has its own controller on this same object; added
+            // here so the scene needs no extra wiring.
+            if (GetComponent<QuestLogPageUI>() == null) gameObject.AddComponent<QuestLogPageUI>();
+        }
+
         void OnEnable()
         {
             // PanelRenderer hands us the UI via the reload callback: it fires when
@@ -58,6 +66,28 @@ namespace Platformer
             // again whenever the UI rebuilds — so wiring lives in OnUIReload.
             document.RegisterUIReloadCallback(OnUIReload);
             SubscribeInput();
+
+            // The quest log key (J by default) jumps straight to the Quest Log tab.
+            if (GameEventsManager.instance != null)
+                GameEventsManager.instance.inputEvents.onQuestLogTogglePressed += OnQuestLogToggle;
+        }
+
+        /// <summary>Open the hub on a given tab (or switch to it if already open).</summary>
+        public void OpenTab(MenuTab tab)
+        {
+            if (!isOpen)
+            {
+                if (pauseMenu == null) pauseMenu = FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
+                if (pauseMenu != null && pauseMenu.IsPaused) return;
+                Open();
+            }
+            SetActiveTab(tab);
+        }
+
+        void OnQuestLogToggle()
+        {
+            if (isOpen && activeTab == MenuTab.QuestLog) Close();
+            else OpenTab(MenuTab.QuestLog);
         }
 
         void OnUIReload(PanelRenderer _, VisualElement root)
@@ -103,6 +133,8 @@ namespace Platformer
         {
             document.UnregisterUIReloadCallback(OnUIReload);
             UnsubscribeInput();
+            if (GameEventsManager.instance != null)
+                GameEventsManager.instance.inputEvents.onQuestLogTogglePressed -= OnQuestLogToggle;
             if (isOpen) Close();
         }
 

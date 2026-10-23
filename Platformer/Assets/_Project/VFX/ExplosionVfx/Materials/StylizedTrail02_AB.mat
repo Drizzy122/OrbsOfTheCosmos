@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: StylizedTrail02_AB
-  m_Shader: {fileID: -6465566751694194690, guid: 5f9a46d55dd947a49b8c2fa188ab2ad1,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 5f9a46d55dd947a49b8c2fa188ab2ad1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:

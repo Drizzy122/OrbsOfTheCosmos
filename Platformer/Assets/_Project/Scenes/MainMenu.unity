@@ -550,11 +550,11 @@ MonoBehaviour:
     Path: event:/SFX/Player/Attack
   <blastAttack>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1823210001
+      Data2: 1174535621
+      Data3: 2122446227
+      Data4: -241928351
+    Path: event:/SFX/Player/BlastAttack
   <playerHurt>k__BackingField:
     Guid:
       Data1: 2045432500
@@ -811,7 +811,6 @@ Transform:
   m_Children:
   - {fileID: 1724846267}
   - {fileID: 1627185417}
-  - {fileID: 1110655947}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &928045345
@@ -820,7 +819,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1110655947}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3365684022637881515, guid: c23dbdbbdf4aaec4dbe810451e8150e7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1055,8 +1054,7 @@ Transform:
   m_Children:
   - {fileID: 39467702}
   - {fileID: 1347056935}
-  - {fileID: 1616148212}
-  m_Father: {fileID: 925823205}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1127285550
 GameObject:
@@ -1166,7 +1164,7 @@ MonoBehaviour:
   settingsMenu: {fileID: 1407111348}
   gameSceneName: Game
   useStartGate: 1
-  introVolume: {fileID: 0}
+  introVolume: {fileID: 39467703}
   gateVignette: 0.55
   menuVignette: 0.22
   vignetteFadeTime: 1.4
@@ -1179,7 +1177,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1627185417}
     m_Modifications:
     - target: {fileID: 1123243791319946, guid: c0aedbee0212d4ba08d6e85a65854d22, type: 3}
       propertyPath: m_Name
@@ -1268,6 +1266,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RotateObject
   floatHeight: 0
   cycleDuration: 90
+--- !u!4 &1211898734 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4795756332844644, guid: c0aedbee0212d4ba08d6e85a65854d22, type: 3}
+  m_PrefabInstance: {fileID: 1211898729}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1247244035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1595,7 +1598,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Platformer.SettingsManager
   document: {fileID: 1407111350}
-  startHidden: 1
   windowModes:
   - Fullscreen
   - Borderless
@@ -1978,11 +1980,6 @@ PanelRenderer:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_Position: 0
---- !u!4 &1616148212 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3365684022637881515, guid: c23dbdbbdf4aaec4dbe810451e8150e7, type: 3}
-  m_PrefabInstance: {fileID: 928045345}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1627185416
 GameObject:
   m_ObjectHideFlags: 2
@@ -2023,6 +2020,7 @@ Transform:
   - {fileID: 1087751548}
   - {fileID: 676309075}
   - {fileID: 1247244040}
+  - {fileID: 1211898734}
   m_Father: {fileID: 925823205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1724846266
@@ -2681,6 +2679,7 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 928045345}
+  - {fileID: 1110655947}
   - {fileID: 554576638}
   - {fileID: 925823205}
-  - {fileID: 1211898729}

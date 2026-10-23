@@ -27,10 +27,12 @@ namespace Platformer
         [SerializeField, Min(1)] int chargesFullBar = 10;
 
         [Header("Health bar growth (Spider-Man style)")]
-        [Tooltip("Fallback level-1 width in px. Normally the width comes from HUD.uss (.hud-bar--health).")]
-        [SerializeField] float baseHealthBarWidth = 340f;
-        [Tooltip("Extra bar width per level gained.")]
-        [SerializeField] float healthBarWidthPerLevel = 8f;
+        [Tooltip("Bar width in px per point of max health. The bar starts short and widens as max health grows (quests, levels).")]
+        [SerializeField] float healthBarPixelsPerHp = 4f;
+        [Tooltip("Narrowest the bar may get, so the readout stays legible.")]
+        [SerializeField] float healthBarMinWidth = 90f;
+        [Tooltip("Widest the bar may get, so it never runs into the rest of the HUD.")]
+        [SerializeField] float healthBarMaxWidth = 560f;
 
         [Header("Level-up popup")]
         [Tooltip("Seconds the LEVEL UP toast stays on screen.")]
@@ -65,9 +67,8 @@ namespace Platformer
         int lastCharges;
         int lastCombo;
 
-        // Level-1 bar width as laid out by the stylesheet; read once after the
-        // first layout so USS stays the single place that sets the look.
-        float styleBaseWidth = -1f;
+        // Last max health we sized the bar for; re-applied when the UI reloads.
+        float lastSeenMaxHealth = -1f;
 
         void Reset() => document = GetComponent<PanelRenderer>();
 
@@ -89,6 +90,7 @@ namespace Platformer
             events.onPlayerLevelChange += OnLevelChanged;
             events.onLuminChargesChanged += OnChargesChanged;
             events.onComboChanged += OnComboChanged;
+            events.onPlayerHealthChanged += OnHealthChanged;
         }
 
         void OnDisable()
@@ -100,6 +102,7 @@ namespace Platformer
             events.onPlayerLevelChange -= OnLevelChanged;
             events.onLuminChargesChanged -= OnChargesChanged;
             events.onComboChanged -= OnComboChanged;
+            events.onPlayerHealthChanged -= OnHealthChanged;
         }
 
         void OnUIReload(PanelRenderer _, VisualElement root)
@@ -140,12 +143,10 @@ namespace Platformer
 
             if (lastSeenLevel > 0 && levelBadgeLabel != null) levelBadgeLabel.text = lastSeenLevel.ToString();
 
-            if (healthContainer != null)
-            {
-                styleBaseWidth = -1f;
-                healthContainer.style.width = StyleKeyword.Null;   // let USS lay it out first
-                healthContainer.RegisterCallback<GeometryChangedEvent>(OnHealthBarFirstLayout);
-            }
+            // Size the bar for the max health we already know about; otherwise the
+            // first health broadcast does it.
+            if (healthContainer != null && lastSeenMaxHealth > 0f)
+                healthContainer.style.width = HealthBarWidthFor(lastSeenMaxHealth);
 
             var levelUpElement = root.Q<VisualElement>("LevelUpNotification");
             if (levelUpElement != null) levelUpPopup = new HUDPopup(levelUpElement, levelUpDuration);
@@ -182,29 +183,24 @@ namespace Platformer
 
         // ── Level ────────────────────────────────────────────────────────────
 
-        float HealthBarWidthFor(int level)
-        {
-            float baseWidth = styleBaseWidth > 0f ? styleBaseWidth : baseHealthBarWidth;
-            return baseWidth + (Mathf.Max(level, 1) - 1) * healthBarWidthPerLevel;
-        }
+        // ── Health bar width ─────────────────────────────────────────────────
 
-        void OnHealthBarFirstLayout(GeometryChangedEvent evt)
+        float HealthBarWidthFor(float maxHealth) =>
+            Mathf.Clamp(maxHealth * healthBarPixelsPerHp, healthBarMinWidth, healthBarMaxWidth);
+
+        // The bar physically widens as max health grows (PlayerHealthScaling:
+        // quests and levels). HUD.uss animates the width change.
+        void OnHealthChanged(float current, float max)
         {
-            healthContainer.UnregisterCallback<GeometryChangedEvent>(OnHealthBarFirstLayout);
-            float w = healthContainer.resolvedStyle.width;
-            if (!float.IsNaN(w) && w > 0f) styleBaseWidth = w;
-            if (lastSeenLevel > 1) healthContainer.style.width = HealthBarWidthFor(lastSeenLevel);
+            if (max <= 0f || Mathf.Approximately(max, lastSeenMaxHealth)) return;
+            lastSeenMaxHealth = max;
+            if (healthContainer != null) healthContainer.style.width = HealthBarWidthFor(max);
         }
 
         void OnLevelChanged(int level)
         {
             if (levelLabel != null) levelLabel.text = $"You are now level {level}";
             if (levelBadgeLabel != null) levelBadgeLabel.text = level.ToString();
-
-            // The health bar physically widens with each level, matching the
-            // max-health growth from PlayerHealthScaling. Level 1 keeps the
-            // stylesheet width untouched.
-            if (healthContainer != null && level > 1) healthContainer.style.width = HealthBarWidthFor(level);
 
             // Pop the LEVEL UP toast only on genuine level-ups; the very first
             // broadcast is just PlayerLevelManager syncing the starting level.

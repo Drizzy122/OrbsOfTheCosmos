@@ -5,7 +5,7 @@ namespace Platformer
     public class ExperienceOrb : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private int experienceGained = 25;
+        [SerializeField] private int experienceGained = 10;
 
         private SphereCollider sphereCollider;
         private void Awake()

@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MV_Mountain
-  m_Shader: {fileID: -6465566751694194690, guid: 6e81e92635c971147869e2fa22f70601,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 6e81e92635c971147869e2fa22f70601, type: 3}
   m_Parent: {fileID: 2100000, guid: 972e390eca8b48044aadd752a575467c, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

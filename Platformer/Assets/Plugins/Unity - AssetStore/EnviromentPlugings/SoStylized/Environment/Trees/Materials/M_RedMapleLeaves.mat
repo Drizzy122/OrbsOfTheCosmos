@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_RedMapleLeaves
-  m_Shader: {fileID: -6465566751694194690, guid: a65bec4bef9f96c4c9dde8ad2a20a99a,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: a65bec4bef9f96c4c9dde8ad2a20a99a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -41,11 +40,7 @@ Material:
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: _Alpha_LCip _Basic_Color_Texture _CullPerpendiculars _Dot_Offset
-    _Fresnel_Power _Gradient_Offset _Gradient_Stretch _Hue_Shift _Hue_Variation _Leaf_Texture
-    _Perpendicular_Trim _SSS_Brightness _SSS_Size _Smoothness _Smoothness_Texture
-    _Specular _UseColorTexture _UseGradient _UseSmoothnessMap _UseTwoSidedSign _UseWorldGradient
-    _World_Gradient_Contrast _World_Gradient_Size
+  m_LockedProperties: _Alpha_LCip _Basic_Color_Texture _CullPerpendiculars _Dot_Offset _Fresnel_Power _Gradient_Offset _Gradient_Stretch _Hue_Shift _Hue_Variation _Leaf_Texture _Perpendicular_Trim _SSS_Brightness _SSS_Size _Smoothness _Smoothness_Texture _Specular _UseColorTexture _UseGradient _UseSmoothnessMap _UseTwoSidedSign _UseWorldGradient _World_Gradient_Contrast _World_Gradient_Size
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -111,6 +106,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_db2fa32299ac42f38d0435a90020f5ea_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: af27d632f75721640aa8499b2c88b4b5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SingleMaterialWoodTexture:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Smoothness:
@@ -237,6 +236,7 @@ Material:
     - _SecondColorOverlayType: 1
     - _ShadowCutoffOffset: -30
     - _Shininess: 0.1
+    - _SingleMaterialLOD: 0
     - _Smoot: 1
     - _Smoothness: 0.094
     - _SmoothnessInt: 0

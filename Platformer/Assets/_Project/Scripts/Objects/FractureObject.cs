@@ -11,8 +11,11 @@ public class FractureObject : MonoBehaviour, IDamageable
 
     void Awake() => currentHealth = maxHealth;
 
+    bool exploded;
+
     public void TakeDamage(float damage, float knockBackTime = 0f)
     {
+        if (exploded) return;
         currentHealth -= damage;
         if (currentHealth <= 0f)
             Explode();
@@ -33,14 +36,29 @@ public class FractureObject : MonoBehaviour, IDamageable
     private GameObject fractObj;
     public void Explode()
     {
+        if (exploded) return;
+        exploded = true;
+
         if (originalObject != null)
         {
-            meshRenderer.enabled = false;
+            if (meshRenderer != null) meshRenderer.enabled = false;
+
+            // Dead props can't be hit again (the object lingers while the pieces shrink).
+            foreach (var col in originalObject.GetComponentsInChildren<Collider>())
+                col.enabled = false;
 
             if (explosionVFX != null)
             {
                 GameObject exploVFX = Instantiate(explosionVFX, transform.position, Quaternion.identity);
                 Destroy(exploVFX, 7);
+            }
+
+            // The fractured prefab must be a pile of pieces, not another breakable
+            // prop: spawning a copy of ourselves would respawn the target forever.
+            if (fracturedObject != null && fracturedObject.GetComponentInChildren<FractureObject>(true) != null)
+            {
+                Debug.LogWarning($"[FractureObject] '{name}': Fractured Object points at a breakable object ('{fracturedObject.name}'), not at broken pieces. Ignoring it.", this);
+                fracturedObject = null;
             }
 
             if (fracturedObject != null)

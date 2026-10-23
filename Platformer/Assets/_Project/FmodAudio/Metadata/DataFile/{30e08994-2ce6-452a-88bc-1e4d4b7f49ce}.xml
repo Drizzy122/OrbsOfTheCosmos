@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DataFile" id="{30e08994-2ce6-452a-88bc-1e4d4b7f49ce}">
+		<property name="assetPath">
+			<value>RPG Lite Edition II/Lite #3 - Venturing/Short Loops/Venturing_Loop3.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{acad769a-8d92-4428-bfa4-ed028d918e90}</destination>
+		</relationship>
+	</object>
+</objects>

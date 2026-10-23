@@ -15,9 +15,14 @@ MonoBehaviour:
   <id>k__BackingField: TestSword
   <displayName>k__BackingField: Test Sword
   <description>k__BackingField: this here is a test sword yay
-  <icon>k__BackingField: {fileID: 198872190, guid: 05e0567213a58c840a3ea79a4409bdfd,
-    type: 3}
+  <icon>k__BackingField: {fileID: 198872190, guid: 05e0567213a58c840a3ea79a4409bdfd, type: 3}
+  <rarity>k__BackingField: 0
   <maxStack>k__BackingField: 1
-  <weaponPrefab>k__BackingField: {fileID: 1834598294049812535, guid: 166c355b6285dba498a086bdd7fda4ca,
-    type: 3}
+  <slot>k__BackingField: 1
+  <weaponPrefab>k__BackingField: {fileID: 1834598294049812535, guid: 166c355b6285dba498a086bdd7fda4ca, type: 3}
+  <gripPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <gripRotationOffset>k__BackingField: {x: 0, y: 0, z: 0}
   <damage>k__BackingField: 10
+  <attackSpeed>k__BackingField: 1
+  <range>k__BackingField: 1
+  <knockback>k__BackingField: 0.5

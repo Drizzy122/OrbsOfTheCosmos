@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DataFile" id="{9fe06eab-1fd8-4a50-b733-f5539128ade8}">
+		<property name="assetPath">
+			<value>RPG Lite Edition II/Lite #1 - War of Exploding Mountains/Fade Outs.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{acad769a-8d92-4428-bfa4-ed028d918e90}</destination>
+		</relationship>
+	</object>
+</objects>

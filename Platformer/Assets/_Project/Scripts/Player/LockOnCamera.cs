@@ -36,13 +36,13 @@ namespace Platformer
         [Header("Camera Steering")]
         [SerializeField] bool steerCamera = true;
         [Tooltip("How hard the camera is pulled toward the target, per second. 0 = off, ~2 = lazy, ~6 = firm. Exponential ease, so it never snaps.")]
-        [SerializeField, Range(0f, 15f)] float pullStrength = 4f;
+        [SerializeField, Range(0f, 15f)] float pullStrength = 6f;
         [Tooltip("Hard cap on how fast the lock may turn the camera (degrees per second).")]
         [SerializeField, Range(10f, 720f)] float maxTurnSpeed = 180f;
         [Tooltip("Yaw error (degrees) below which the camera is left alone, so it does not jitter around the target.")]
         [SerializeField, Range(0f, 15f)] float deadZone = 2f;
         [Tooltip("0 = the lock ignores the player's look input, 1 = the pull fully pauses while the player is actively looking around.")]
-        [SerializeField, Range(0f, 1f)] float lookInputYield = 0.85f;
+        [SerializeField, Range(0f, 1f)] float lookInputYield = 0.5f;
         [Tooltip("Seconds after the last look input before the pull returns to full strength.")]
         [SerializeField, Range(0f, 3f)] float lookInputGrace = 0.6f;
         [Tooltip("Look input magnitude that counts as the player looking around.")]
@@ -236,7 +236,7 @@ namespace Platformer
 
             if (enemyDetection == null)
             {
-                enemyDetection = FindFirstObjectByType<EnemyDetection>();
+                enemyDetection = FindAnyObjectByType<EnemyDetection>();
                 SubscribeDetection();
             }
 

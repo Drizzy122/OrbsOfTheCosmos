@@ -103,6 +103,9 @@ namespace Platformer
             if (best != null) SetLock(best);
         }
 
+        /// <summary>True when a lock-on press would land on an enemy (one is alive, targetable and inside lockOnRange).</summary>
+        public bool HasEnemyInLockRange() => FindLockTarget() != null;
+
         /// <summary>Release the hard lock (no-op when not locked).</summary>
         public void ClearLock()
         {

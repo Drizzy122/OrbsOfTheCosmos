@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EncodableAsset" id="{d2ab97de-ce8b-4e40-b485-5f2a8764354f}">
+		<property name="assetPath">
+			<value>RPG Lite Edition II/Lite #1 - War of Exploding Mountains/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{acad769a-8d92-4428-bfa4-ed028d918e90}</destination>
+		</relationship>
+	</object>
+</objects>

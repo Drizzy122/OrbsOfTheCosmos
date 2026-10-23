@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DataFile" id="{c8a5f581-a496-4235-86b8-d2032c202e48}">
+		<property name="assetPath">
+			<value>RPG Lite Edition II/Lite #2 - Guitar Folk Music/Loops/Guitar_Folk_Music_V3_DrumsOnly_Loop.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{acad769a-8d92-4428-bfa4-ed028d918e90}</destination>
+		</relationship>
+	</object>
+</objects>

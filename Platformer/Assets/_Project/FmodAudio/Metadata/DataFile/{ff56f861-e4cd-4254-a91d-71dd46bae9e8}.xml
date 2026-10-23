@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DataFile" id="{ff56f861-e4cd-4254-a91d-71dd46bae9e8}">
+		<property name="assetPath">
+			<value>RPG Lite Edition II/Lite #2 - Guitar Folk Music/Fade-Outs.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{acad769a-8d92-4428-bfa4-ed028d918e90}</destination>
+		</relationship>
+	</object>
+</objects>

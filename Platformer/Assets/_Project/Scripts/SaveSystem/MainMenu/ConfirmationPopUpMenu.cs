@@ -41,10 +41,27 @@ namespace Platformer
             confirmButton = rootContainer.Q<Button>("ConfirmButton");
             cancelButton = rootContainer.Q<Button>("CancelButton");
 
+            // Hide FIRST. The UXML shows the dialog by default, and this callback can run
+            // synchronously inside Awake (panel already built) before AudioManager.Awake has
+            // run - anything that can throw must come after the hide or the dialog is left
+            // on screen with its placeholder text.
+            DeactivateMenu();
+
+            if (AudioManager.instance != null) RegisterButtonAudio();
+            else if (isActiveAndEnabled) StartCoroutine(RegisterButtonAudioWhenReady());
+        }
+
+        private void RegisterButtonAudio()
+        {
             AudioManager.instance.RegisterButtonAudio(confirmButton);
             AudioManager.instance.RegisterButtonAudio(cancelButton, isCloseAction: true);
+        }
 
-            DeactivateMenu();
+        /// <summary>AudioManager may initialise after this panel; wait for it rather than throw.</summary>
+        private System.Collections.IEnumerator RegisterButtonAudioWhenReady()
+        {
+            while (AudioManager.instance == null) yield return null;
+            if (confirmButton != null && cancelButton != null) RegisterButtonAudio();
         }
 
         public void ActivateMenu(string text, Action confirmAction, Action cancelAction)

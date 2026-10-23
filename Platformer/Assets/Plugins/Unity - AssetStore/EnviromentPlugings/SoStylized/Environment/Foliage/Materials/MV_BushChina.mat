@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MV_BushChina
-  m_Shader: {fileID: -6465566751694194690, guid: 9def86e0e2fee9a4a8b1dbb313e05b9f,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 9def86e0e2fee9a4a8b1dbb313e05b9f, type: 3}
   m_Parent: {fileID: 2100000, guid: 9220c6e902241c342bed0abf46a96d64, type: 2}
   m_ModifiedSerializedProperties: 2
   m_ValidKeywords: []

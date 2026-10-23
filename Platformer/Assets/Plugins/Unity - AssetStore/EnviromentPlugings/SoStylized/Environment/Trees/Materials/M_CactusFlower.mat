@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_CactusFlower
-  m_Shader: {fileID: -6465566751694194690, guid: 9def86e0e2fee9a4a8b1dbb313e05b9f,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 9def86e0e2fee9a4a8b1dbb313e05b9f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

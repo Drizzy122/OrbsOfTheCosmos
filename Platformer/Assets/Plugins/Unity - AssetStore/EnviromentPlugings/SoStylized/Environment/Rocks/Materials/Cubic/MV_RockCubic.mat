@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MV_RockCubic
-  m_Shader: {fileID: -6465566751694194690, guid: a6fcfd526cd108942a6a8db5ebeda498,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: a6fcfd526cd108942a6a8db5ebeda498, type: 3}
   m_Parent: {fileID: 2100000, guid: 70a5bcccb07223b42a7564d54529ba58, type: 2}
   m_ModifiedSerializedProperties: 2
   m_ValidKeywords: []
@@ -35,10 +34,7 @@ Material:
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: _Contrast _Distant_Rock_Normal_Flatten _Emissive_Strength _Projection_Contrast
-    _RockMetallic _Rock_Brightness _Rock_Normal_Distance _Rock_Normal_Flatten _Rock_Scale
-    _Rock_Texture _Rock_Tint _Saturation _Side_Project_Only _Smoothness _Smoothness_Contrast
-    _Smoothness_Texture _Smoothness_Texture_1 _UseSmoothedNormalMap
+  m_LockedProperties: _Contrast _Distant_Rock_Normal_Flatten _Emissive_Strength _Projection_Contrast _RockMetallic _Rock_Brightness _Rock_Normal_Distance _Rock_Normal_Flatten _Rock_Scale _Rock_Texture _Rock_Tint _Saturation _Side_Project_Only _Smoothness _Smoothness_Contrast _Smoothness_Texture _Smoothness_Texture_1 _UseSmoothedNormalMap
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -59,6 +55,8 @@ Material:
     - _Contrast: 0.7
     - _Cracks_Flatten: 0.75
     - _MaskTopLayer: 0
+    - _Moss: 1
+    - _Moss_Sharpness: 0.65
     - _Projection_Contrast: 1
     - _Rock_Brightness: 0.16
     - _Rock_Normal_Flatten: 0.4

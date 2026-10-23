@@ -32,17 +32,21 @@ namespace Platformer
         [Tooltip("How quickly the brackets resize to the enemy's bounds.")]
         [SerializeField] float sizeGlideSpeed = 12f;
         [Tooltip("Pixels of breathing room around the enemy's bounds.")]
-        [SerializeField] float padding = 18f;
-        [SerializeField] float minSize = 60f;
-        [SerializeField] float maxSize = 340f;
+        [SerializeField] float padding = 4f;
+        [SerializeField] float minSize = 44f;
+        [SerializeField] float maxSize = 190f;
         [Tooltip("Distance from the screen edge for the off-screen arrow.")]
         [SerializeField] float edgeMargin = 56f;
 
         VisualElement marker;
         VisualElement offscreen;
         VisualElement arrow;
-        VisualElement lockHint;
+        Label lockHint;
         bool hintOn;
+        bool hintShowsCounter;
+        PlayerCombat combat;
+        const string LockHintText = "TAB / R3   LOCK ON";
+        const string CounterHintText = "COUNTER STRIKE READY";
 
         Transform currentTarget;
         Collider targetCollider;
@@ -71,7 +75,7 @@ namespace Platformer
             marker = root.Q<VisualElement>("TargetMarker");
             offscreen = root.Q<VisualElement>("TargetOffscreen");
             arrow = root.Q<VisualElement>("TargetOffscreenArrow");
-            lockHint = root.Q<VisualElement>("LockHint");
+            lockHint = root.Q<Label>("LockHint");
             hintOn = true;
             SetHint(false);
 
@@ -102,9 +106,19 @@ namespace Platformer
             var cam = Camera.main;
             var panel = marker.panel;
 
+            // A perfect dodge arms a counter strike: say so where the lock hint lives.
+            if (combat == null) combat = enemyDetection.GetComponentInParent<PlayerCombat>();
+            bool counterReady = combat != null && combat.CounterStrikeReady;
+            if (lockHint != null && counterReady != hintShowsCounter)
+            {
+                hintShowsCounter = counterReady;
+                lockHint.text = counterReady ? CounterHintText : LockHintText;
+            }
+
             if (target == null || cam == null || panel == null)
             {
                 ClearTarget();
+                SetHint(counterReady);
                 return;
             }
 
@@ -118,8 +132,9 @@ namespace Platformer
                 PlayAcquire();
             }
 
-            // Prompt the lock-on button while an enemy is soft-targeted but not locked.
-            SetHint(!locked);
+            // Prompt the lock-on button while an enemy is soft-targeted but not locked,
+            // or the counter strike while one is armed.
+            SetHint(counterReady || !locked);
 
             Bounds bounds = TargetBounds(target);
             Vector3 viewport = cam.WorldToViewportPoint(bounds.center);

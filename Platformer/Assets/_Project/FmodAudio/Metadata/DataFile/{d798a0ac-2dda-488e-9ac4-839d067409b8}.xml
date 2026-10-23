@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DataFile" id="{d798a0ac-2dda-488e-9ac4-839d067409b8}">
+		<property name="assetPath">
+			<value>RPG Lite Edition II/Lite #3 - Venturing/Fade Outs.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{acad769a-8d92-4428-bfa4-ed028d918e90}</destination>
+		</relationship>
+	</object>
+</objects>

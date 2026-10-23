@@ -34,6 +34,9 @@ namespace Platformer
         // While aiming, PlayerAim owns the facing (camera yaw) — movement must not rotate us
         public bool IsAimingActive => playerAim != null && playerAim.IsAiming;
 
+        /// <summary>True for the whole dodge, i.e. while its i-frames are active.</summary>
+        public bool IsDodging => dodgeTimer != null && dodgeTimer.IsRunning;
+
         [field: Header("Jump Settings")]
         [field: SerializeField] float jumpForce = 10f;
         [field: SerializeField] float jumpDuration = 0.5f;
@@ -152,6 +155,16 @@ namespace Platformer
         /// than stick tilt, so sprinting reads as sprinting and gliding doesn't blow past the tree.</summary>
         void UpdateAnimator()
         {
+            // Wall climbing zeroes the rigidbody and moves the transform directly, so the body's
+            // world speed is always 0 there. The WallClimb tree (hang idle -> climb) blends on
+            // Speed too, so feed it the stick instead or the climb clip never plays.
+            if (wallClimbimg)
+            {
+                animator.SetFloat(Speed, Mathf.Clamp01(movement.magnitude), locomotionBlendDamp, Time.deltaTime);
+                if (hasSpeedMult) animator.SetFloat(SpeedMult, 1f);
+                return;
+            }
+
             float worldSpeed = new Vector3(rb.linearVelocity.x, ZeroF, rb.linearVelocity.z).magnitude;
 
             // Map world speed onto the tree's authored thresholds: 0 idle / 0.5 walk / 1 run.
@@ -425,8 +438,14 @@ namespace Platformer
         
         public void OnSprint(bool performed)
         {
+            // Can't start a sprint on an empty tank; release and press again once
+            // stamina has recovered a little (GlideStamina.CanSprint).
+            if (performed && glideStamina != null && !glideStamina.CanSprint) return;
             IsSprinting = performed;
         }
+
+        /// <summary>Ends the sprint (stamina ran out). The key must be pressed again to sprint.</summary>
+        public void StopSprinting() => IsSprinting = false;
 
         void HandlePlayerHurt(float knockbackTime)
         {

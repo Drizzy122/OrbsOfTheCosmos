@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Flare_02
-  m_Shader: {fileID: -6465566751694194690, guid: be8ba0df87da1b448b142819efe929a3,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: be8ba0df87da1b448b142819efe929a3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -66,10 +65,12 @@ Material:
     - _Cull: 0
     - _DissolveFeather: 1
     - _DstBlend: 10
+    - _DstBlendAlpha: 10
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SoftParticle: 1
     - _SrcBlend: 5
+    - _SrcBlendAlpha: 1
     - _Surface: 1
     - _ZTest: 4
     - _ZWrite: 0

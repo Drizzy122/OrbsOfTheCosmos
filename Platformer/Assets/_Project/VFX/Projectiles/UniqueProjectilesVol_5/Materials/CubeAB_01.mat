@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CubeAB_01
-  m_Shader: {fileID: -6465566751694194690, guid: 8c182134ba3d9aa4093934754417d47f,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 8c182134ba3d9aa4093934754417d47f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:

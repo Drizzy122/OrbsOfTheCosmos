@@ -29,6 +29,9 @@ namespace Platformer
 
         public event System.Action<EquipSlot> OnActiveWeaponChanged;
 
+        /// <summary>The hand bone the active weapon is parented to.</summary>
+        public Transform WeaponSocket => weaponSocket;
+
         void Reset() => inventory = GetComponent<Inventory>();
 
         public InventoryItem GetEquipped(EquipSlot slot)
@@ -120,9 +123,15 @@ namespace Platformer
 
             if (prefab == null || parent == null) return;
 
+            // Instantiate(prefab, parent) keeps the prefab's own local position,
+            // rotation and scale relative to the socket, so the grip authored on
+            // the prefab is respected. The weapon data can nudge it on top.
             var visual = Instantiate(prefab, parent);
-            visual.transform.localPosition = Vector3.zero;
-            visual.transform.localRotation = Quaternion.identity;
+            if (item.data is WeaponData weaponData)
+            {
+                visual.transform.localPosition += weaponData.gripPositionOffset;
+                visual.transform.localRotation *= Quaternion.Euler(weaponData.gripRotationOffset);
+            }
             spawnedVisuals[slot] = visual;
         }
 

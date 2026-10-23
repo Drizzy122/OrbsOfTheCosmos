@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MV_RockCubic_Cliff
-  m_Shader: {fileID: -6465566751694194690, guid: a6fcfd526cd108942a6a8db5ebeda498,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: a6fcfd526cd108942a6a8db5ebeda498, type: 3}
   m_Parent: {fileID: 2100000, guid: 2a53b8dbb30d146478b19d806ec8b4f8, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

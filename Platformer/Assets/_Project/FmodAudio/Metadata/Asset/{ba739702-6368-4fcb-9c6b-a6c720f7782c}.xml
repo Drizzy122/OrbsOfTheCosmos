@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EncodableAsset" id="{ba739702-6368-4fcb-9c6b-a6c720f7782c}">
+		<property name="assetPath">
+			<value>RPG Lite Edition II/Lite #5 - Sapphires/Loops/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{acad769a-8d92-4428-bfa4-ed028d918e90}</destination>
+		</relationship>
+	</object>
+</objects>

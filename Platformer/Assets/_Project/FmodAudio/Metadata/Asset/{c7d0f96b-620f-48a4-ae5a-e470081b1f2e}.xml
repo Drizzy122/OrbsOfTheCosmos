@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EncodableAsset" id="{c7d0f96b-620f-48a4-ae5a-e470081b1f2e}">
+		<property name="assetPath">
+			<value>RPG Lite Edition II/Lite #2 - Guitar Folk Music/Short Loops/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{acad769a-8d92-4428-bfa4-ed028d918e90}</destination>
+		</relationship>
+	</object>
+</objects>

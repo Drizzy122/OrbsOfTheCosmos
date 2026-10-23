@@ -1,14 +1,7 @@
 fileFormatVersion: 2
 guid: 72d3d15481947d944b543b4c68b217d7
-AssetOrigin:
-  serializedVersion: 1
-  productId: 326646
-  packageName: Stylized Nature & Environment MEGA PACK
-  packageVersion: 1.0
-  assetPath: Assets/SoStylized/Environment/Trees/Asia/Meshes/SM_ChinaPineC01.fbx
-  uploadId: 815288
 ModelImporter:
-  serializedVersion: 24200
+  serializedVersion: 22200
   internalIDToNameTable: []
   externalObjects:
   - first:
@@ -48,6 +41,8 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -62,7 +57,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages:
     - 0.25
@@ -91,9 +86,6 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
-    generateMeshLods: 0
-    meshLodGenerationFlags: 0
-    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -143,3 +135,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 326646
+  packageName: Stylized Nature & Environment MEGA PACK
+  packageVersion: 1.0
+  assetPath: Assets/SoStylized/Environment/Trees/Asia/Meshes/SM_ChinaPineC01.fbx
+  uploadId: 815288

@@ -18,15 +18,56 @@ namespace Platformer
         [Tooltip("The one and only ability cooldown, in seconds.")]
         [SerializeField] float sonarPulseCooldown = 0.5f;
 
+        [Header("Combat")]
+        [Tooltip("Sonar shares R3 with Lock On on a gamepad. While in combat (locked on, an enemy in lock range, mid-attack, or hit in the last few seconds) the press is left to Lock On and the ability does not fire.")]
+        [SerializeField] bool blockedDuringCombat = true;
+
+        // Seconds after the player's last attack / last hit taken that still count as combat.
+        const float CombatLinger = 3f;
+
         private CountdownTimer pulseTimer;
+        EnemyDetection enemyDetection;
+        PlayerCombat combat;
+        Health health;
+        float lastCombatTime = -10f;
 
         void Awake()
         {
             pulseTimer = new CountdownTimer(sonarPulseCooldown);
+            combat = GetComponentInParent<PlayerCombat>();
+            health = GetComponentInParent<Health>();
+            ResolveEnemyDetection();
+        }
+
+        // EnemyDetection lives on its own child object in the Player prefab, so a parent-only
+        // lookup misses it. Prefer PlayerCombat's wired reference, then children, then the scene.
+        void ResolveEnemyDetection()
+        {
+            if (enemyDetection != null) return;
+            if (combat != null) enemyDetection = combat.enemyDetection;
+            if (enemyDetection == null) enemyDetection = GetComponentInChildren<EnemyDetection>(true);
+            if (enemyDetection == null) enemyDetection = GetComponentInParent<EnemyDetection>();
+            if (enemyDetection == null) enemyDetection = FindAnyObjectByType<EnemyDetection>();
+        }
+
+        void OnHit(float _) => lastCombatTime = Time.time;
+
+        /// <summary>Combat = a lock is active or possible, an attack is running, or one ran / landed on us recently.</summary>
+        public bool IsInCombat
+        {
+            get
+            {
+                if (enemyDetection == null) ResolveEnemyDetection();
+                if (enemyDetection != null && (enemyDetection.IsLockedOn || enemyDetection.HasEnemyInLockRange())) return true;
+                if (combat != null && (combat.IsAttacking || combat.IsBlastAttacking)) lastCombatTime = Time.time;
+                return Time.time - lastCombatTime < CombatLinger;
+            }
         }
 
         void OnSonarPulse(bool performed)
         {
+            if (performed && blockedDuringCombat && IsInCombat) return;
+
             if (performed && !pulseTimer.IsRunning)
             {
                 ExecuteActiveAbility();
@@ -70,8 +111,16 @@ namespace Platformer
         }
         #endregion
         
-        void OnEnable() => input.SonarPulse += OnSonarPulse;
+        void OnEnable()
+        {
+            input.SonarPulse += OnSonarPulse;
+            if (health != null) health.OnHit += OnHit;
+        }
 
-        void OnDisable() => input.SonarPulse -= OnSonarPulse;
+        void OnDisable()
+        {
+            input.SonarPulse -= OnSonarPulse;
+            if (health != null) health.OnHit -= OnHit;
+        }
     }
 }

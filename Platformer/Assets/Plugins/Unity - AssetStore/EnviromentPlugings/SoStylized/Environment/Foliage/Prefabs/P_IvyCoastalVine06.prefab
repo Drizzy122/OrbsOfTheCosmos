@@ -8,89 +8,66 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -145.3086
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.49198
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 152.35004
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9727593
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.23181757
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 26.808
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - target: {fileID: -8679921383154817045, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - target: {fileID: 919132149155446097, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       propertyPath: m_Name
       value: P_IvyCoastalVine06
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4243571038908198993}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 188529952119515228}
   m_SourcePrefab: {fileID: 100100000, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
 --- !u!23 &2840102460576737129 stripped
 MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
   m_PrefabInstance: {fileID: 3507045727836650477}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4353554033391961788 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 14af97f9390f74b41ab1ad91eabfc6d2,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 14af97f9390f74b41ab1ad91eabfc6d2, type: 3}
   m_PrefabInstance: {fileID: 3507045727836650477}
   m_PrefabAsset: {fileID: 0}
 --- !u!205 &4243571038908198993
@@ -100,7 +77,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4353554033391961788}
-  serializedVersion: 3
+  serializedVersion: 2
   m_LocalReferencePoint: {x: -2.0450788, y: -4.902446, z: 0.040067077}
   m_Size: 11.397461
   m_FadeMode: 0
@@ -112,24 +89,3 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2840102460576737129}
   m_Enabled: 1
-  m_GlobalIlluminationLOD: 0
---- !u!114 &188529952119515228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4353554033391961788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
-  m_SerializedVersion: 0
-  m_OverrideArea: 0
-  m_Area: 0
-  m_OverrideGenerateLinks: 0
-  m_GenerateLinks: 0
-  m_IgnoreFromBuild: 1
-  m_ApplyToChildren: 1
-  m_AffectedAgents: ffffffff

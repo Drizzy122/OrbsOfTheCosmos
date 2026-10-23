@@ -1,0 +1,29 @@
+fileFormatVersion: 2
+guid: f42484ba47c3c444590a1e75a9ca77eb
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 6
+  defaultSettings:
+    loadType: 0
+    sampleRateSetting: 0
+    sampleRateOverride: 44100
+    compressionFormat: 1
+    quality: 1
+    conversionMode: 0
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 1
+  preloadAudioData: 1
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 183496
+  packageName: 'RPG Music Pack: Lite Edition II'
+  packageVersion: 1.0
+  assetPath: Assets/RPG Lite Edition II/Lite #2 - Guitar Folk Music/Short Loops/Guitar_Folk_Music_Loop3.wav
+  uploadId: 402398

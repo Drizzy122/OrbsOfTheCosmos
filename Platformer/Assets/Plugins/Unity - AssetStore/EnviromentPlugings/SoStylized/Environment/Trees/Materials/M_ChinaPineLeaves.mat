@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_ChinaPineLeaves
-  m_Shader: {fileID: -6465566751694194690, guid: a65bec4bef9f96c4c9dde8ad2a20a99a,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: a65bec4bef9f96c4c9dde8ad2a20a99a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -34,12 +33,7 @@ Material:
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: _Alpha_LCip _Basic_Color_Texture _CullPerpendiculars _Dot_Offset
-    _Emissive_Strength _Fresnel_Power _Gradient_Offset _Gradient_Stretch _Hue_Shift
-    _Hue_Variation _Leaf_Texture _Main_Color _Perpendicular_Trim _SSS_Brightness
-    _SSS_Color _SSS_Size _Second_Color _Smoothness _Smoothness_Texture _Specular
-    _UseColorTexture _UseGradient _UseSmoothnessMap _UseTwoSidedSign _UseWind _UseWorldGradient
-    _WindIntensity _WindScale _WindSpeed _World_Gradient_Contrast _World_Gradient_Size
+  m_LockedProperties: _Alpha_LCip _Basic_Color_Texture _CullPerpendiculars _Dot_Offset _Emissive_Strength _Fresnel_Power _Gradient_Offset _Gradient_Stretch _Hue_Shift _Hue_Variation _Leaf_Texture _Main_Color _Perpendicular_Trim _SSS_Brightness _SSS_Color _SSS_Size _Second_Color _Smoothness _Smoothness_Texture _Specular _UseColorTexture _UseGradient _UseSmoothnessMap _UseTwoSidedSign _UseWind _UseWorldGradient _WindIntensity _WindScale _WindSpeed _World_Gradient_Contrast _World_Gradient_Size
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -107,6 +101,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: af27d632f75721640aa8499b2c88b4b5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SingleMaterialWoodTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Smoothness:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -159,6 +157,7 @@ Material:
     m_Floats:
     - _ASEOutlineWidth: 1
     - _AlphaCutoff: 1
+    - _Alpha_Clip: 0.4
     - _Alpha_LCip: 0.03
     - _Anchorthefoliagebase: 0
     - _Bias1: 0.42
@@ -200,9 +199,12 @@ Material:
     - _Keyword0: 1
     - _LOD: 0
     - _Max: 0
+    - _Max_Distance_Fade: 3
     - _Metallic: 0
     - _Min: 0
+    - _Min_Distance_Fade: 2
     - _Mode: 0
+    - _ObjectDistanceForFade: 0
     - _OcclusionStrength: 1
     - _Offset: 0
     - _Parallax: 0.02
@@ -219,6 +221,7 @@ Material:
     - _SSSMaskIntensity: 0
     - _SSSRange: 0.05
     - _SSS_Brightness: 0.29
+    - _SSS_Offset: 0
     - _SSS_Size: 1.02
     - _Scale1: -0.54
     - _SecondColorFade: 1
@@ -226,6 +229,7 @@ Material:
     - _SecondColorOverlayType: 1
     - _ShadowCutoffOffset: -30
     - _Shininess: 0.1
+    - _SingleMaterialLOD: 0
     - _Smoot: 1
     - _Smoothness: 0
     - _SmoothnessInt: 0
@@ -281,6 +285,7 @@ Material:
     - _Color: {r: 0.10196079, g: 0.36078432, b: 0.2509804, a: 1}
     - _Color0: {r: 0, g: 0.5110004, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Gradient_Color: {r: 0, g: 0, b: 0, a: 0}
     - _MainColor: {r: 0.10283219, g: 0.32599998, b: 0.23629527, a: 0}
     - _Main_Color: {r: 0.11394872, g: 0.404, b: 0.2796923, a: 1}
     - _Min_MAx: {r: -1, g: 1, b: 0, a: 0}
@@ -290,6 +295,7 @@ Material:
     - _SecondColor: {r: 0.18485224, g: 0.5849056, b: 0.4251346, a: 0}
     - _Second_Color: {r: 0.16843477, g: 0.59599996, b: 0.41460863, a: 0}
     - _SpecularColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
+    - _Specular_Color: {r: 0, g: 0, b: 0, a: 0}
     - _View_Dir_Offset: {r: 0, g: 0, b: 0, a: 0}
     - _Wind_Direction: {r: 1, g: 0, b: 0, a: 0}
     - _WorldSpaceLightPos0: {r: -310, g: -48, b: 0, a: 0}

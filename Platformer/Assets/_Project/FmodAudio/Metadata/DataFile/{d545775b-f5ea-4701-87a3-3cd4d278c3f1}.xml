@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DataFile" id="{d545775b-f5ea-4701-87a3-3cd4d278c3f1}">
+		<property name="assetPath">
+			<value>RPG Lite Edition II/Lite #1 - War of Exploding Mountains/Short Loops/War_of_Exploding_Mountains_Loop4.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{acad769a-8d92-4428-bfa4-ed028d918e90}</destination>
+		</relationship>
+	</object>
+</objects>

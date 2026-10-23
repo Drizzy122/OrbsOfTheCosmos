@@ -1,14 +1,7 @@
 fileFormatVersion: 2
 guid: ce0532179b847d04f86019be4ec06e2d
-AssetOrigin:
-  serializedVersion: 1
-  productId: 326646
-  packageName: Stylized Nature & Environment MEGA PACK
-  packageVersion: 1.0
-  assetPath: Assets/SoStylized/Environment/Trees/Pine/Meshes/SM_PineDead01.fbx
-  uploadId: 815288
 ModelImporter:
-  serializedVersion: 24200
+  serializedVersion: 22200
   internalIDToNameTable: []
   externalObjects:
   - first:
@@ -33,6 +26,8 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -47,7 +42,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages:
     - 0.25
@@ -75,9 +70,6 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
-    generateMeshLods: 0
-    meshLodGenerationFlags: 0
-    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -127,3 +119,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 326646
+  packageName: Stylized Nature & Environment MEGA PACK
+  packageVersion: 1.0
+  assetPath: Assets/SoStylized/Environment/Trees/Pine/Meshes/SM_PineDead01.fbx
+  uploadId: 815288

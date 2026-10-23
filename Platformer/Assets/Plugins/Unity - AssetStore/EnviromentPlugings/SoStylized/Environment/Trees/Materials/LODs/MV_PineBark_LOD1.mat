@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MV_PineBark_LOD1
-  m_Shader: {fileID: -6465566751694194690, guid: 016550df8fe3d84418b52fbdc767f495,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 016550df8fe3d84418b52fbdc767f495, type: 3}
   m_Parent: {fileID: 2100000, guid: 145e6546446a91447b4358f45984a797, type: 2}
   m_ModifiedSerializedProperties: 2
   m_ValidKeywords: []

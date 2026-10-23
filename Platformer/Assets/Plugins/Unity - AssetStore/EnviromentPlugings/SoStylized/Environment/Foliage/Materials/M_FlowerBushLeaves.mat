@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_FlowerBushLeaves
-  m_Shader: {fileID: -6465566751694194690, guid: a65bec4bef9f96c4c9dde8ad2a20a99a,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: a65bec4bef9f96c4c9dde8ad2a20a99a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -102,6 +101,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: af27d632f75721640aa8499b2c88b4b5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SingleMaterialWoodTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Smoothness:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -154,6 +157,7 @@ Material:
     m_Floats:
     - _ASEOutlineWidth: 1
     - _AlphaCutoff: 1
+    - _Alpha_Clip: 0.4
     - _Alpha_LCip: 0.5
     - _Anchorthefoliagebase: 0
     - _Bias1: 0.42
@@ -195,9 +199,12 @@ Material:
     - _Keyword0: 1
     - _LOD: 0
     - _Max: 0
+    - _Max_Distance_Fade: 3
     - _Metallic: 0
     - _Min: 0
+    - _Min_Distance_Fade: 2
     - _Mode: 0
+    - _ObjectDistanceForFade: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Perpendicular_Trim: 0
@@ -212,6 +219,7 @@ Material:
     - _SSSMaskIntensity: 0
     - _SSSRange: 0.05
     - _SSS_Brightness: 0
+    - _SSS_Offset: 0
     - _SSS_Size: -1.61
     - _Scale1: -0.54
     - _SecondColorFade: -0.28
@@ -219,6 +227,7 @@ Material:
     - _SecondColorOverlayType: 1
     - _ShadowCutoffOffset: -30
     - _Shininess: 0.1
+    - _SingleMaterialLOD: 0
     - _Smoot: 1
     - _Smoothness: 0
     - _SmoothnessInt: 0
@@ -272,6 +281,7 @@ Material:
     - _Color: {r: 0.340704, g: 0.624, b: 0.34873748, a: 1}
     - _Color0: {r: 0, g: 0.5110004, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Gradient_Color: {r: 0, g: 0, b: 0, a: 0}
     - _MainColor: {r: 0.1493766, g: 0.639, b: 0.27385706, a: 0}
     - _Main_Color: {r: 0.64804184, g: 0.73800004, b: 0.12546001, a: 1}
     - _Min_MAx: {r: -1, g: 1, b: 0, a: 0}

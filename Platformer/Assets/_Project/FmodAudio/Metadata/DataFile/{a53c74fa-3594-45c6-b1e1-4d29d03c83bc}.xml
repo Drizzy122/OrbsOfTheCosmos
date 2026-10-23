@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DataFile" id="{a53c74fa-3594-45c6-b1e1-4d29d03c83bc}">
+		<property name="assetPath">
+			<value>RPG Lite Edition II/Lite #4 - Beyond Hills and Dreams/Short Loops/Beyond_Hills_and_Dreams_Loop2.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{acad769a-8d92-4428-bfa4-ed028d918e90}</destination>
+		</relationship>
+	</object>
+</objects>

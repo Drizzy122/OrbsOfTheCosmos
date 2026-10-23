@@ -12,6 +12,10 @@ namespace Platformer
 
         [Header("Weapon — Visual")]
         [field: SerializeField] public GameObject weaponPrefab { get; private set; }
+        [Tooltip("Extra local position applied on top of the prefab's root transform when it spawns in the hand socket.")]
+        [field: SerializeField] public Vector3 gripPositionOffset { get; private set; } = Vector3.zero;
+        [Tooltip("Extra local rotation (euler degrees) applied on top of the prefab's root transform when it spawns in the hand socket.")]
+        [field: SerializeField] public Vector3 gripRotationOffset { get; private set; } = Vector3.zero;
 
         [Header("Weapon — Stats")]
         [field: SerializeField, Min(0)] public int damage { get; private set; } = 10;

@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: FullScreenShader01_LowHP
-  m_Shader: {fileID: -6465566751694194690, guid: bc9714a25ea119a4e9bbc2148fa1cec8,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: bc9714a25ea119a4e9bbc2148fa1cec8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

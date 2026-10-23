@@ -70,6 +70,52 @@ namespace Platformer
         private Tween lungeMoveTween;
         private Tween pendingAttackCall;
 
+        [field: Header("Combat Feel")]
+        [Tooltip("Forward step taken by a swing that has no target, so attacks don't feel rooted. Blocked by Lunge Obstacles.")]
+        [field: SerializeField] float noTargetStepDistance = 1.2f;
+        [Tooltip("Seconds into a swing after which holding a direction (with no attack queued) cancels the recovery into movement.")]
+        [field: SerializeField] float recoveryCancelTime = 0.32f;
+        [Tooltip("Hit-stop for a normal hit, in real seconds.")]
+        [field: SerializeField] float hitStopLight = 0.06f;
+        [Tooltip("Hit-stop for the last swing of the combo.")]
+        [field: SerializeField] float hitStopFinisher = 0.12f;
+        [Tooltip("Damage multiplier on the last swing of the combo.")]
+        [field: SerializeField] float finisherDamageMultiplier = 1.5f;
+        [Tooltip("Knockback-time multiplier on the last swing: enemies fly further and stay down longer.")]
+        [field: SerializeField] float finisherKnockbackMultiplier = 1.8f;
+        [Tooltip("How long the attack state lasts on the last swing, so the power attack animation plays out instead of being cut at Attack Cool Down. Power_Attack_End slams at 1.0 s.")]
+        [field: SerializeField] float finisherAttackDuration = 1.4f;
+        [Tooltip("Animator playback speed during the last swing (1 = normal). Below 1 gives the power attack weight.")]
+        [field: SerializeField] float finisherAnimationSpeed = 1f;
+        [Tooltip("Seconds into the last swing when its damage lands (the slam), instead of the normal Slide Duration.")]
+        [field: SerializeField] float finisherHitDelay = 1.0f;
+        Animator animator;
+        bool animatorSpeedOverridden;
+        bool currentSwingIsFinisher;
+        [Tooltip("Time scale during the slow-motion that follows a killing blow.")]
+        [field: SerializeField] float killSlowMoScale = 0.35f;
+        [Tooltip("Real seconds of slow-motion after a killing blow.")]
+        [field: SerializeField] float killSlowMoDuration = 0.3f;
+        [Tooltip("Real seconds of slow-motion when the kill empties the arena.")]
+        [field: SerializeField] float lastKillSlowMoDuration = 0.7f;
+
+        [field: Header("Perfect Dodge")]
+        [Tooltip("Seconds after dodging through an attack during which the next swing is a counter strike.")]
+        [field: SerializeField] float perfectDodgeWindow = 1.5f;
+        [field: SerializeField] float perfectDodgeSlowMoScale = 0.3f;
+        [field: SerializeField] float perfectDodgeSlowMoDuration = 0.35f;
+        [Tooltip("Damage multiplier of the counter strike after a perfect dodge.")]
+        [field: SerializeField] float counterStrikeDamageMultiplier = 2f;
+        [Tooltip("How much further the counter strike may lunge, as a multiplier of Max Lunge Range.")]
+        [field: SerializeField] float counterStrikeLungeMultiplier = 1.6f;
+
+        float perfectDodgeUntil = -1f;
+        float swingStartedAt;
+        bool swingHitLanded;
+
+        /// <summary>True while the next swing counts as a counter strike.</summary>
+        public bool CounterStrikeReady => Time.time <= perfectDodgeUntil;
+
         [field: Header("Camera Shake Settings")]
         [field: SerializeField] float minShakeForce = 0.5f;
         [field: SerializeField] float shakeDistanceMultiplier = 0.2f;
@@ -77,8 +123,17 @@ namespace Platformer
 
         [field: Header("VFX Settings")]
         [field: SerializeField] VisualEffect slashVFX;
+        [Tooltip("Slash effect objects. No longer played on swings (the blade trail replaced them); they are only switched off at start.")]
         [field: SerializeField] ComboSlash[] comboSlashes;
         [field: SerializeField] GameObject impactVFX;
+        [Tooltip("Draw a ribbon from the blade's real motion on every swing (BladeTrail component, added automatically). Always in sync with the animation.")]
+        [field: SerializeField] bool useBladeTrail = true;
+        [Tooltip("Seconds the blade trail keeps emitting after a slash event.")]
+        [field: SerializeField] float bladeTrailSeconds = 0.25f;
+        [Tooltip("The trail also starts from code this many seconds into every swing (the Air Wave swings begin at 0.05-0.17 s), so it shows even on a clip without events.")]
+        [field: SerializeField] float bladeTrailSwingDelay = 0.06f;
+        BladeTrail bladeTrail;
+        Tween pendingTrailCall;
 
         private PlayerMovement playerMovement;
         private PlayerEquipment playerEquipment;
@@ -146,8 +201,14 @@ namespace Platformer
 
         /// <summary>Called by AttackState when it begins a swing so the attack window
         /// always spans the full swing (matters when entering from a dodge or a combo
-        /// continue, where the timer was started earlier).</summary>
-        public void RestartAttackWindow() => attackTimer.Start();
+        /// continue, where the timer was started earlier). Normal swings use
+        /// Attack Cool Down; lunge() stretches it again for the finisher.</summary>
+        public void RestartAttackWindow()
+        {
+            RestoreAnimatorSpeed();
+            attackTimer.Reset(attackCoolDown);
+            attackTimer.Start();
+        }
 
         /// <summary>Called by AttackState each frame: true when a queued press exists
         /// and the current swing has played far enough to flow into the next one.</summary>
@@ -155,6 +216,8 @@ namespace Platformer
         {
             if (!IsAttacking || Time.time > attackBufferedUntil) return false;
             if (attackTimer.Progress > comboContinuePoint) return false;
+            // The power attack commits: no chaining out of it until its slam has landed.
+            if (currentSwingIsFinisher && !swingHitLanded) return false;
             attackBufferedUntil = -1f;
             return true;
         }
@@ -169,11 +232,15 @@ namespace Platformer
             attackTimer?.Stop();
             blastAttackTimer?.Stop();
             attackBufferedUntil = -1f;
+            swingHitLanded = false;
+            currentSwingIsFinisher = false;
+            RestoreAnimatorSpeed();
 
             // Also kill any in-flight lunge and its pending hit — otherwise getting
             // hurt mid-attack still slides us in and lands the swing from HurtState.
             lungeMoveTween?.Kill();
             pendingAttackCall?.Kill();
+            pendingTrailCall?.Kill();
         }
 
         
@@ -186,6 +253,7 @@ namespace Platformer
 
         void Awake()
         {
+            EnsureLockOnCamera();
             playerMovement = GetComponent<PlayerMovement>();
             // Equipment and the ability tree live on child objects of the Player
             playerEquipment = GetComponentInChildren<PlayerEquipment>();
@@ -211,9 +279,32 @@ namespace Platformer
             if (enemyDetection != null) enemyDetection.ToggleLockOn();
         }
 
+        // The lock-on camera steers the orbit toward the locked enemy. Added here
+        // so the prefab needs no manual wiring; it resolves its references itself.
+        void EnsureLockOnCamera()
+        {
+            if (GetComponent<LockOnCamera>() == null) gameObject.AddComponent<LockOnCamera>();
+            bladeTrail = GetComponent<BladeTrail>();
+            if (bladeTrail == null) bladeTrail = gameObject.AddComponent<BladeTrail>();
+            finalBlowCamera = GetComponent<FinalBlowCamera>();
+            if (finalBlowCamera == null) finalBlowCamera = gameObject.AddComponent<FinalBlowCamera>();
+        }
+
+        // Close-up slow-motion camera on the kill that empties the arena (Mix and Jam style).
+        FinalBlowCamera finalBlowCamera;
+
+        void RestoreAnimatorSpeed()
+        {
+            if (!animatorSpeedOverridden) return;
+            animatorSpeedOverridden = false;
+            if (animator != null) animator.speed = 1f;
+        }
+
         void Update()
         {
             HandleWeaponVisibility();
+
+            if (animatorSpeedOverridden && !IsAttacking) RestoreAnimatorSpeed();
 
             if (enemyDetection != null && playerMovement != null)
             {
@@ -227,6 +318,18 @@ namespace Platformer
             {
                 attackBufferedUntil = -1f;
                 attackTimer.Start();
+            }
+
+            // Recovery cancel: once the hit has landed and the swing has played past
+            // the cancel point, holding a direction with nothing queued drops the
+            // rest of the recovery and hands control back to movement.
+            if (IsAttacking && swingHitLanded && Time.time > attackBufferedUntil
+                && Time.time - swingStartedAt >= recoveryCancelTime
+                && playerMovement != null
+                && playerMovement.GetAdjustedMovementDirection().sqrMagnitude > 0.25f)
+            {
+                lungeMoveTween?.Kill();
+                attackTimer.Stop();
             }
         }
 
@@ -271,26 +374,16 @@ namespace Platformer
             // Initial broadcast so the HUD charge bar starts correct.
             GameEventsManager.instance?.playerEvents.LuminChargesChanged(luminCharges);
         }
+        /// <summary>Animation event on the attack clips: shows the slash object for
+        /// that swing and starts the blade trail.</summary>
+        /// <summary>Animation event on the attack clips. The slash effect objects are
+        /// no longer played; each event just (re)starts the blade trail, which is
+        /// drawn from the sword itself and so always matches the swing.</summary>
         public void PlaySlashVFX(int slashIndex)
         {
-            if (slashIndex >= 0 && slashIndex < comboSlashes.Length)
-            {
-                GameObject currentSlash = comboSlashes[slashIndex].slashObj;
-                float duration = comboSlashes[slashIndex].activeDuration;
-
-                if (currentSlash != null)
-                {
-                    currentSlash.SetActive(false);
-                    currentSlash.SetActive(true);
-                    DOVirtual.DelayedCall(duration, () =>
-                    {
-                        if (currentSlash != null)
-                        {
-                            currentSlash.SetActive(false);
-                        }
-                    });
-                }
-            }
+            // Some clips are shared with the blast attack; only a melee swing shows the trail.
+            if (!IsAttacking || IsBlastAttacking) return;
+            if (useBladeTrail && bladeTrail != null) bladeTrail.Emit(bladeTrailSeconds);
         }
 
         private void TriggerCameraShake(float distance)
@@ -335,6 +428,48 @@ namespace Platformer
             float lungeDistance = 0f;
             Transform target = enemyDetection.CurrentTarget();
 
+            swingStartedAt = Time.time;
+            swingHitLanded = false;
+
+            // A kick on every swing, whether or not it lands; hits add their own on top.
+            // DualSense motors are weak, so this is stronger than it reads.
+            RumblePulse(0.45f, 0.7f, 0.12f);
+
+            // Swing weight: the chain's last swing is the finisher; a swing thrown
+            // right after a perfect dodge is a counter strike.
+            var command = playerMovement != null ? playerMovement.commandManager.LightAttackCommand : null;
+            bool finisher = command != null && command.IsFinisher;
+            currentSwingIsFinisher = finisher;
+            bool counterStrike = CounterStrikeReady;
+            if (counterStrike) perfectDodgeUntil = -1f;   // consumed
+
+            float lungeRange = counterStrike ? maxLungeRange * counterStrikeLungeMultiplier : maxLungeRange;
+
+            // The power attack gets its full animation: a longer attack window and
+            // slower playback. Both are undone when the attack ends.
+            if (finisher)
+            {
+                attackTimer.Reset(finisherAttackDuration);
+                attackTimer.Start();
+                if (animator == null) animator = GetComponent<Animator>();
+                if (animator != null && finisherAnimationSpeed > 0f)
+                {
+                    animator.speed = finisherAnimationSpeed;
+                    animatorSpeedOverridden = true;
+                }
+            }
+
+            // Blade trail from code on every swing, so it never depends on the clip
+            // carrying an event. Slower finisher playback pushes the start later.
+            if (useBladeTrail && bladeTrail != null)
+            {
+                pendingTrailCall?.Kill();
+                float speed = finisher && finisherAnimationSpeed > 0f ? finisherAnimationSpeed : 1f;
+                float delay = bladeTrailSwingDelay / speed;
+                float emitFor = (bladeTrailSeconds + 0.1f) / speed;
+                pendingTrailCall = DOVirtual.DelayedCall(delay, () => bladeTrail.Emit(emitFor));
+            }
+
             if (target != null)
             {
                 lungeDistance = Vector3.Distance(transform.position, target.position);
@@ -352,62 +487,154 @@ namespace Platformer
                 transform.DOLookAt(target.position, 0.1f, AxisConstraint.Y);
 
                 // Only warp within a sane range — beyond it we just face the target
-                if (lungeDistance <= maxLungeRange && CanLungeTo(target, directionToTarget, stopPosition))
+                if (lungeDistance <= lungeRange && CanLungeTo(target, directionToTarget, stopPosition))
                 {
                     lungeMoveTween = transform.DOMove(stopPosition, slideDuration).SetEase(Ease.OutQuad);
                 }
             }
-            else if (inputDirection != Vector3.zero)
+            else
             {
-                transform.rotation = Quaternion.LookRotation(inputDirection);
+                if (inputDirection != Vector3.zero)
+                {
+                    transform.rotation = Quaternion.LookRotation(inputDirection);
+                }
+
+                // No target: step into the swing so it carries weight instead of
+                // chopping the air on the spot. Same obstacle check as the lunge.
+                if (noTargetStepDistance > 0f)
+                {
+                    Vector3 stepDir = transform.forward;
+                    Vector3 stepTo = transform.position + stepDir * noTargetStepDistance;
+                    if (CanLungeTo(transform, stepDir, stepTo))
+                        lungeMoveTween = transform.DOMove(stepTo, slideDuration).SetEase(Ease.OutQuad);
+                }
             }
 
-            pendingAttackCall = DOVirtual.DelayedCall(slideDuration, () =>
+            float damageMultiplier = 1f;
+            float knockback = knockbackTime;
+            if (finisher)
+            {
+                damageMultiplier *= finisherDamageMultiplier;
+                knockback *= finisherKnockbackMultiplier;
+            }
+            if (counterStrike)
+            {
+                damageMultiplier *= counterStrikeDamageMultiplier;
+                knockback *= finisherKnockbackMultiplier;
+            }
+
+            // The power attack's damage lands on its slam, well after the lunge.
+            float hitDelay = finisher ? finisherHitDelay / Mathf.Max(0.01f, finisherAnimationSpeed) : slideDuration;
+
+            pendingAttackCall = DOVirtual.DelayedCall(hitDelay, () =>
             {
                 AudioManager.instance.PlayOneShot(FMODEvents.instance.playerAttack, transform.position);
 
-                int hits = LightAttack();
-                if (hits > 0)
+                int hits = LightAttack(damageMultiplier, knockback, out bool killed, out bool arenaCleared, out Vector3 killedAt);
+                swingHitLanded = true;
+                if (hits == 0) return;
+
+                // Hit-confirm sandwich: freeze + shake + rumble, scaled by how much
+                // the hit mattered. The enemy hurt SFX and hit-flash come from
+                // Health.TakeDamage.
+                float shake = Mathf.Max(lungeDistance, 3f);
+                if (killed && arenaCleared && finalBlowCamera != null)
                 {
-                    // Hit-confirm sandwich: freeze + shake + rumble. The enemy hurt
-                    // SFX and hit-flash come from Health.TakeDamage.
-                    HitStop.Play();
-                    TriggerCameraShake(Mathf.Max(lungeDistance, 3f));
+                    // Last enemy down: the final blow camera owns the slow-motion.
+                    finalBlowCamera.Play(killedAt);
+                    TriggerCameraShake(shake * 2f);
+                    RumblePulse(0.7f, 1f, 0.3f);
+                }
+                else if (killed)
+                {
+                    HitStop.Play(killSlowMoDuration, killSlowMoScale);
+                    TriggerCameraShake(shake * 2f);
+                    RumblePulse(0.6f, 0.9f, 0.22f);
+                }
+                else if (finisher || counterStrike)
+                {
+                    HitStop.Play(hitStopFinisher);
+                    TriggerCameraShake(shake * 1.6f);
+                    RumblePulse(0.5f, 0.8f, 0.16f);
+                }
+                else
+                {
+                    HitStop.Play(hitStopLight);
+                    TriggerCameraShake(shake);
                     RumblePulse();
                 }
             });
         }
 
-
-
-
-        /// <summary>Applies melee damage in front of us. Returns how many targets were hit.</summary>
-        private int LightAttack()
+        /// <summary>
+        /// Called by an enemy whose attack passed through the player's dodge
+        /// i-frames: time dips and the next swing becomes a counter strike.
+        /// </summary>
+        public void OnPerfectDodge(Enemy enemy)
         {
+            perfectDodgeUntil = Time.time + perfectDodgeWindow;
+            HitStop.Play(perfectDodgeSlowMoDuration, perfectDodgeSlowMoScale);
+            RumblePulse(0.2f, 0.5f, 0.1f);
+            if (enemy != null) SpawnImpactVFX(enemy.transform.position + Vector3.up);
+        }
+
+
+
+
+        // Targets already damaged by the current swing, so an object with several
+        // colliders (ragdoll parts, dummy segments) takes one hit, not one per collider.
+        readonly System.Collections.Generic.HashSet<Component> damagedThisSwing = new();
+
+        /// <summary>Applies melee damage in front of us. Returns how many targets were hit,
+        /// and whether any of them died (and whether that emptied the arena).</summary>
+        private int LightAttack(float damageMultiplier, float knockback, out bool killedSomething, out bool arenaCleared, out Vector3 killedAt)
+        {
+            killedSomething = false;
+            arenaCleared = false;
+            killedAt = transform.position + transform.forward * 2f;
+
             Vector3 attackPos = transform.position + transform.forward * lightAttackDistance;
             Collider[] hitEnemies = Physics.OverlapSphere(attackPos, lightAttackDistance);
 
-            int damage = CurrentMeleeDamage();
+            int damage = Mathf.RoundToInt(CurrentMeleeDamage() * damageMultiplier);
             int hits = 0;
+            damagedThisSwing.Clear();
+
             foreach (var hit in hitEnemies)
             {
-                if (hit.CompareTag("Enemy"))
+                // Colliders usually sit on child objects while the tag and the damage
+                // component live on the parent, so resolve both up the hierarchy.
+                var enemyHealth = hit.GetComponentInParent<Health>();
+                if (enemyHealth != null)
                 {
-                    if (hit.TryGetComponent<Health>(out Health enemyHealth) && !enemyHealth.isDead)
+                    bool isEnemy = hit.CompareTag("Enemy") || enemyHealth.CompareTag("Enemy");
+                    if (!isEnemy || enemyHealth.isDead || !damagedThisSwing.Add(enemyHealth)) continue;
+
+                    enemyHealth.TakeDamage(damage, knockback);
+                    SpawnImpactVFX(hit.ClosestPoint(attackPos));
+                    hits++;
+
+                    if (enemyHealth.isDead)
                     {
-                        enemyHealth.TakeDamage(damage, knockbackTime);
-                        SpawnImpactVFX(hit.ClosestPoint(attackPos));
-                        hits++;
+                        killedSomething = true;
+                        killedAt = enemyHealth.transform.position;
+                        // The dying enemy is still registered until its death state
+                        // runs, so "one left" means this kill clears the arena.
+                        if (EnemyManager.instance != null && EnemyManager.instance.AliveEnemyCount() <= 1)
+                            arenaCleared = true;
                     }
+                    continue;
                 }
-                else if (hit.CompareTag("Destructable"))
+
+                var damageable = hit.GetComponentInParent<IDamageable>();
+                if (damageable is Component damageableObject)
                 {
-                    if (hit.TryGetComponent<IDamageable>(out var damageable))
-                    {
-                        damageable.TakeDamage(damage, knockbackTime);
-                        SpawnImpactVFX(hit.ClosestPoint(attackPos));
-                        hits++;
-                    }
+                    bool isDestructable = hit.CompareTag("Destructable") || damageableObject.CompareTag("Destructable");
+                    if (!isDestructable || !damagedThisSwing.Add(damageableObject)) continue;
+
+                    damageable.TakeDamage(damage, knockback);
+                    SpawnImpactVFX(hit.ClosestPoint(attackPos));
+                    hits++;
                 }
             }
             return hits;
@@ -420,12 +647,16 @@ namespace Platformer
             Destroy(vfx, 2f);
         }
 
-        void RumblePulse()
+        void RumblePulse(float lowFrequency = 0.35f, float highFrequency = 0.6f, float seconds = 0.12f)
         {
             var pad = UnityEngine.InputSystem.Gamepad.current;
+            // TEMP diagnostic: remove once rumble is confirmed working.
+            Debug.Log(pad == null
+                ? "[Rumble] no gamepad is current (Gamepad.current is null)"
+                : $"[Rumble] {pad.displayName} ({pad.GetType().Name}) low={lowFrequency} high={highFrequency} for {seconds}s");
             if (pad == null) return;
-            pad.SetMotorSpeeds(0.35f, 0.6f);
-            DOVirtual.DelayedCall(0.12f, () => pad.SetMotorSpeeds(0f, 0f)).SetUpdate(true);
+            pad.SetMotorSpeeds(lowFrequency, highFrequency);
+            DOVirtual.DelayedCall(seconds, () => pad.SetMotorSpeeds(0f, 0f)).SetUpdate(true);
         }
 
         public void BlastAttack()

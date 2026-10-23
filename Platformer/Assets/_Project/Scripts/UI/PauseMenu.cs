@@ -77,24 +77,34 @@ namespace Platformer
             loadButton.clicked += OnLoadClicked;
             settingsButton.clicked += OnSettingsClicked;
 
-            if (quickSaveButton != null)
-            {
-                quickSaveButton.clicked += OnQuickSaveClicked;
-                AudioManager.instance.RegisterButtonAudio(quickSaveButton);
-            }
-            if (loadLastSaveButton != null)
-            {
-                loadLastSaveButton.clicked += OnLoadLastSaveClicked;
-                AudioManager.instance.RegisterButtonAudio(loadLastSaveButton);
-            }
+            if (quickSaveButton != null) quickSaveButton.clicked += OnQuickSaveClicked;
+            if (loadLastSaveButton != null) loadLastSaveButton.clicked += OnLoadLastSaveClicked;
 
-            AudioManager.instance.RegisterButtonAudio(continueButton);
-            AudioManager.instance.RegisterButtonAudio(loadButton);
-            AudioManager.instance.RegisterButtonAudio(settingsButton);
-            AudioManager.instance.RegisterButtonAudio(quitButton, isCloseAction: true);
-
-            // Re-apply state whenever the UI (re)builds
+            // Re-apply state whenever the UI (re)builds. Done BEFORE the audio hookup: this
+            // callback can run synchronously inside Awake, ahead of AudioManager.Awake, and a
+            // throw here used to leave the menu in whatever state the UXML declares.
             rootContainer.style.display = isPaused ? DisplayStyle.Flex : DisplayStyle.None;
+
+            if (AudioManager.instance != null) RegisterButtonAudio();
+            else if (isActiveAndEnabled) StartCoroutine(RegisterButtonAudioWhenReady());
+        }
+
+        private void RegisterButtonAudio()
+        {
+            var audio = AudioManager.instance;
+            if (quickSaveButton != null) audio.RegisterButtonAudio(quickSaveButton);
+            if (loadLastSaveButton != null) audio.RegisterButtonAudio(loadLastSaveButton);
+            audio.RegisterButtonAudio(continueButton);
+            audio.RegisterButtonAudio(loadButton);
+            audio.RegisterButtonAudio(settingsButton);
+            audio.RegisterButtonAudio(quitButton, isCloseAction: true);
+        }
+
+        /// <summary>AudioManager may initialise after this panel; wait for it rather than throw.</summary>
+        private System.Collections.IEnumerator RegisterButtonAudioWhenReady()
+        {
+            while (AudioManager.instance == null) yield return null;
+            if (continueButton != null) RegisterButtonAudio();
         }
 
         void Start()

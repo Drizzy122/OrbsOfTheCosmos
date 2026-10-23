@@ -13,6 +13,10 @@ namespace Platformer
         private int currentPlayerLevel;
         
         private Dictionary<string, Quest> questMap;
+
+        /// <summary>Every quest the game knows about, for UI that opens after the initial broadcast.</summary>
+        public IEnumerable<Quest> Quests => questMap != null ? questMap.Values : System.Array.Empty<Quest>();
+
         private void Awake()
         {
             questMap = CreateQuestMap();

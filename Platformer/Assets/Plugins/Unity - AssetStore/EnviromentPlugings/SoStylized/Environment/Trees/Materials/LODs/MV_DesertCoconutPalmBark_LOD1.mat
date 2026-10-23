@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MV_DesertCoconutPalmBark_LOD1
-  m_Shader: {fileID: -6465566751694194690, guid: 016550df8fe3d84418b52fbdc767f495,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 016550df8fe3d84418b52fbdc767f495, type: 3}
   m_Parent: {fileID: 2100000, guid: 9aafd8dadd4a3f34c96e90266a738ca5, type: 2}
   m_ModifiedSerializedProperties: 2
   m_ValidKeywords: []
