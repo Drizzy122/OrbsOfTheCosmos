@@ -5,6 +5,7 @@ DefaultImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+<<<<<<< Updated upstream
 AssetOrigin:
   serializedVersion: 1
   productId: 281045
@@ -12,3 +13,5 @@ AssetOrigin:
   packageVersion: 1.0.4
   assetPath: Assets/Toon Adventure Island/URP_Toon Adventure Island_6000.1.0.unitypackage
   uploadId: 782649
+=======
+>>>>>>> Stashed changes

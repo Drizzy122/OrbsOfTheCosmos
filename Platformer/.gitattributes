@@ -11,6 +11,13 @@
 *.asset merge=unityyamlmerge eol=lf
 *.meta merge=unityyamlmerge eol=lf
 *.controller merge=unityyamlmerge eol=lf
+# Binary-serialized Unity assets (TerrainData, lighting, occlusion, navmesh) are
+# never YAML, so line-ending normalisation or a YAML merge must never touch them.
+*Terrain*.asset -text -merge
+LightingData.asset -text -merge
+OcclusionCullingData.asset -text -merge
+NavMesh*.asset -text -merge
+*.cubemap -text -merge
 ## git-lfs ##
 #Image
 *.jpg filter=lfs diff=lfs merge=lfs -text
